@@ -1,7 +1,7 @@
 ---
-name: US_? // User Story Template
-about: About that user Story
-title: ''
+name: User Story
+about: About that user Story.
+title: US_?// User Story
 labels: ''
 assignees: ''
 
