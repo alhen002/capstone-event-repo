@@ -46,8 +46,6 @@ export default function EventCard({ event }) {
       <StyledImage
         src={event.image_url}
         alt={event.title.toLowerCase()}
-        // width={375}
-        // height={133}
         fill={true}
       />
       <StyledTitle>
