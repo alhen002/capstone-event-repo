@@ -13,6 +13,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ["unsplash.com", "images.unsplash.com"],
+  },
 };
 
 module.exports = nextConfig;
