@@ -47,6 +47,7 @@ export default function EventCard({ event }) {
         src={event.image_url}
         alt={event.title.toLowerCase()}
         fill={true}
+        quality={50}
       />
       <StyledTitle>
         {event.title}, <StyledCity>{event.city}</StyledCity>

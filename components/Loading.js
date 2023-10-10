@@ -1,3 +1,9 @@
+import { StyledContainer } from "./Error";
+
 export default function Loading() {
-  return <p>Loading....</p>;
+  return (
+    <StyledContainer>
+      <p>Loading....</p>
+    </StyledContainer>
+  );
 }

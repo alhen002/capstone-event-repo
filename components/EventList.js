@@ -6,7 +6,6 @@ const StyledList = styled.ul`
   list-style-type: none;
   max-width: 36rem;
   padding-inline: 1rem;
-  padding-block: 3rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
