@@ -8,8 +8,8 @@ const eventSchema = new Schema({
   category: { type: String },
   description: { type: String },
   image_url: { type: String },
-  start_date_time: { type: String },
-  end_date_time: { type: String },
+  start_date_time: { type: Date },
+  end_date_time: { type: Date },
   organizer: { type: String },
 });
 

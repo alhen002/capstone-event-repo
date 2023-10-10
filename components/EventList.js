@@ -2,11 +2,14 @@ import styled from "styled-components";
 import EventCard from "./EventCard";
 
 const StyledList = styled.ul`
-  margin: 0 auto;
+  margin-inline: auto;
   list-style-type: none;
-  max-width: 80ch;
-  padding-inline 1 rem;
+  max-width: 36rem;
+  padding-inline: 1rem;
   padding-block: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 export default function EventList({ events }) {

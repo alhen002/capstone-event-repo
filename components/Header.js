@@ -8,12 +8,17 @@ const StyledHeader = styled.header`
   left: 0;
   height: 1 rem;
   padding: 0.5rem;
+  z-index: 99;
+`;
+
+const LogoWrapper = styled.div`
+  padding-left: 1rem;
 `;
 
 export default function Header() {
   return (
     <StyledHeader>
-      <div>Logo</div>
+      <LogoWrapper>Logo</LogoWrapper>
     </StyledHeader>
   );
 }
