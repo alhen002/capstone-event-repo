@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import { StyledList } from "@/components/EventList";
 
 const StyledForm = styled.form`
+  padding-top: 3rem;
   margin-inline: auto;
   max-width: 36rem;
   padding-inline: 1rem;
@@ -14,10 +15,11 @@ const StyledForm = styled.form`
 export default function Page() {
   return (
     <>
-      <BackButton />
-      <StyledForm>
-        <h2>Add an event</h2>
+      <Header />
 
+      <StyledForm>
+        <BackButton />
+        <h2>Add an event</h2>
         <label htmlFor="title">Title*</label>
         <input
           id="title"
@@ -26,7 +28,6 @@ export default function Page() {
           placeholder="Was is your event called?"
           required
         ></input>
-
         <label htmlFor="description">Description*</label>
         <textarea
           id="description"
@@ -36,7 +37,6 @@ export default function Page() {
           rows="5"
           required
         ></textarea>
-
         <label htmlFor="category">Category*</label>
         <select id="category" name="category" required>
           <option value="Nightlife & Clubs">Nightlife & Clubs</option>
@@ -46,7 +46,6 @@ export default function Page() {
           <option value="Live Shows"> Live Shows</option>
           <option value="Community Meet-up">Community Meet-up</option>
         </select>
-
         <label htmlFor="city">City*</label>
         <input
           id="city"
@@ -55,7 +54,6 @@ export default function Page() {
           placeholder="Where is your event happening?"
           required
         ></input>
-
         <label htmlFor="imageUrl">Picture*</label>
         <input
           id="imageUrl"
@@ -64,7 +62,6 @@ export default function Page() {
           placeholder="Which Unsplashed URL should we use for your event?"
           required
         ></input>
-
         <label htmlFor="startDateTime">Start*</label>
         <input
           id="startDateTime"
@@ -73,7 +70,6 @@ export default function Page() {
           type="datetime-local"
           required
         ></input>
-
         <label htmlFor="endDateTime">End*</label>
         <input
           id="endDateTime"
@@ -83,7 +79,6 @@ export default function Page() {
           // min startDateTime
           required
         ></input>
-
         <label htmlFor="location">Location</label>
         <input
           id="location"
@@ -91,7 +86,6 @@ export default function Page() {
           aria-label="Location of the event"
           placeholder="Put in an adress or landmark where everyone should gather"
         ></input>
-
         <label htmlFor="organizer">Organizer</label>
         <input
           id="organizer"
@@ -99,9 +93,7 @@ export default function Page() {
           aria-label="Organizer of the event"
           placeholder="Pick your name of that of your organisation"
         ></input>
-
         <p> *required fields</p>
-
         <button type="Submit">Submit</button>
       </StyledForm>
     </>
