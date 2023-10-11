@@ -1,7 +1,6 @@
-// lib imports
 import useSWR from "swr";
 import styled from "styled-components";
-// components
+
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import EventList from "@/components/EventList";
@@ -21,7 +20,7 @@ export default function HomePage() {
       <StyledMain>
         {events && <EventList events={events} />}
         {isLoading && <Loading />}
-        {error && <Error>{"Oops something went wrong"}</Error>}
+        {error && <Error>{error.message}</Error>}
       </StyledMain>
     </>
   );

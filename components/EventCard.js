@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import Image from "next/image";
 
-const StyledArticle = styled.article`
+const StyledListItem = styled.li`
   position: relative;
   padding-inline: 1rem;
   padding-block: 2rem;
-  border: 1px solid black;
+  border: 1px solid #000000;
   min-height: 9rem;
   border-radius: 5px;
 `;
@@ -14,7 +14,7 @@ const StyledImage = styled(Image)`
 `;
 
 const StyledTitle = styled.h2`
-  color: white;
+  color: #ffffff;
   font-size: 1rem;
   position: absolute;
   left: 1rem;
@@ -26,7 +26,7 @@ const StyledCity = styled.span`
 `;
 
 const StyledDate = styled.p`
-  color: white;
+  color: #ffffff;
   font-size: 0.75rem;
   position: absolute;
   right: 1rem;
@@ -35,16 +35,16 @@ const StyledDate = styled.p`
 
 export default function EventCard({ event }) {
   // computed from event prop
-  const eventDate = new Date(event.start_date_time);
+  const eventDate = new Date(event.startDateTime);
   const eventDay = eventDate.getDate();
   const eventMonth = eventDate.toLocaleDateString("default", {
     month: "short",
   });
 
   return (
-    <StyledArticle>
+    <StyledListItem>
       <StyledImage
-        src={event.image_url}
+        src={event.imageUrl}
         alt={event.title.toLowerCase()}
         fill={true}
         quality={50}
@@ -53,6 +53,6 @@ export default function EventCard({ event }) {
         {event.title}, <StyledCity>{event.city}</StyledCity>
       </StyledTitle>
       <StyledDate>{`${eventDay}. ${eventMonth}`}</StyledDate>
-    </StyledArticle>
+    </StyledListItem>
   );
 }

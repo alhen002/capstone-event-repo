@@ -7,9 +7,9 @@ const eventSchema = new Schema({
   city: { type: String },
   category: { type: String },
   description: { type: String },
-  image_url: { type: String },
-  start_date_time: { type: Date },
-  end_date_time: { type: Date },
+  imageUrl: { type: String },
+  startDateTime: { type: Date },
+  endDateTime: { type: Date },
   organizer: { type: String },
 });
 

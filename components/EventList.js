@@ -15,9 +15,7 @@ export default function EventList({ events }) {
   return (
     <StyledList>
       {events.map((event) => (
-        <li key={event._id}>
-          <EventCard event={event} />
-        </li>
+        <EventCard event={event} key={event._id} />
       ))}
     </StyledList>
   );
