@@ -10,7 +10,7 @@ export default async function handler(request, response) {
         const allEvents = await Event.find();
 
         if (allEvents.length === 0 || !allEvents) {
-          return response.status(404).json({ error: "Not Found" });
+          throw new Error("There was no event found.");
         }
         return response.status(200).json(allEvents);
       } catch (error) {

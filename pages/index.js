@@ -13,27 +13,16 @@ const StyledMain = styled.main`
 
 export default function HomePage() {
   const { data: events, isLoading, error } = useSWR(`/api/events`);
-
-  if (isLoading)
-    return (
-      <>
-        <Header />
-        <Loading />
-      </>
-    );
-
-  if (error)
-    return (
-      <>
-        <Header />
-        <Error>{error.message}</Error>
-      </>
-    );
-
   return (
     <>
       <Header />
-      <StyledMain>{events && <EventList events={events} />}</StyledMain>
+      <StyledMain>
+        {isLoading && <Loading />}
+        {error && (
+          <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
+        )}
+        {events && <EventList events={events} />}
+      </StyledMain>
     </>
   );
 }
