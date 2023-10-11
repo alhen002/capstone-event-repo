@@ -16,6 +16,16 @@ export default async function handler(request, response) {
       } catch (error) {
         return response.status(400).json({ message: error.message });
       }
+
+    case "POST":
+      try {
+        const newEvent = request.body;
+        await Event.create(newEvent);
+        response.status(201).json({ status: "Event created" });
+      } catch (error) {
+        return response.status(400).json({ message: error.message });
+      }
+
     default:
       return response.status(405).json({ message: "Method not allowed" });
   }

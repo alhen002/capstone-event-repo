@@ -5,6 +5,7 @@ import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import EventList from "@/components/EventList";
 import Header from "@/components/Header";
+import LinkButton from "@/components/Button";
 
 const StyledMain = styled.main`
   height: 100vh;
