@@ -8,6 +8,7 @@ export default async function handler(request, response) {
     case "GET":
       try {
         const allEvents = await Event.find();
+
         if (allEvents.length === 0 || !allEvents) {
           return response.status(404).json({ error: "Not Found" });
         }
@@ -15,5 +16,7 @@ export default async function handler(request, response) {
       } catch (error) {
         return response.status(400).json({ message: error.message });
       }
+    default:
+      return response.status(405).json({ message: "Method not allowed" });
   }
 }
