@@ -13,7 +13,6 @@ const StyledMain = styled.main`
 
 export default function HomePage() {
   const { data: events, isLoading, error } = useSWR(`/api/events`);
-
   return (
     <>
       <Header />
