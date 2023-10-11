@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import EventCard from "./EventCard";
 
-const StyledList = styled.ul`
+const StyledSection = styled.section`
   margin-inline: auto;
   list-style-type: none;
   max-width: 36rem;
@@ -13,10 +13,10 @@ const StyledList = styled.ul`
 
 export default function EventList({ events }) {
   return (
-    <StyledList>
+    <StyledSection>
       {events.map((event) => (
         <EventCard event={event} key={event._id} />
       ))}
-    </StyledList>
+    </StyledSection>
   );
 }
