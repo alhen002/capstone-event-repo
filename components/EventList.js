@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import EventCard from "./EventCard";
-import LinkButton from "./Button";
+import LinkButton from "./LinkButton";
 
 export const StyledList = styled.ul`
   margin-inline: auto;

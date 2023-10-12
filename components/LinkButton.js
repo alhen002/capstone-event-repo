@@ -14,10 +14,6 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-export default function LinkButton({ url, children }) {
+export default function LinkButton({ url = "/", children = "Back" }) {
   return <StyledLink href={url}>{children}</StyledLink>;
-}
-
-export function BackButton() {
-  return <StyledLink href={"/"}> Back </StyledLink>;
 }

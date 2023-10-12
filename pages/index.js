@@ -5,9 +5,9 @@ import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import EventList from "@/components/EventList";
 import Header from "@/components/Header";
-import LinkButton from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 
-const StyledMain = styled.main`
+export const StyledMain = styled.main`
   height: 100vh;
   padding-block: 3rem;
 `;
