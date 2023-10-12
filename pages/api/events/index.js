@@ -21,7 +21,13 @@ export default async function handler(request, response) {
       try {
         const newEvent = request.body;
         await Event.create(newEvent);
-        response.status(201).json({ status: "Event created" });
+        response
+          .status(201)
+          .json({ message: `Event ${newEvent._id} created. 🎉` });
+
+        if (!newEvent) {
+          throw new Error("Could not create event.");
+        }
       } catch (error) {
         return response.status(400).json({ message: error.message });
       }
