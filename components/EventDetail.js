@@ -1,0 +1,51 @@
+import styled from "styled-components";
+import Image from "next/image";
+import getDate from "@/lib/getDate";
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-block: 2rem;
+  max-width: 36rem;
+  margin-inline: auto;
+`;
+const StyledHeaderImage = styled(Image)`
+  width: 100%;
+`;
+const StyledTitle = styled.p``;
+const StyledEventInfoContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  align-items: baseline;
+`;
+const StyledEventInfo = styled.p`
+  justify-self: ${(props) => (props.$right ? "end" : "start")};
+`;
+const StyledDescription = styled.p``;
+
+export default function EventDetail({ event }) {
+  const { day, month, year, time } = getDate(event.startDateTime);
+
+  return (
+    <StyledContainer>
+      <StyledHeaderImage
+        src={event.imageUrl}
+        alt={event.title}
+        width={260}
+        height={260}
+      />
+
+      <StyledEventInfoContainer>
+        <StyledTitle>{event.title}</StyledTitle>
+        <StyledEventInfo $right>{event.category}</StyledEventInfo>
+        <StyledEventInfo>{event.city}</StyledEventInfo>
+        <StyledEventInfo
+          $right
+        >{`${day}. ${month} ${year}, ${time} Uhr`}</StyledEventInfo>
+        <StyledEventInfo>{event.organizer}</StyledEventInfo>
+      </StyledEventInfoContainer>
+      <StyledDescription>{event.description}</StyledDescription>
+    </StyledContainer>
+  );
+}

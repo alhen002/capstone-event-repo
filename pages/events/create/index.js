@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import EventForm from "@/components/EventForm";
-import { StyledMain } from "@/pages";
+import { StyledMain } from "@/components/StyledMain";
 import LinkButton from "@/components/LinkButton";
 
 export default function Page() {

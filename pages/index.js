@@ -6,11 +6,7 @@ import Loading from "@/components/Loading";
 import EventList from "@/components/EventList";
 import Header from "@/components/Header";
 import LinkButton from "@/components/LinkButton";
-
-export const StyledMain = styled.main`
-  height: 100vh;
-  padding-block: 3rem;
-`;
+import { StyledMain } from "@/components/StyledMain";
 
 export default function HomePage() {
   const { data: events, isLoading, error } = useSWR(`/api/events`);

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import EventCard from "./EventCard";
 import LinkButton from "./LinkButton";
 
-export const StyledList = styled.ul`
+const StyledSection = styled.section`
   margin-inline: auto;
   list-style-type: none;
   max-width: 36rem;
@@ -14,11 +14,11 @@ export const StyledList = styled.ul`
 
 export default function EventList({ events }) {
   return (
-    <StyledList>
+    <StyledSection>
       <LinkButton url={"/events/create"}>Add new event</LinkButton>
       {events.map((event) => (
         <EventCard event={event} key={event._id} />
       ))}
-    </StyledList>
+    </StyledSection>
   );
 }
