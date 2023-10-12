@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
-
+import getDate from "@/lib/getDate";
 const StyledLink = styled(Link)`
   position: relative;
   padding-inline: 1rem;
@@ -36,11 +36,8 @@ const StyledDate = styled.p`
 
 export default function EventCard({ event }) {
   // computed from event prop
-  const eventDate = new Date(event.startDateTime);
-  const eventDay = eventDate.getDate();
-  const eventMonth = eventDate.toLocaleDateString("default", {
-    month: "short",
-  });
+
+  const { day, month } = getDate(event.startDateTime);
 
   return (
     <StyledLink href={`/events/${event._id}`}>
@@ -53,7 +50,7 @@ export default function EventCard({ event }) {
       <StyledTitle>
         {event.title}, <StyledCity>{event.city}</StyledCity>
       </StyledTitle>
-      <StyledDate>{`${eventDay}. ${eventMonth}`}</StyledDate>
+      <StyledDate>{`${day}. ${month}`}</StyledDate>
     </StyledLink>
   );
 }

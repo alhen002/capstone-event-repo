@@ -13,7 +13,7 @@ const StyledLink = styled(Link)`
       case "purple":
         return "#C4AEF2";
       default:
-        return "grey";
+        return "#3F3F3F";
     }
   }};
 `;
