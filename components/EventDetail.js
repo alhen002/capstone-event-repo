@@ -28,13 +28,14 @@ const StyledEventInfo = styled.p`
 `;
 const StyledDescription = styled.p``;
 
+const confirmDeleteMessage = "Are you sure you want to delete the event?";
+
 export default function EventDetail({ event }) {
   const { day, month, year, time } = getDate(event.startDateTime);
   const router = useRouter();
 
-  function handleDelete() {
-    const ConfirmDeleteMessage = "Are you sure you want to delete the event?";
-    if (confirm(ConfirmDeleteMessage) == true) {
+  async function handleDelete() {
+    if (confirm(confirmDeleteMessage) == true) {
       deleteEvent(event._id);
       router.push("/");
     } else {
@@ -61,7 +62,7 @@ export default function EventDetail({ event }) {
       </StyledEventInfoContainer>
       <StyledDescription>{event.description}</StyledDescription>
 
-      <button onClick={() => handleDelete()}>Delete</button>
+      <button onClick={handleDelete}>Delete</button>
     </StyledContainer>
   );
 }

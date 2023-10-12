@@ -22,13 +22,14 @@ export default async function handler(request, response) {
       try {
         const eventResponse = await Event.findByIdAndDelete(id);
         if (!eventResponse) {
-          throw new Error("Event was not deleted.");
+          response.status(404).json({ message: "No event found" });
+          return;
         }
         return response
           .status(200)
           .json({ message: "Event successfully deleted." });
       } catch (error) {
-        return response.status(404).json({ message: error.message });
+        return response.status(500).json({ message: error.message });
       }
   }
 }
