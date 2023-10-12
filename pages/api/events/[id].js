@@ -17,5 +17,18 @@ export default async function handler(request, response) {
       }
     default:
       return response.status(405).json({ message: "Method not allowed" });
+
+    case "DELETE":
+      try {
+        const eventResponse = await Event.findByIdAndDelete(id);
+        if (!eventResponse) {
+          throw new Error("Event was not deleted.");
+        }
+        return response
+          .status(200)
+          .json({ message: "Event successfully deleted." });
+      } catch (error) {
+        return response.status(404).json({ message: error.message });
+      }
   }
 }
