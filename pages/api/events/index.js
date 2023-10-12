@@ -19,8 +19,7 @@ export default async function handler(request, response) {
 
     case "POST":
       try {
-        const newEvent = request.body;
-        await Event.create(newEvent);
+        const newEvent = await Event.create(request.body);
         response
           .status(201)
           .json({ message: `Event ${newEvent._id} created. 🎉` });
