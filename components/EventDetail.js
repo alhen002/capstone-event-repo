@@ -97,7 +97,8 @@ export default function EventDetail() {
           <StyledEventInfoContainer>
             {isEditMode ? (
               <StyledTitle>
-                <input
+                <label htmlFor="title">Title</label>
+                <input id="title"
                   value={title}
                   onChange={(jsEvent) => setTitle(jsEvent.target.value)}
                 />
@@ -107,7 +108,8 @@ export default function EventDetail() {
             )}
             {isEditMode ? (
               <StyledEventInfo $right>
-                <input
+                <label htmlFor="category">Category</label>
+                <input id="category"
                   value={category}
                   onChange={(jsEvent) => setCategory(jsEvent.target.value)}
                 />
@@ -118,7 +120,8 @@ export default function EventDetail() {
 
             {isEditMode ? (
               <StyledEventInfo>
-                <input
+                <label htmlFor="city">City</label>
+                <input id="city"
                   value={city}
                   onChange={(jsEvent) => setCity(jsEvent.target.value)}
                 />
@@ -129,7 +132,8 @@ export default function EventDetail() {
 
             {isEditMode ? (
               <StyledEventInfo $right>
-                <input
+                <label htmlFor="date">Date</label>
+                <input id="date"
                   type="datetime-local"
                   value={date}
                   onChange={(jsEvent) => setDate(jsEvent.target.value)}
@@ -144,7 +148,8 @@ export default function EventDetail() {
             {isEditMode ? (
               <StyledEventInfo>
                 {" "}
-                <input
+                <label htmlFor="organizer">Organizer</label>
+                <input id="organizer"
                   value={organizer}
                   onChange={(jsEvent) => setOrganizer(jsEvent.target.value)}
                 />{" "}
@@ -155,7 +160,8 @@ export default function EventDetail() {
           </StyledEventInfoContainer>
           {isEditMode ? (
             <StyledDescription>
-              <textarea
+              <label htmlFor="description">Description</label>
+              <textarea id="description"
                 value={description}
                 rows="5"
                 cols="48"

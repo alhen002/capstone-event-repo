@@ -25,7 +25,7 @@ export default function Event() {
         {error && (
           <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
         )}
-        {event && <EventDetail event={event} />}
+        {event && <EventDetail />}
       </StyledMain>
     </>
   );
