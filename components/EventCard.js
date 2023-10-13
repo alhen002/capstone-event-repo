@@ -36,7 +36,6 @@ const StyledDate = styled.p`
 
 export default function EventCard({ event }) {
   // computed from event prop
-
   const { day, month } = getDate(event.startDateTime);
 
   return (

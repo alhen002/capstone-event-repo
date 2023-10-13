@@ -10,7 +10,7 @@ export default async function handler(request, response) {
         const allEvents = await Event.find();
 
         if (allEvents.length === 0 || !allEvents) {
-          throw new Error("There was no event found.");
+          return response.status(404).json({ message: "Events not found." });
         }
         return response.status(200).json(allEvents);
       } catch (error) {
@@ -22,7 +22,7 @@ export default async function handler(request, response) {
         const newEvent = await Event.create(request.body);
         response
           .status(201)
-          .json({ message: `Event ${newEvent._id} created. 🎉` });
+          .json({ message: `Event ${newEvent._id} created.` });
 
         if (!newEvent) {
           throw new Error("Could not create event.");
