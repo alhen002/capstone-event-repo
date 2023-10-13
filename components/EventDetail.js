@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import Image from "next/image";
 import getDate from "@/lib/getDate";
+import Button from "./Button";
+import { deleteEvent } from "@/lib/api";
+import { useRouter } from "next/router";
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -24,8 +28,19 @@ const StyledEventInfo = styled.p`
 `;
 const StyledDescription = styled.p``;
 
+const confirmDeleteMessage = "Are you sure you want to delete the event?";
+
 export default function EventDetail({ event }) {
   const { day, month, year, time } = getDate(event.startDateTime);
+  const router = useRouter();
+
+  async function handleDelete() {
+    if (!confirm(confirmDeleteMessage)) {
+      return;
+    }
+    await deleteEvent(event._id);
+    router.push("/");
+  }
 
   return (
     <StyledContainer>
@@ -46,6 +61,8 @@ export default function EventDetail({ event }) {
         <StyledEventInfo>{event.organizer}</StyledEventInfo>
       </StyledEventInfoContainer>
       <StyledDescription>{event.description}</StyledDescription>
+
+      <button onClick={handleDelete}>Delete</button>
     </StyledContainer>
   );
 }
