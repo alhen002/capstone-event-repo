@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import Image from "next/image";
 import getDate from "@/lib/getDate";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
-
+import { deleteEvent } from "@/lib/api";
+import Button from "./Button";
 // ui styles
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,8 +67,9 @@ const StyledTextarea = styled.textarea`
   border: 1px solid #000000;
   border-radius: 5px;
 `;
-
+const confirmDeleteMessage = "Are you sure you want to delete the event?";
 export default function EventDetail({ event = {} }) {
+  const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
   const { day, month, year, formattedDate, time } = getDate(
@@ -85,6 +89,13 @@ export default function EventDetail({ event = {} }) {
     mutate();
   }
 
+  async function handleDelete() {
+    if (!confirm(confirmDeleteMessage)) {
+      return;
+    }
+    await deleteEvent(event._id);
+    router.push("/");
+  }
   return (
     <>
       <StyledContainer>
@@ -94,7 +105,6 @@ export default function EventDetail({ event = {} }) {
           width={260}
           height={260}
         />
-
         {!isEditMode ? (
           <StyledEventInfoContainer>
             <StyledTitle>{event.title}</StyledTitle>
@@ -162,6 +172,7 @@ export default function EventDetail({ event = {} }) {
         >
           {isEditMode ? "Cancel" : "Edit"}
         </button>
+        <button onClick={handleDelete}>Delete</button>
       </StyledContainer>
     </>
   );
