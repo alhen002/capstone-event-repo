@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 
+// ui styles
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,70 +19,74 @@ const StyledContainer = styled.div`
 const StyledHeaderImage = styled(Image)`
   width: 100%;
 `;
+const StyledTitle = styled.p`
+  font-size: 1rem;
+`;
 
-const StyledTitle = styled.p``;
 const StyledEventInfoContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: space-between;
   align-items: baseline;
 `;
-
 const StyledEventInfo = styled.p`
   justify-self: ${(props) => (props.$right ? "end" : "start")};
 `;
 
-const StyledDescription = styled.p``;
+const StyledDescription = styled.p`
+  font-size: 1rem;
+  grid-column: 1 / -1;
+`;
 
-const initialState = {
-  title: "",
-  city: "",
-  category: "",
-  startDateTime: "",
-  organizer: "",
-  description: "",
-};
+// form styles
+const StyledForm = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  align-items: baseline;
+`;
 
-export default function EventDetail() {
-  const router = useRouter();
-  const { id } = router.query;
-  const { mutate, data: event } = useSWR(`/api/events/${id}`);
+const StyledLabel = styled.label`
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  grid-column: ${(props) => (props.$full ? "1 / -1" : "")};
+`;
+
+const StyledInput = styled.input`
+  font-size: 1rem;
+  border: 1px solid #000000;
+  border-radius: 5px;
+`;
+
+const StyledTextarea = styled.textarea`
+  font-size: 1rem;
+  border: 1px solid #000000;
+  border-radius: 5px;
+`;
+
+export default function EventDetail({ event = {} }) {
+  const { mutate } = useSWR(`/api/events/${event._id}`);
+  console.log(event);
 
   // destructuring a formatted date of the event object
-  const { day, month, year, time } = getDate(event?.startDateTime);
-
-  const [formData, setFormData] = useState(initialState);
+  const { day, month, year, formattedDate, time } = getDate(
+    event.startDateTime
+  );
 
   // toggle for Edit Mode
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // set input fields to the current event data
-  useEffect(() => {
-    setFormData({
-      title: event.title,
-      city: event.city,
-      category: event.category,
-      startDateTime: event.startDateTime,
-      organizer: event.organizer,
-      description: event.description,
-    });
-  }, [event]);
-
   // handle functions
-  async function handleSubmit(jsEvent) {
-    jsEvent.preventDefault();
-    await updateEvent(id, formData);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    await updateEvent(event._id, data);
     setIsEditMode(false);
     mutate();
   }
-  function handleChange(jsEvent, target) {
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        [target]: jsEvent.target.value,
-      };
-    });
-  }
+
   return (
     <>
       <StyledContainer>
@@ -91,96 +96,75 @@ export default function EventDetail() {
           width={260}
           height={260}
         />
-        <StyledEventInfoContainer>
-          {isEditMode ? (
-            <StyledTitle>
-              <label htmlFor="title">Title</label>
-              <input
-                id="title"
-                value={formData.title}
-                onChange={(jsEvent) => handleChange(jsEvent, "title")}
-              />
-            </StyledTitle>
-          ) : (
+
+        {!isEditMode ? (
+          <StyledEventInfoContainer>
             <StyledTitle>{event.title}</StyledTitle>
-          )}
-          {isEditMode ? (
-            <StyledEventInfo $right>
-              <label htmlFor="category">Category</label>
-              <input
-                id="category"
-                value={formData.category}
-                onChange={(jsEvent) => handleChange(jsEvent, "category")}
-              />
-            </StyledEventInfo>
-          ) : (
             <StyledEventInfo $right>{event.category}</StyledEventInfo>
-          )}
-
-          {isEditMode ? (
-            <StyledEventInfo>
-              <label htmlFor="city">City</label>
-              <input
-                id="city"
-                value={formData.city}
-                onChange={(jsEvent) => handleChange(jsEvent, "city")}
-              />
-            </StyledEventInfo>
-          ) : (
             <StyledEventInfo>{event.city}</StyledEventInfo>
-          )}
-
-          {isEditMode ? (
-            <StyledEventInfo $right>
-              <label htmlFor="date">Date</label>
-              <input
-                id="date"
-                type="datetime-local"
-                value={formData.date}
-                onChange={(jsEvent) => handleChange(jsEvent, "date")}
-              />
-            </StyledEventInfo>
-          ) : (
             <StyledEventInfo
               $right
-            >{`${day}. ${month} ${year}, ${time} Uhr`}</StyledEventInfo>
-          )}
-
-          {isEditMode ? (
-            <StyledEventInfo>
-              {" "}
-              <label htmlFor="organizer">Organizer</label>
-              <input
-                id="organizer"
-                value={formData.organizer}
-                onChange={(jsEvent) => handleChange(jsEvent, "organizer")}
-              />{" "}
-            </StyledEventInfo>
-          ) : (
+            >{`${day}. ${month} ${year}, ${time}`}</StyledEventInfo>
             <StyledEventInfo>{event.organizer}</StyledEventInfo>
-          )}
-        </StyledEventInfoContainer>
-        {isEditMode ? (
-          <StyledDescription>
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              value={formData.description}
-              rows="5"
-              cols="48"
-              onChange={(jsEvent) => handleChange(jsEvent, "description")}
-            />
-          </StyledDescription>
+            <StyledDescription>{event.description}</StyledDescription>
+          </StyledEventInfoContainer>
         ) : (
-          <StyledDescription>{event.description}</StyledDescription>
+          <StyledForm onSubmit={handleSubmit}>
+            <StyledLabel htmlFor="title">
+              title
+              <StyledInput id="title" defaultValue={event.title} name="title" />
+            </StyledLabel>
+            <StyledLabel htmlFor="category">
+              category
+              <StyledInput
+                id="category"
+                defaultValue={event.category}
+                name="category"
+              />
+            </StyledLabel>
+            <StyledLabel htmlFor="city">
+              city
+              <StyledInput id="city" defaultValue={event.city} name="city" />
+            </StyledLabel>
+            <StyledLabel htmlFor="date">
+              date
+              <StyledInput
+                id="date"
+                type="datetime-local"
+                defaultValue={formattedDate}
+                name="startDateTime"
+              />
+            </StyledLabel>
+            <StyledLabel htmlFor="organizer">
+              organizer
+              <StyledInput
+                id="organizer"
+                defaultValue={event.organizer}
+                name="organizer"
+              />
+            </StyledLabel>
+            <StyledLabel $full htmlFor="description">
+              description
+              <StyledTextarea
+                id="description"
+                name="description"
+                defaultValue={event.description}
+              />
+            </StyledLabel>
+            <button>Save</button>
+          </StyledForm>
         )}
       </StyledContainer>
-      <button
-        onClick={() => setIsEditMode((currentIsEditMode) => !currentIsEditMode)}
-      >
-        {isEditMode ? "Cancel" : "Edit"}
-      </button>
-      {isEditMode && <button onClick={handleSubmit}>Save</button>}
+
+      <StyledContainer>
+        <button
+          onClick={() =>
+            setIsEditMode((currentIsEditMode) => !currentIsEditMode)
+          }
+        >
+          {isEditMode ? "Cancel" : "Edit"}
+        </button>
+      </StyledContainer>
     </>
   );
 }
