@@ -35,11 +35,11 @@ export default function EventDetail({ event }) {
   const router = useRouter();
 
   async function handleDelete() {
-    if (confirm(confirmDeleteMessage) == true) {
-      deleteEvent(event._id);
-      router.push("/");
-    } else {
+    if (!confirm(confirmDeleteMessage)) {
+      return;
     }
+    await deleteEvent(event._id);
+    router.push("/");
   }
 
   return (
