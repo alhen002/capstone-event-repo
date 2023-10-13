@@ -67,7 +67,6 @@ const StyledTextarea = styled.textarea`
 
 export default function EventDetail({ event = {} }) {
   const { mutate } = useSWR(`/api/events/${event._id}`);
-
   // destructuring a formatted date of the event object
   const { day, month, year, formattedDate, time } = getDate(
     event.startDateTime
@@ -77,9 +76,9 @@ export default function EventDetail({ event = {} }) {
   const [isEditMode, setIsEditMode] = useState(false);
 
   // handle functions
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
+  async function handleSubmit(jsEvent) {
+    jsEvent.preventDefault();
+    const formData = new FormData(jsEvent.target);
     const data = Object.fromEntries(formData);
     await updateEvent(event._id, data);
     setIsEditMode(false);
