@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,6 +33,15 @@ const StyledEventInfo = styled.p`
 
 const StyledDescription = styled.p``;
 
+const initialState = {
+  title: "",
+  city: "",
+  category: "",
+  startDateTime: "",
+  organizer: "",
+  description: "",
+};
+
 export default function EventDetail() {
   const router = useRouter();
   const { id } = router.query;
@@ -39,15 +49,6 @@ export default function EventDetail() {
 
   // destructuring a formatted date of the event object
   const { day, month, year, time } = getDate(event?.startDateTime);
-
-  const initialState = {
-    title: "",
-    city: "",
-    category: "",
-    startDateTime: "",
-    organizer: "",
-    description: "",
-  };
 
   const [formData, setFormData] = useState(initialState);
 
