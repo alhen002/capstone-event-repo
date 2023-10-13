@@ -67,7 +67,6 @@ const StyledTextarea = styled.textarea`
 
 export default function EventDetail({ event = {} }) {
   const { mutate } = useSWR(`/api/events/${event._id}`);
-  console.log(event);
 
   // destructuring a formatted date of the event object
   const { day, month, year, formattedDate, time } = getDate(
