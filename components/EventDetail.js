@@ -72,9 +72,7 @@ export default function EventDetail({ event = {} }) {
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
-  const { day, month, year, formattedDate, time } = getDate(
-    event.startDateTime
-  );
+  const { day, month, year, dateString, time } = getDate(event.startDateTime);
 
   // toggle for Edit Mode
   const [isEditMode, setIsEditMode] = useState(false);
@@ -139,7 +137,7 @@ export default function EventDetail({ event = {} }) {
               <StyledInput
                 id="date"
                 type="datetime-local"
-                defaultValue={formattedDate}
+                defaultValue={dateString}
                 name="startDateTime"
               />
             </StyledLabel>
