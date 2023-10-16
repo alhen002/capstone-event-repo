@@ -156,7 +156,7 @@ export default function EventForm() {
             placeholder="Pick your name of that of your organisation"
           ></input>
           <p> *required fields</p>
-          <Button $color={"green"} type="Submit">
+          <Button color={"green"} type="Submit">
             Submit
           </Button>
         </StyledFieldset>

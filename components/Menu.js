@@ -5,6 +5,8 @@ const BurgerMenu = styled.div`
   padding: 5px;
   color: #63f287;
   font-size: xx-large;
+  grid-column: 3;
+  justify-self: end;
 `;
 
 export default function Menu({ menuOpen, handleToggleMenu }) {
@@ -13,7 +15,7 @@ export default function Menu({ menuOpen, handleToggleMenu }) {
       {!menuOpen ? (
         <BurgerMenu onClick={handleToggleMenu}>☰</BurgerMenu>
       ) : (
-        <BurgerMenu onClick={handleToggleMenu}>X</BurgerMenu>
+        <BurgerMenu onClick={handleToggleMenu}>x</BurgerMenu>
       )}
     </>
   );

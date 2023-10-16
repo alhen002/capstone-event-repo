@@ -13,6 +13,8 @@ const StyledButton = styled.button`
     switch (props.$color) {
       case "green":
         return "var(--bright-green)";
+      case "rose":
+        return "var(--rose)";
       case "purple":
         return "#C4AEF2";
       default:
@@ -25,12 +27,18 @@ const StyledButton = styled.button`
         return "var(--black)";
       case "purple":
         return "var(--black)";
+      case "rose":
+        return "var(--black)";
       default:
         return "var(--white)";
     }
   }};
 `;
 
-export default function Button({ children, color }) {
-  return <StyledButton $color={color}>{children}</StyledButton>;
+export default function Button({ children, color, onClick }) {
+  return (
+    <StyledButton onClick={onClick} $color={color}>
+      {children}
+    </StyledButton>
+  );
 }

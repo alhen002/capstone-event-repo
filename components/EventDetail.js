@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
+import Button from "components/Button.js";
 // ui styles
 
 const StyledContainer = styled.div`
@@ -156,20 +157,23 @@ export default function EventDetail({ event = {} }) {
                 defaultValue={event.description}
               />
             </StyledLabel>
-            <button>Save</button>
+            <Button color={"green"}>Save</Button>
           </StyledForm>
         )}
       </StyledContainer>
 
       <StyledContainer>
-        <button
+        <Button
+          color={isEditMode ? "" : "green"}
           onClick={() =>
             setIsEditMode((currentIsEditMode) => !currentIsEditMode)
           }
         >
           {isEditMode ? "Cancel" : "Edit"}
-        </button>
-        <button onClick={handleDelete}>Delete</button>
+        </Button>
+        <Button color={"rose"} onClick={handleDelete}>
+          Delete
+        </Button>
       </StyledContainer>
     </>
   );

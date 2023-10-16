@@ -7,9 +7,8 @@ import { useRouter } from "next/router";
 const StyledHeader = styled.header`
   background: var(--mid-grey);
   position: fixed;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   top: 0;
   right: 0;
   left: 0;
@@ -32,9 +31,21 @@ const StyledNavigation = styled.nav`
   backdrop-filter: blur(5px);
 `;
 
+const StyledLink = styled(Link)`
+  color: var(--black);
+  font-weight: bold;
+  text-decoration: ${(props) => (props.$active ? "underline" : "none")};
+  text-decoration-thickness: 3px;
+  text-decoration-color: ${(props) =>
+    props.$active ? "var(--bright-green)" : "var(--black)"};
+`;
+
 const LogoWrapper = styled.div`
   padding-left: 1rem;
+  place-self: center;
   color: var(--bright-green);
+  place-self: center;
+  grid-column: 2;
 `;
 
 export default function Header() {
@@ -67,20 +78,20 @@ export default function Header() {
   return (
     <div ref={ref}>
       <StyledHeader>
-        <LogoWrapper>Logo</LogoWrapper>
+        <LogoWrapper>Event Collective</LogoWrapper>
         <Menu menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
       </StyledHeader>
       {menuOpen && (
         <StyledNavigation>
-          <Link href="/" className={router.pathname === "/" && "active"}>
+          <StyledLink href="/" $active={router.pathname === "/" ? true : false}>
             <div onClick={handleMenuClose}>home</div>
-          </Link>
-          <Link
+          </StyledLink>
+          <StyledLink
             href="/events/create"
-            className={router.pathname === "/events/create" && "active"}
+            $active={router.pathname === "/events/create" ? true : false}
           >
             <div onClick={handleMenuClose}>create</div>
-          </Link>
+          </StyledLink>
         </StyledNavigation>
       )}
     </div>

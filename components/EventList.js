@@ -15,9 +15,6 @@ const StyledSection = styled.section`
 export default function EventList({ events }) {
   return (
     <StyledSection>
-      <LinkButton href={"/events/create"} color={"green"}>
-        Add new event
-      </LinkButton>
       {events.map((event) => (
         <EventCard event={event} key={event._id} />
       ))}
