@@ -79,7 +79,6 @@ export default function EventForm() {
             <option value=""> --Please pick a category-- </option>
             <option value="Nightlife & Clubs">Nightlife & Clubs</option>
             <option value="Culture & Arts">Culture & Arts</option>
-            <option value="Liveshow">Liveshow</option>
             <option value="Activities & Games">Activities & Games</option>
             <option value="Live Shows"> Live Shows</option>
             <option value="Community Meet-up">Community Meet-up</option>
