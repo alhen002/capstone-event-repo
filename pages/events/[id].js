@@ -3,7 +3,7 @@ import useSWR from "swr";
 import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import EventDetail from "@/components/EventDetail";
-import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
 
 export default function Event() {
   const router = useRouter();
@@ -13,9 +13,7 @@ export default function Event() {
 
   return (
     <>
-      <Button href="/" color="green">
-        Back
-      </Button>
+      <LinkButton />
       {isLoading && <Loading />}
       {error && (
         <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>

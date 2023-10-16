@@ -7,7 +7,6 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
-import Button from "./Button";
 // ui styles
 
 const StyledContainer = styled.div`

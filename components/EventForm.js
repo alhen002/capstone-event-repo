@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
+import Button from "components/Button.js";
 
 const StyledForm = styled.form`
   padding-top: 3rem;
@@ -155,7 +156,9 @@ export default function EventForm() {
             placeholder="Pick your name of that of your organisation"
           ></input>
           <p> *required fields</p>
-          <button type="Submit">Submit</button>
+          <Button $color={"green"} type="Submit">
+            Submit
+          </Button>
         </StyledFieldset>
       </StyledForm>
     </>
