@@ -6,13 +6,26 @@ export default async function handler(request, response) {
 
   switch (request.method) {
     case "GET":
+      const { queryCategory, queryCity } = request.query;
       try {
-        const allEvents = await Event.find();
+        const filter = {};
+        if (queryCategory) {
+          // documentation mongodb
+          filter.category = { $regex: queryCategory, $options: `i` };
+        }
 
-        if (allEvents.length === 0 || !allEvents) {
+        if (queryCity) {
+          // plain js class
+          filter.city = new RegExp(queryCity, `i`);
+        }
+        console.log(filter);
+        const filteredEvents = await Event.find(filter);
+
+        if (filteredEvents.length === 0 || !filteredEvents) {
           return response.status(404).json({ message: "Events not found." });
         }
-        return response.status(200).json(allEvents);
+
+        return response.status(200).json(filteredEvents);
       } catch (error) {
         return response.status(400).json({ message: error.message });
       }
