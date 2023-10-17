@@ -83,12 +83,12 @@ export default function Header() {
       </StyledHeader>
       {menuOpen && (
         <StyledNavigation>
-          <StyledLink href="/" $active={router.pathname === "/" ? true : false}>
+          <StyledLink href="/" $active={router.pathname === "/"}>
             <div onClick={handleMenuClose}>home</div>
           </StyledLink>
           <StyledLink
             href="/events/create"
-            $active={router.pathname === "/events/create" ? true : false}
+            $active={router.pathname === "/events/create"}
           >
             <div onClick={handleMenuClose}>create</div>
           </StyledLink>
