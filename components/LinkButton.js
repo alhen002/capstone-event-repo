@@ -2,8 +2,6 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const StyledLink = styled(Link)`
-  background-color: var(--bright-green);
-  color: var(--black)
   position: relative;
   padding-inline: 1rem;
   padding-block: 1rem;
@@ -12,8 +10,32 @@ const StyledLink = styled(Link)`
   border-radius: 5px;
   text-align: center;
   text-decoration: none;
+  background-color: ${(props) => {
+    switch (props.$color) {
+      case "green":
+        return "var(--bright-green)";
+      case "purple":
+        return "#C4AEF2";
+      default:
+        return "var(--mid-grey)";
+    }
+  }};
+  color: ${(props) => {
+    switch (props.$color) {
+      case "green":
+        return "var(--black)";
+      case "purple":
+        return "#C4AEF2";
+      default:
+        return "var(--white)";
+    }
+  }};
 `;
 
-export default function LinkButton({ url = "/", children = "Back" }) {
-  return <StyledLink href={url}>{children}</StyledLink>;
+export default function LinkButton({ href = "/", children = "Back", color }) {
+  return (
+    <StyledLink $color={color} href={href}>
+      {children}
+    </StyledLink>
+  );
 }

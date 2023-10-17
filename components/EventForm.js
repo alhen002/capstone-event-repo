@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
+import Button from "components/Button.js";
 
 const StyledForm = styled.form`
   padding-top: 3rem;
@@ -78,7 +79,6 @@ export default function EventForm() {
             <option value=""> --Please pick a category-- </option>
             <option value="Nightlife & Clubs">Nightlife & Clubs</option>
             <option value="Culture & Arts">Culture & Arts</option>
-            <option value="Liveshow">Liveshow</option>
             <option value="Activities & Games">Activities & Games</option>
             <option value="Live Shows"> Live Shows</option>
             <option value="Community Meet-up">Community Meet-up</option>
@@ -155,7 +155,9 @@ export default function EventForm() {
             placeholder="Pick your name of that of your organisation"
           ></input>
           <p> *required fields</p>
-          <button type="Submit">Submit</button>
+          <Button color={"green"} type="Submit">
+            Submit
+          </Button>
         </StyledFieldset>
       </StyledForm>
     </>

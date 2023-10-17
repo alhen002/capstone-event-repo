@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
-import Button from "./Button";
+import Button from "components/Button.js";
 // ui styles
 
 const StyledContainer = styled.div`
@@ -72,9 +72,7 @@ export default function EventDetail({ event = {} }) {
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
-  const { day, month, year, formattedDate, time } = getDate(
-    event.startDateTime
-  );
+  const { day, month, year, dateString, time } = getDate(event.startDateTime);
 
   // toggle for Edit Mode
   const [isEditMode, setIsEditMode] = useState(false);
@@ -139,7 +137,7 @@ export default function EventDetail({ event = {} }) {
               <StyledInput
                 id="date"
                 type="datetime-local"
-                defaultValue={formattedDate}
+                defaultValue={dateString}
                 name="startDateTime"
               />
             </StyledLabel>
@@ -159,20 +157,23 @@ export default function EventDetail({ event = {} }) {
                 defaultValue={event.description}
               />
             </StyledLabel>
-            <button>Save</button>
+            <Button color={"green"}>Save</Button>
           </StyledForm>
         )}
       </StyledContainer>
 
       <StyledContainer>
-        <button
+        <Button
+          color={isEditMode ? "" : "green"}
           onClick={() =>
             setIsEditMode((currentIsEditMode) => !currentIsEditMode)
           }
         >
           {isEditMode ? "Cancel" : "Edit"}
-        </button>
-        <button onClick={handleDelete}>Delete</button>
+        </Button>
+        <Button color={"rose"} onClick={handleDelete}>
+          Delete
+        </Button>
       </StyledContainer>
     </>
   );
