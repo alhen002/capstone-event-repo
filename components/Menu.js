@@ -11,12 +11,6 @@ const BurgerMenu = styled.div`
 
 export default function Menu({ menuOpen, handleToggleMenu }) {
   return (
-    <>
-      {!menuOpen ? (
-        <BurgerMenu onClick={handleToggleMenu}>☰</BurgerMenu>
-      ) : (
-        <BurgerMenu onClick={handleToggleMenu}>x</BurgerMenu>
-      )}
-    </>
+    <BurgerMenu onClick={handleToggleMenu}>{menuOpen ? "x" : "☰"}</BurgerMenu>
   );
 }
