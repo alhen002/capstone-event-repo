@@ -10,13 +10,11 @@ export default async function handler(request, response) {
       try {
         const filter = {};
         if (queryCategory) {
-          // documentation mongodb
           filter.category = { $regex: queryCategory, $options: `i` };
         }
 
         if (queryCity) {
-          // plain js class
-          filter.city = new RegExp(queryCity, `i`);
+          filter.city = { $regex: queryCity, $options: `i` };
         }
         console.log(filter);
         const filteredEvents = await Event.find(filter);
