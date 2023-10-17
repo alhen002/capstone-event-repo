@@ -18,11 +18,6 @@ export default async function handler(request, response) {
         }
         console.log(filter);
         const filteredEvents = await Event.find(filter);
-
-        if (filteredEvents.length === 0 || !filteredEvents) {
-          return response.status(404).json({ message: "Events not found." });
-        }
-
         return response.status(200).json(filteredEvents);
       } catch (error) {
         return response.status(400).json({ message: error.message });
