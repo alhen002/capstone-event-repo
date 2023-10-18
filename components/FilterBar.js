@@ -7,6 +7,10 @@ export default function FilterBar({ onFilter, cities, categories, filter }) {
     setIsFilterVisible(!isFilterVisible);
   };
 
+  const handleReset = () => {
+    onFilter({ category: "", city: "" });
+  };
+
   return (
     <div className="filter-container">
       <button className="filter-toggle" onClick={toggleFilter}>
@@ -23,13 +27,12 @@ export default function FilterBar({ onFilter, cities, categories, filter }) {
           <select
             id="queryCity"
             onChange={(e) => onFilter({ city: e.target.value })}
+            value={filter.city || ""}
           >
+            <option value="">All</option>
             {cities &&
               cities.map((city) => (
-                <option
-                  key={city}
-                  defaultValue={filter.queryCity === city ? true : false}
-                >
+                <option key={city} value={city.toLowerCase()}>
                   {city}
                 </option>
               ))}
@@ -39,22 +42,17 @@ export default function FilterBar({ onFilter, cities, categories, filter }) {
           <select
             id="queryCategory"
             onChange={(e) => onFilter({ category: e.target.value })}
+            value={filter.category || ""}
           >
+            <option value="">All</option>
             {categories &&
               categories.map((category) => (
-                <option
-                  key={category}
-                  defaultValue={
-                    filter.queryCategory === category ? true : false
-                  }
-                >
+                <option key={category} value={category.toLowerCase()}>
                   {category}
                 </option>
               ))}
           </select>
-          <button onClick={() => onFilter({ category: "", city: "" })}>
-            Reset
-          </button>
+          <button onClick={handleReset}>Reset</button>
         </div>
       )}
     </div>
