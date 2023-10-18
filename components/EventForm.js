@@ -41,6 +41,7 @@ const ButtonContainer = styled.div`
 export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
   const currentStep = formStep;
+  const stepCount = 4;
 
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
@@ -48,10 +49,7 @@ export default function EventForm() {
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
 
-  const todayISO = new Date().toISOString();
-  const today = todayISO.slice(0, -8);
-
-  console.log(todayISO, today);
+  const today = new Date().toISOString().slice(0, -8);
 
   const router = useRouter();
 
@@ -67,12 +65,14 @@ export default function EventForm() {
 
   return (
     <>
-      <ProgressBar steps={"4"} currentStep={currentStep} />
+      <ProgressBar currentStep={currentStep} />
       <StyledForm onSubmit={handleSubmit}>
         <h2>Add an event</h2>
 
         <StyledFieldset
-          $visibility={formStep == 0 || formStep == 4 ? "visible" : "hidden"}
+          $visibility={
+            formStep == 0 || formStep == stepCount ? "visible" : "hidden"
+          }
         >
           <legend>Event Basics</legend>
 
@@ -98,11 +98,13 @@ export default function EventForm() {
             rows="5"
             required
           ></textarea>
-          {formStep < 4 && <p> *required fields</p>}
+          {formStep < stepCount && <p> *required fields</p>}
         </StyledFieldset>
 
         <StyledFieldset
-          $visibility={formStep == 1 || formStep == 4 ? "visible" : "hidden"}
+          $visibility={
+            formStep == 1 || formStep == stepCount ? "visible" : "hidden"
+          }
         >
           <legend>Event Details</legend>
 
@@ -135,12 +137,14 @@ export default function EventForm() {
             pattern="^https://images\.unsplash\.com/.*$"
             required
           ></input>
-          {formStep < 4 && <p> *required fields</p>}
+          {formStep < stepCount && <p> *required fields</p>}
         </StyledFieldset>
 
         <>
           <StyledFieldset
-            $visibility={formStep == 2 || formStep == 4 ? "visible" : "hidden"}
+            $visibility={
+              formStep == 2 || formStep == stepCount ? "visible" : "hidden"
+            }
           >
             <legend>Event Time</legend>
             <label htmlFor="startDateTime" id="startDateTimeLabel">
@@ -170,10 +174,12 @@ export default function EventForm() {
               required
             ></input>
 
-            {formStep < 4 && <p> *required fields</p>}
+            {formStep < stepCount && <p> *required fields</p>}
           </StyledFieldset>
           <StyledFieldset
-            $visibility={formStep == 3 || formStep == 4 ? "visible" : "hidden"}
+            $visibility={
+              formStep == 3 || formStep == stepCount ? "visible" : "hidden"
+            }
           >
             <legend>Event Location</legend>
 
@@ -217,8 +223,8 @@ export default function EventForm() {
           {formStep === 3 && (
             <Button onClick={nextFormStep}>Check all entered Data</Button>
           )}
-          {formStep === 4 && (
-            <Button color={"green"} type="Submit">
+          {formStep === stepCount && (
+            <Button color="green" type="submit">
               Submit
             </Button>
           )}
