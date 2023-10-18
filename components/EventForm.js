@@ -18,6 +18,16 @@ const StyledFieldset = styled.fieldset`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  display: ${(props) => {
+    switch (props.$visibility) {
+      case "visible":
+        return "flex";
+      case "hidden":
+        return "none";
+      default:
+        return "none";
+    }
+  }};
 `;
 
 export default function EventForm() {
@@ -43,140 +53,136 @@ export default function EventForm() {
       <StyledForm onSubmit={handleSubmit}>
         <h2>Add an event</h2>
 
-        {formStep === 0 && (
-          <StyledFieldset>
-            <legend>Event Basics</legend>
+        <StyledFieldset $visibility={formStep === 0 ? "visible" : "hidden"}>
+          <legend>Event Basics</legend>
 
-            <label htmlFor="title" id="titleLabel">
-              Title*
+          <label htmlFor="title" id="titleLabel">
+            Title*
+          </label>
+          <input
+            id="title"
+            name="title"
+            aria-labelledby="titleLabel"
+            placeholder="What is your event called?"
+            required
+          ></input>
+
+          <label htmlFor="description" id="descriptionLabel">
+            Description*
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            aria-labelledby="descriptionLabel"
+            placeholder="Describe your event here"
+            rows="5"
+            required
+          ></textarea>
+          <p> *required fields</p>
+        </StyledFieldset>
+
+        <StyledFieldset $visibility={formStep === 1 ? "visible" : "hidden"}>
+          <legend>Category and City</legend>
+
+          <label htmlFor="category" id="categoryLabel">
+            Category*
+          </label>
+          <select
+            id="category"
+            name="category"
+            aria-labelledby="categoryLabel"
+            required
+          >
+            <option value=""> --Please pick a category-- </option>
+            <option value="Nightlife & Clubs">Nightlife & Clubs</option>
+            <option value="Culture & Arts">Culture & Arts</option>
+            <option value="Activities & Games">Activities & Games</option>
+            <option value="Live Shows"> Live Shows</option>
+            <option value="Community Meet-up">Community Meet-up</option>
+          </select>
+
+          <label htmlFor="city" id="cityLabel">
+            City*
+          </label>
+          <input
+            id="city"
+            name="city"
+            aria-labelledby="cityLabel"
+            placeholder="Where is your event happening?"
+            required
+          ></input>
+
+          <label htmlFor="imageUrl" id="imageLabel">
+            Picture*
+          </label>
+          <input
+            id="imageUrl"
+            name="imageUrl"
+            aria-labelledby="imageLabel"
+            placeholder="Which https://images.unsplash.com/ URL should we use for your event?"
+            type="url"
+            pattern="^https://images\.unsplash\.com/.*$"
+            required
+          ></input>
+          <p> *required fields</p>
+        </StyledFieldset>
+
+        <>
+          <StyledFieldset $visibility={formStep === 2 ? "visible" : "hidden"}>
+            <legend>Event Details</legend>
+            <label htmlFor="startDateTime" id="startDateTimeLabel">
+              Start*
             </label>
             <input
-              id="title"
-              name="title"
-              aria-labelledby="titleLabel"
-              placeholder="What is your event called?"
+              id="startDateTime"
+              name="startDateTime"
+              aria-labelledby="startDateTimeLabel"
+              type="datetime-local"
               required
             ></input>
 
-            <label htmlFor="description" id="descriptionLabel">
-              Description*
+            <label htmlFor="endDateTime" id="endDateTimeLabel">
+              End*
             </label>
-            <textarea
-              id="description"
-              name="description"
-              aria-labelledby="descriptionLabel"
-              placeholder="Describe your event here"
-              rows="5"
+            <input
+              id="endDateTime"
+              name="endDateTime"
+              aria-labelledby="endDateTimeLabel"
+              type="datetime-local"
               required
-            ></textarea>
+            ></input>
 
-            <Button onClick={nextFormStep}>Next</Button>
+            <label htmlFor="location" id="locationLabel">
+              Location
+            </label>
+            <input
+              id="location"
+              name="location"
+              aria-labelledby="locationLabel"
+              placeholder="Put in an adress or landmark where everyone should gather"
+            ></input>
+            <p> *required fields</p>
           </StyledFieldset>
-        )}
-
-        {formStep === 1 && (
-          <StyledFieldset>
-            <legend>Category and City</legend>
-
-            <label htmlFor="category" id="categoryLabel">
-              Category*
-            </label>
-            <select
-              id="category"
-              name="category"
-              aria-labelledby="categoryLabel"
-              required
-            >
-              <option value=""> --Please pick a category-- </option>
-              <option value="Nightlife & Clubs">Nightlife & Clubs</option>
-              <option value="Culture & Arts">Culture & Arts</option>
-              <option value="Activities & Games">Activities & Games</option>
-              <option value="Live Shows"> Live Shows</option>
-              <option value="Community Meet-up">Community Meet-up</option>
-            </select>
-
-            <label htmlFor="city" id="cityLabel">
-              City*
+          <StyledFieldset $visibility={formStep === 3 ? "visible" : "hidden"}>
+            <legend>About you</legend>
+            <label htmlFor="organizer" id="organizerLabel">
+              Organizer
             </label>
             <input
-              id="city"
-              name="city"
-              aria-labelledby="cityLabel"
-              placeholder="Where is your event happening?"
-              required
+              id="organizer"
+              name="organizer"
+              aria-labelledby="organizerLabel"
+              placeholder="Pick your name of that of your organisation"
             ></input>
-
-            <label htmlFor="imageUrl" id="imageLabel">
-              Picture*
-            </label>
-            <input
-              id="imageUrl"
-              name="imageUrl"
-              aria-labelledby="imageLabel"
-              placeholder="Which https://images.unsplash.com/ URL should we use for your event?"
-              type="url"
-              pattern="^https://images\.unsplash\.com/.*$"
-              required
-            ></input>
-            <Button onClick={prevFormStep}>Back</Button>
-            <Button onClick={nextFormStep}>Next</Button>
+            <p> *required fields</p>
           </StyledFieldset>
-        )}
-
-        {formStep === 2 && (
-          <>
-            <StyledFieldset>
-              <legend>Event Details</legend>
-              <label htmlFor="startDateTime" id="startDateTimeLabel">
-                Start*
-              </label>
-              <input
-                id="startDateTime"
-                name="startDateTime"
-                aria-labelledby="startDateTimeLabel"
-                type="datetime-local"
-                required
-              ></input>
-
-              <label htmlFor="endDateTime" id="endDateTimeLabel">
-                End*
-              </label>
-              <input
-                id="endDateTime"
-                name="endDateTime"
-                aria-labelledby="endDateTimeLabel"
-                type="datetime-local"
-                required
-              ></input>
-
-              <label htmlFor="location" id="locationLabel">
-                Location
-              </label>
-              <input
-                id="location"
-                name="location"
-                aria-labelledby="locationLabel"
-                placeholder="Put in an adress or landmark where everyone should gather"
-              ></input>
-            </StyledFieldset>
-            <StyledFieldset>
-              <legend>About you</legend>
-              <label htmlFor="organizer" id="organizerLabel">
-                Organizer
-              </label>
-              <input
-                id="organizer"
-                name="organizer"
-                aria-labelledby="organizerLabel"
-                placeholder="Pick your name of that of your organisation"
-              ></input>
-              <p> *required fields</p>
-              <Button onClick={prevFormStep}>Back</Button>
-              <Button color={"green"} type="Submit">
-                Submit
-              </Button>
-            </StyledFieldset>
-          </>
+        </>
+        {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
+        {formStep < 3 && <Button onClick={nextFormStep}>Next</Button>}
+        {formStep === 3 && (
+          <Button color={"green"} type="Submit">
+            Submit
+          </Button>
         )}
       </StyledForm>
     </>
