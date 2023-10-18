@@ -1,38 +1,24 @@
 import useSWR from "swr";
+import { useState } from "react";
+import { unique } from "@/lib/utils";
+import { getURL } from "@/lib/utils";
+//components
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
 import EventList from "@/components/EventList";
 import FilterBar from "@/components/FilterBar";
-import { useState } from "react";
 
 export default function HomePage() {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({ city: "", category: "" });
 
-  const {
-    data: events,
-    isLoading,
-    error,
-  } = useSWR(
-    `/api/events?queryCategory=${
-      filter?.category ? filter.category : ""
-    }&queryCity=${filter?.city ? filter.city : ""}`
-  );
+  const { data: events, isLoading, error } = useSWR(getURL(filter));
 
   function handleUpdateFilter(filterObject) {
-    setFilter((currentFilter) => {
-      return { ...currentFilter, ...filterObject };
-    });
+    setFilter((currentFilter) => ({ ...currentFilter, ...filterObject }));
   }
 
-  const categories = events?.reduce(
-    (allCategories, curr) => [...allCategories, curr.category],
-    []
-  );
-
-  const cities = events?.reduce(
-    (allCities, curr) => [...allCities, curr.city],
-    []
-  );
+  const cities = unique(events, "city");
+  const categories = unique(events, "category");
 
   return (
     <>
