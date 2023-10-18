@@ -16,7 +16,8 @@ export default function App({ Component, pageProps }) {
   const { data: events, isLoading, error } = useSWR(getURL(filters), fetcher);
 
   const groupedCategoryEvents = groupByProperty(events, "category");
-  // const groupedCityEvents = groupByProperty(events, "city");
+  const groupedCityEvents = groupByProperty(events, "city");
+
   return (
     <>
       <SWRConfig value={{ fetcher }}>
@@ -28,6 +29,7 @@ export default function App({ Component, pageProps }) {
             onChange={onChange}
             groupedCategoryEvents={groupedCategoryEvents}
             reset={reset}
+            groupedCityEvents={groupedCityEvents}
             isLoading={isLoading}
             error={error}
           />

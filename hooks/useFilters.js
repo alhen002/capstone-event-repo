@@ -22,7 +22,9 @@ export default function useFilters(
 
   function reset() {
     router.replace({
-      query: {},
+      query: {
+        slug: router.query.slug,
+      },
     });
   }
 
