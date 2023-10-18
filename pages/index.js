@@ -44,6 +44,7 @@ export default function HomePage() {
       {events && (
         <>
           <FilterBar
+            filter={filter}
             onFilter={handleUpdateFilter}
             categories={categories}
             cities={cities}
