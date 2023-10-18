@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useState } from "react";
+import ProgressBar from "./EventForm_ProgressBar";
 
 const StyledForm = styled.form`
   padding-top: 3rem;
@@ -30,8 +31,16 @@ const StyledFieldset = styled.fieldset`
   }};
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 36rem;
+`;
+
 export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
+  const currentStep = formStep;
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -50,10 +59,13 @@ export default function EventForm() {
 
   return (
     <>
+      <ProgressBar steps={"4"} currentStep={currentStep} />
       <StyledForm onSubmit={handleSubmit}>
         <h2>Add an event</h2>
 
-        <StyledFieldset $visibility={formStep === 0 ? "visible" : "hidden"}>
+        <StyledFieldset
+          $visibility={formStep == 0 || formStep == 4 ? "visible" : "hidden"}
+        >
           <legend>Event Basics</legend>
 
           <label htmlFor="title" id="titleLabel">
@@ -78,11 +90,13 @@ export default function EventForm() {
             rows="5"
             required
           ></textarea>
-          <p> *required fields</p>
+          {formStep < 4 && <p> *required fields</p>}
         </StyledFieldset>
 
-        <StyledFieldset $visibility={formStep === 1 ? "visible" : "hidden"}>
-          <legend>Category and City</legend>
+        <StyledFieldset
+          $visibility={formStep == 1 || formStep == 4 ? "visible" : "hidden"}
+        >
+          <legend>Event Details</legend>
 
           <label htmlFor="category" id="categoryLabel">
             Category*
@@ -101,17 +115,6 @@ export default function EventForm() {
             <option value="Community Meet-up">Community Meet-up</option>
           </select>
 
-          <label htmlFor="city" id="cityLabel">
-            City*
-          </label>
-          <input
-            id="city"
-            name="city"
-            aria-labelledby="cityLabel"
-            placeholder="Where is your event happening?"
-            required
-          ></input>
-
           <label htmlFor="imageUrl" id="imageLabel">
             Picture*
           </label>
@@ -124,12 +127,14 @@ export default function EventForm() {
             pattern="^https://images\.unsplash\.com/.*$"
             required
           ></input>
-          <p> *required fields</p>
+          {formStep < 4 && <p> *required fields</p>}
         </StyledFieldset>
 
         <>
-          <StyledFieldset $visibility={formStep === 2 ? "visible" : "hidden"}>
-            <legend>Event Details</legend>
+          <StyledFieldset
+            $visibility={formStep == 2 || formStep == 4 ? "visible" : "hidden"}
+          >
+            <legend>Event Time</legend>
             <label htmlFor="startDateTime" id="startDateTimeLabel">
               Start*
             </label>
@@ -152,6 +157,24 @@ export default function EventForm() {
               required
             ></input>
 
+            {formStep < 4 && <p> *required fields</p>}
+          </StyledFieldset>
+          <StyledFieldset
+            $visibility={formStep == 3 || formStep == 4 ? "visible" : "hidden"}
+          >
+            <legend>Event Location</legend>
+
+            <label htmlFor="city" id="cityLabel">
+              City*
+            </label>
+            <input
+              id="city"
+              name="city"
+              aria-labelledby="cityLabel"
+              placeholder="Where is your event happening?"
+              required
+            ></input>
+
             <label htmlFor="location" id="locationLabel">
               Location
             </label>
@@ -161,10 +184,7 @@ export default function EventForm() {
               aria-labelledby="locationLabel"
               placeholder="Put in an adress or landmark where everyone should gather"
             ></input>
-            <p> *required fields</p>
-          </StyledFieldset>
-          <StyledFieldset $visibility={formStep === 3 ? "visible" : "hidden"}>
-            <legend>About you</legend>
+
             <label htmlFor="organizer" id="organizerLabel">
               Organizer
             </label>
@@ -177,13 +197,19 @@ export default function EventForm() {
             <p> *required fields</p>
           </StyledFieldset>
         </>
-        {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
-        {formStep < 3 && <Button onClick={nextFormStep}>Next</Button>}
-        {formStep === 3 && (
-          <Button color={"green"} type="Submit">
-            Submit
-          </Button>
-        )}
+
+        <ButtonContainer>
+          {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
+          {formStep < 3 && <Button onClick={nextFormStep}>Next</Button>}
+          {formStep === 3 && (
+            <Button onClick={nextFormStep}>Check all entered Data</Button>
+          )}
+          {formStep === 4 && (
+            <Button color={"green"} type="Submit">
+              Submit
+            </Button>
+          )}
+        </ButtonContainer>
       </StyledForm>
     </>
   );
