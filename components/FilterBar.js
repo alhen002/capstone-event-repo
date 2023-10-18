@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function FilterBar({ onFilter, cities, categories, filter }) {
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);

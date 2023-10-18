@@ -36,19 +36,18 @@ export default function HomePage() {
 
   return (
     <>
+      <FilterBar
+        filter={filter}
+        onFilter={handleUpdateFilter}
+        categories={categories}
+        cities={cities}
+      />
       {isLoading && <Loading />}
       {error && (
         <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
       )}
-
       {events && (
         <>
-          <FilterBar
-            filter={filter}
-            onFilter={handleUpdateFilter}
-            categories={categories}
-            cities={cities}
-          />
           {events?.length === 0 && <p>Sorry no events were found.</p>}
           <EventList events={events} />
         </>
