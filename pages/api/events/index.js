@@ -6,13 +6,18 @@ export default async function handler(request, response) {
 
   switch (request.method) {
     case "GET":
+      const { category, city } = request.query;
       try {
-        const allEvents = await Event.find();
-
-        if (allEvents.length === 0 || !allEvents) {
-          return response.status(404).json({ message: "Events not found." });
+        const filter = {};
+        if (category) {
+          filter.category = { $regex: category, $options: `i` };
         }
-        return response.status(200).json(allEvents);
+
+        if (city) {
+          filter.city = { $regex: city, $options: `i` };
+        }
+        const filteredEvents = await Event.find(filter);
+        return response.status(200).json(filteredEvents);
       } catch (error) {
         return response.status(400).json({ message: error.message });
       }
