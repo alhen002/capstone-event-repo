@@ -78,7 +78,10 @@ export default function Header() {
   return (
     <div ref={ref}>
       <StyledHeader>
-        <LogoWrapper>Event Collective</LogoWrapper>
+        <LogoWrapper>
+          <Link href="/">Event Collective</Link>
+        </LogoWrapper>
+
         <Menu menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
       </StyledHeader>
       {menuOpen && (

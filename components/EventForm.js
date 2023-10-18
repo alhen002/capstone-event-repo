@@ -42,8 +42,16 @@ export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
   const currentStep = formStep;
 
+  const [startDateTime, setStartDateTime] = useState();
+  const [endDateTime, setEndDateTime] = useState();
+
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
+
+  const todayISO = new Date().toISOString();
+  const today = todayISO.slice(0, -8);
+
+  console.log(todayISO, today);
 
   const router = useRouter();
 
@@ -143,6 +151,9 @@ export default function EventForm() {
               name="startDateTime"
               aria-labelledby="startDateTimeLabel"
               type="datetime-local"
+              min={today}
+              max={endDateTime}
+              onChange={(event) => setStartDateTime(event.target.value)}
               required
             ></input>
 
@@ -154,6 +165,8 @@ export default function EventForm() {
               name="endDateTime"
               aria-labelledby="endDateTimeLabel"
               type="datetime-local"
+              min={startDateTime}
+              onChange={(event) => setEndDateTime(event.target.value)}
               required
             ></input>
 

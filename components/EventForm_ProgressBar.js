@@ -11,7 +11,7 @@ const ProgressBarSegment = styled.div`
       case "mid-grey":
         return "var(--mid-grey)";
       default:
-        return "lightgrey";
+        return "var(--light-grey)";
     }
   }};
 `;
