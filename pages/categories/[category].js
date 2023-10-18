@@ -5,14 +5,21 @@ import EventList from "@/components/EventList";
 import FilterBar from "@/components/FilterBar";
 import Loading from "@/components/Loading";
 import Error from "@/components/Error";
+import useFilters from "@/hooks/useFilters";
 
-export default function Category() {
+export default function Category({ groupedCategoryEvents }) {
   const router = useRouter();
-  const { category } = router.query;
+  const { category: slug } = router.query;
 
+  const groupedCategory = groupedCategoryEvents.find(
+    (category) => category.slug === slug
+  );
+
+  console.log(slug);
+  console.log(groupedCategoryEvents);
   return (
     <>
-      <p>a category page of {category}</p>
+      <p></p>
       {/* <FilterBar
         filter={filter}
         onFilter={handleUpdateFilter}
@@ -22,13 +29,15 @@ export default function Category() {
       {isLoading && <Loading />}
       {error && (
         <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
-      )}
-      {events && (
-        <>
-          {events?.length === 0 && <p>Sorry no events were found.</p>}
-          <EventList events={events} />
-        </>
       )} */}
+      {groupedCategory?.events && (
+        <>
+          {groupedCategory?.events?.length === 0 && (
+            <p>Sorry no events were found.</p>
+          )}
+          <EventList events={groupedCategory?.events} />
+        </>
+      )}
     </>
   );
 }

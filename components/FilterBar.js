@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useFilters from "@/hooks/useFilters";
 
 export default function FilterBar({ onFilter, cities, categories, filter }) {
   const [isFilterVisible, setIsFilterVisible] = useState(true);
