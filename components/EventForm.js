@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
+import { useState } from "react";
+import ProgressBar from "./EventForm_ProgressBar";
 
 const StyledForm = styled.form`
   padding-top: 3rem;
@@ -17,9 +19,38 @@ const StyledFieldset = styled.fieldset`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  display: ${(props) => {
+    switch (props.$visibility) {
+      case "visible":
+        return "flex";
+      case "hidden":
+        return "none";
+      default:
+        return "none";
+    }
+  }};
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 36rem;
 `;
 
 export default function EventForm() {
+  const [formStep, setFormStep] = useState(0);
+  const currentStep = formStep;
+  const stepCount = 4;
+
+  const [startDateTime, setStartDateTime] = useState();
+  const [endDateTime, setEndDateTime] = useState();
+
+  const nextFormStep = () => setFormStep(formStep + 1);
+  const prevFormStep = () => setFormStep(formStep - 1);
+
+  const today = new Date().toISOString().slice(0, -8);
+
   const router = useRouter();
 
   function handleSubmit(event) {
@@ -34,10 +65,15 @@ export default function EventForm() {
 
   return (
     <>
+      <ProgressBar currentStep={currentStep} />
       <StyledForm onSubmit={handleSubmit}>
         <h2>Add an event</h2>
 
-        <StyledFieldset>
+        <StyledFieldset
+          $visibility={
+            formStep == 0 || formStep == stepCount ? "visible" : "hidden"
+          }
+        >
           <legend>Event Basics</legend>
 
           <label htmlFor="title" id="titleLabel">
@@ -62,10 +98,15 @@ export default function EventForm() {
             rows="5"
             required
           ></textarea>
+          {formStep < stepCount && <p> *required fields</p>}
         </StyledFieldset>
 
-        <StyledFieldset>
-          <legend>Category and City</legend>
+        <StyledFieldset
+          $visibility={
+            formStep == 1 || formStep == stepCount ? "visible" : "hidden"
+          }
+        >
+          <legend>Event Details</legend>
 
           <label htmlFor="category" id="categoryLabel">
             Category*
@@ -84,17 +125,6 @@ export default function EventForm() {
             <option value="Community Meet-up">Community Meet-up</option>
           </select>
 
-          <label htmlFor="city" id="cityLabel">
-            City*
-          </label>
-          <input
-            id="city"
-            name="city"
-            aria-labelledby="cityLabel"
-            placeholder="Where is your event happening?"
-            required
-          ></input>
-
           <label htmlFor="imageUrl" id="imageLabel">
             Picture*
           </label>
@@ -107,58 +137,98 @@ export default function EventForm() {
             pattern="^https://images\.unsplash\.com/.*$"
             required
           ></input>
+          {formStep < stepCount && <p> *required fields</p>}
         </StyledFieldset>
 
-        <StyledFieldset>
-          <legend>Event Details</legend>
-          <label htmlFor="startDateTime" id="startDateTimeLabel">
-            Start*
-          </label>
-          <input
-            id="startDateTime"
-            name="startDateTime"
-            aria-labelledby="startDateTimeLabel"
-            type="datetime-local"
-            required
-          ></input>
+        <>
+          <StyledFieldset
+            $visibility={
+              formStep == 2 || formStep == stepCount ? "visible" : "hidden"
+            }
+          >
+            <legend>Event Time</legend>
+            <label htmlFor="startDateTime" id="startDateTimeLabel">
+              Start*
+            </label>
+            <input
+              id="startDateTime"
+              name="startDateTime"
+              aria-labelledby="startDateTimeLabel"
+              type="datetime-local"
+              min={today}
+              max={endDateTime}
+              onChange={(event) => setStartDateTime(event.target.value)}
+              required
+            ></input>
 
-          <label htmlFor="endDateTime" id="endDateTimeLabel">
-            End*
-          </label>
-          <input
-            id="endDateTime"
-            name="endDateTime"
-            aria-labelledby="endDateTimeLabel"
-            type="datetime-local"
-            required
-          ></input>
+            <label htmlFor="endDateTime" id="endDateTimeLabel">
+              End*
+            </label>
+            <input
+              id="endDateTime"
+              name="endDateTime"
+              aria-labelledby="endDateTimeLabel"
+              type="datetime-local"
+              min={startDateTime}
+              onChange={(event) => setEndDateTime(event.target.value)}
+              required
+            ></input>
 
-          <label htmlFor="location" id="locationLabel">
-            Location
-          </label>
-          <input
-            id="location"
-            name="location"
-            aria-labelledby="locationLabel"
-            placeholder="Put in an adress or landmark where everyone should gather"
-          ></input>
-        </StyledFieldset>
-        <StyledFieldset>
-          <legend>About you</legend>
-          <label htmlFor="organizer" id="organizerLabel">
-            Organizer
-          </label>
-          <input
-            id="organizer"
-            name="organizer"
-            aria-labelledby="organizerLabel"
-            placeholder="Pick your name of that of your organisation"
-          ></input>
-          <p> *required fields</p>
-          <Button color={"green"} type="Submit">
-            Submit
-          </Button>
-        </StyledFieldset>
+            {formStep < stepCount && <p> *required fields</p>}
+          </StyledFieldset>
+          <StyledFieldset
+            $visibility={
+              formStep == 3 || formStep == stepCount ? "visible" : "hidden"
+            }
+          >
+            <legend>Event Location</legend>
+
+            <label htmlFor="city" id="cityLabel">
+              City*
+            </label>
+            <input
+              id="city"
+              name="city"
+              aria-labelledby="cityLabel"
+              placeholder="Where is your event happening?"
+              required
+            ></input>
+
+            <label htmlFor="location" id="locationLabel">
+              Location
+            </label>
+            <input
+              id="location"
+              name="location"
+              aria-labelledby="locationLabel"
+              placeholder="Put in an adress or landmark where everyone should gather"
+            ></input>
+
+            <label htmlFor="organizer" id="organizerLabel">
+              Organizer
+            </label>
+            <input
+              id="organizer"
+              name="organizer"
+              aria-labelledby="organizerLabel"
+              placeholder="Pick your name of that of your organisation"
+            ></input>
+            <p> *required fields</p>
+          </StyledFieldset>
+        </>
+
+        <ButtonContainer>
+          {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
+          {formStep < 3 && <Button onClick={nextFormStep}>Next</Button>}
+          {formStep === 3 && (
+            <Button onClick={nextFormStep}>Check all entered Data</Button>
+          )}
+          {formStep === stepCount && (
+            <Button color="green" type="submit">
+              Submit
+            </Button>
+          )}
+        </ButtonContainer>
       </StyledForm>
     </>
   );

@@ -7,6 +7,7 @@ export default createGlobalStyle`
   --bright-green: #63F287;
   --white: #ffffff;
   --rose: #F2C9C9;
+  --light-grey: #E4E4E4;
 }
 
   *,
