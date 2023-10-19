@@ -4,6 +4,9 @@ import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useState } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
+import { AddressAutofill } from "@mapbox/search-js-react";
+
+const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 const StyledForm = styled.form`
   padding-top: 3rem;
@@ -183,36 +186,50 @@ export default function EventForm() {
           >
             <legend>Event Location</legend>
 
-            <label htmlFor="city" id="cityLabel">
-              City*
-            </label>
-            <input
-              id="city"
-              name="city"
-              aria-labelledby="cityLabel"
-              placeholder="Where is your event happening?"
-              required
-            ></input>
+            <AddressAutofill accessToken={mapboxAccessToken}>
+              <label htmlFor="address" id="addressLabel">
+                Address*
+              </label>
+              <input
+                id="address"
+                name="address"
+                aria-labelledby="addressLabel"
+                placeholder="Street"
+                autoComplete="street-address"
+                required
+              ></input>
 
-            <label htmlFor="location" id="locationLabel">
-              Location
-            </label>
-            <input
-              id="location"
-              name="location"
-              aria-labelledby="locationLabel"
-              placeholder="Put in an adress or landmark where everyone should gather"
-            ></input>
+              <label htmlFor="city" id="cityLabel">
+                City*
+              </label>
+              <input
+                id="city"
+                name="city"
+                aria-labelledby="cityLabel"
+                placeholder="Where is your event happening?"
+                required
+              ></input>
 
-            <label htmlFor="organizer" id="organizerLabel">
-              Organizer
-            </label>
-            <input
-              id="organizer"
-              name="organizer"
-              aria-labelledby="organizerLabel"
-              placeholder="Pick your name of that of your organisation"
-            ></input>
+              <label htmlFor="location" id="locationLabel">
+                Location
+              </label>
+              <input
+                id="location"
+                name="location"
+                aria-labelledby="locationLabel"
+                placeholder="Put in an adress or landmark where everyone should gather"
+              ></input>
+
+              <label htmlFor="organizer" id="organizerLabel">
+                Organizer
+              </label>
+              <input
+                id="organizer"
+                name="organizer"
+                aria-labelledby="organizerLabel"
+                placeholder="Pick your name of that of your organisation"
+              ></input>
+            </AddressAutofill>
             <p> *required fields</p>
           </StyledFieldset>
         </>
