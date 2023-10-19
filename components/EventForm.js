@@ -5,6 +5,8 @@ import Button from "components/Button.js";
 import { useState } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import { AddressAutofill } from "@mapbox/search-js-react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -101,7 +103,7 @@ export default function EventForm() {
             rows="5"
             required
           ></textarea>
-          {formStep < stepCount && <p> *required fields</p>}
+          {formStep < stepCount && <small> *required fields</small>}
         </StyledFieldset>
 
         <StyledFieldset
@@ -140,7 +142,7 @@ export default function EventForm() {
             pattern="^https://images\.unsplash\.com/.*$"
             required
           ></input>
-          {formStep < stepCount && <p> *required fields</p>}
+          {formStep < stepCount && <small> *required fields</small>}
         </StyledFieldset>
 
         <>
@@ -177,22 +179,23 @@ export default function EventForm() {
               required
             ></input>
 
-            {formStep < stepCount && <p> *required fields</p>}
+            {formStep < stepCount && <small> *required fields</small>}
           </StyledFieldset>
-          <StyledFieldset
-            $visibility={
-              formStep == 3 || formStep == stepCount ? "visible" : "hidden"
-            }
-          >
-            <legend>Event Location</legend>
 
-            <AddressAutofill accessToken={mapboxAccessToken}>
+          <AddressAutofill accessToken={mapboxAccessToken}>
+            <StyledFieldset
+              $visibility={
+                formStep == 3 || formStep == stepCount ? "visible" : "hidden"
+              }
+            >
+              <legend>Event Location</legend>
+
               <label htmlFor="address" id="addressLabel">
                 Address*
               </label>
               <input
                 id="address"
-                name="address"
+                name="location"
                 aria-labelledby="addressLabel"
                 placeholder="Street"
                 autoComplete="street-address"
@@ -207,17 +210,30 @@ export default function EventForm() {
                 name="city"
                 aria-labelledby="cityLabel"
                 placeholder="Where is your event happening?"
+                autoComplete="address-level2"
                 required
               ></input>
 
-              <label htmlFor="location" id="locationLabel">
-                Location
+              <label htmlFor="PLZ" id="PLZLabel">
+                PLZ*
               </label>
               <input
-                id="location"
-                name="location"
-                aria-labelledby="locationLabel"
-                placeholder="Put in an adress or landmark where everyone should gather"
+                id="PLZ"
+                name="PLZ"
+                aria-labelledby="PLZLabel"
+                autoComplete="postal-code"
+                required
+              ></input>
+
+              <label htmlFor="country" id="countryLabel">
+                Country*
+              </label>
+              <input
+                id="country"
+                name="country"
+                aria-labelledby="countryLabel"
+                autoComplete="country-name"
+                required
               ></input>
 
               <label htmlFor="organizer" id="organizerLabel">
@@ -229,9 +245,10 @@ export default function EventForm() {
                 aria-labelledby="organizerLabel"
                 placeholder="Pick your name of that of your organisation"
               ></input>
-            </AddressAutofill>
-            <p> *required fields</p>
-          </StyledFieldset>
+
+              <small> *required fields</small>
+            </StyledFieldset>
+          </AddressAutofill>
         </>
 
         <ButtonContainer>
