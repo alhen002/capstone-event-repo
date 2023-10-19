@@ -2,18 +2,11 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import { AddressAutofill } from "@mapbox/search-js-react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect } from "react";
-
-const MapContainer = styled.div`
-  height: 300px;
-  width: 300px;
-  background-color: red;
-`;
+import Map from "./Map";
+import getCoordinates from "@/lib/getCoordinates";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -57,21 +50,12 @@ export default function EventForm() {
 
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
+  const [eventAddress, setEventAddress] = useState("Fischmarkt1");
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
 
   const today = new Date().toISOString().slice(0, -8);
-
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: "map", // container ID
-      style: "mapbox://styles/mapbox/streets-v12", // style URL
-      center: [-74.5, 40], // starting position [lng, lat]
-      zoom: 9, // starting zoom
-    });
-  });
-
   const router = useRouter();
 
   function handleSubmit(event) {
@@ -83,6 +67,13 @@ export default function EventForm() {
     event.target.reset();
     router.push("/");
   }
+
+  useEffect(() => {
+    async function handleFetch() {
+      getCoordinates(eventAddress);
+    }
+    handleFetch();
+  }, [eventAddress]);
 
   return (
     <>
@@ -114,7 +105,7 @@ export default function EventForm() {
           <textarea
             id="description"
             name="description"
-            aria-labelledby="descriptionLabel"
+            aria-labelledy="descriptionLabel"
             placeholder="Describe your event here"
             rows="5"
             required
@@ -215,6 +206,7 @@ export default function EventForm() {
                 aria-labelledby="addressLabel"
                 placeholder="Street"
                 autoComplete="street-address"
+                onChange={(event) => setEventAddress(event.target.value)}
                 required
               ></input>
 
@@ -259,10 +251,9 @@ export default function EventForm() {
                 id="organizer"
                 name="organizer"
                 aria-labelledby="organizerLabel"
-                placeholder="Pick your name of that of your organisation"
+                placeholder="Pick your name or that of your organisation"
               ></input>
-
-              <MapContainer id="map"></MapContainer>
+              <Map location={{ lng: 10, lat: 53, zoom: 14 }} />
 
               <small> *required fields</small>
             </StyledFieldset>
