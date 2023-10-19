@@ -44,7 +44,6 @@ export default function Category({
         <Button onClick={() => router.back()}>Back</Button>
         <FilterBar
           filters={filters}
-          groupedCategoryEvents={groupedCategoryEvents}
           groupedCityEvents={groupedCityEvents}
           onChange={onChange}
           reset={reset}

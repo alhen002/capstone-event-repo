@@ -1,6 +1,14 @@
 import { useState } from "react";
 import useFilters from "@/hooks/useFilters";
+import styled from "styled-components";
+import Button from "./Button";
 
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  align-items: center;
+`;
 export default function FilterBar({
   onChange,
   groupedCityEvents,
@@ -15,30 +23,49 @@ export default function FilterBar({
   };
 
   return (
-    <div className="filter-container">
-      <button className="filter-toggle" onClick={toggleFilter}>
+    <StyledDiv>
+      <Button color="purple" onClick={toggleFilter}>
         Filter{" "}
-      </button>
+      </Button>
       {isFilterVisible && (
         <div className="filter-options">
-          <label htmlFor="queryCity">City:</label>
-          <select name="city" onChange={onChange} value={filters.city}>
-            <option>All</option>
-            {groupedCityEvents.map((city) => (
-              <option key={city.name}>{city.name}</option>
-            ))}
-          </select>
-          <label htmlFor="queryCategory">Category:</label>
-          <select name="category" onChange={onChange} value={filters.category}>
-            <option>All</option>
-            {groupedCategoryEvents.map((category) => (
-              <option key={category.name}>{category.name}</option>
-            ))}
-          </select>
-
-          <button onClick={reset}>Reset</button>
+          {groupedCityEvents && (
+            <>
+              <label htmlFor="city">City:</label>
+              <select
+                id="city"
+                name="city"
+                onChange={onChange}
+                value={filters.city}
+              >
+                <option>All</option>
+                {groupedCityEvents.map((city) => (
+                  <option key={city.name}>{city.name}</option>
+                ))}
+              </select>
+            </>
+          )}
+          {groupedCategoryEvents && (
+            <>
+              <label htmlFor="category">Category:</label>
+              <select
+                id="category"
+                name="category"
+                onChange={onChange}
+                value={filters.category}
+              >
+                <option>All</option>
+                {groupedCategoryEvents.map((category) => (
+                  <option key={category.name}>{category.name}</option>
+                ))}
+              </select>
+            </>
+          )}
+          <Button color="rose" onClick={reset}>
+            Reset
+          </Button>
         </div>
       )}
-    </div>
+    </StyledDiv>
   );
 }

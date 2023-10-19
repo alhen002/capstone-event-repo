@@ -6,16 +6,23 @@ export default async function handler(request, response) {
 
   switch (request.method) {
     case "GET":
-      const { category, city } = request.query;
+      const { category, city, search } = request.query;
+      if (search) {
+        const searchedEvents = await Event.find({
+          title: new RegExp(search, "i"),
+        }).exec();
+        return response.status(200).json(searchedEvents);
+      }
+
       try {
         const filter = {};
         if (category) {
-          filter.category = { $regex: category, $options: `i` };
+          filter.category = new RegExp(category, "i");
+        }
+        if (city) {
+          filter.city = new RegExp(city, "i");
         }
 
-        if (city) {
-          filter.city = { $regex: city, $options: `i` };
-        }
         const filteredEvents = await Event.find(filter);
         return response.status(200).json(filteredEvents);
       } catch (error) {
