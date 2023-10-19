@@ -7,6 +7,13 @@ import ProgressBar from "./EventForm_ProgressBar";
 import { AddressAutofill } from "@mapbox/search-js-react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { useEffect } from "react";
+
+const MapContainer = styled.div`
+  height: 300px;
+  width: 300px;
+  background-color: red;
+`;
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -55,6 +62,15 @@ export default function EventForm() {
   const prevFormStep = () => setFormStep(formStep - 1);
 
   const today = new Date().toISOString().slice(0, -8);
+
+  useEffect(() => {
+    const map = new mapboxgl.Map({
+      container: "map", // container ID
+      style: "mapbox://styles/mapbox/streets-v12", // style URL
+      center: [-74.5, 40], // starting position [lng, lat]
+      zoom: 9, // starting zoom
+    });
+  });
 
   const router = useRouter();
 
@@ -245,6 +261,8 @@ export default function EventForm() {
                 aria-labelledby="organizerLabel"
                 placeholder="Pick your name of that of your organisation"
               ></input>
+
+              <MapContainer id="map"></MapContainer>
 
               <small> *required fields</small>
             </StyledFieldset>
