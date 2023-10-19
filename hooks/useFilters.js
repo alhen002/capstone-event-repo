@@ -16,7 +16,11 @@ export default function useFilters(
 
   function onChange(event) {
     router.replace({
-      query: { ...router.query, [event.target.name]: event.target.value },
+      query: {
+        ...router.query,
+        [event.target.name]:
+          event.target.value === "All" ? "" : event.target.value,
+      },
     });
   }
 
