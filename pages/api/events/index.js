@@ -7,13 +7,14 @@ export default async function handler(request, response) {
   switch (request.method) {
     case "GET":
       const { category, city, search } = request.query;
+
       if (search) {
+        let regex = new RegExp(search, "i");
         const searchedEvents = await Event.find({
-          title: new RegExp(search, "i"),
+          $and: [{ $or: [{ title: regex }, { description: regex }] }],
         }).exec();
         return response.status(200).json(searchedEvents);
       }
-
       try {
         const filter = {};
         if (category) {
@@ -23,7 +24,7 @@ export default async function handler(request, response) {
           filter.city = new RegExp(city, "i");
         }
 
-        const filteredEvents = await Event.find(filter);
+        const filteredEvents = await Event.find(filter).exec();
         return response.status(200).json(filteredEvents);
       } catch (error) {
         return response.status(400).json({ message: error.message });
