@@ -4,7 +4,6 @@ import LinkButton from "./LinkButton";
 
 const StyledSection = styled.section`
   margin-inline: auto;
-  list-style-type: none;
   max-width: 36rem;
   padding-inline: 1rem;
   display: flex;

@@ -1,58 +1,42 @@
 import { useState } from "react";
+import useFilters from "@/hooks/useFilters";
 
-export default function FilterBar({ onFilter, cities, categories, filter }) {
+export default function FilterBar({
+  onChange,
+  groupedCityEvents,
+  groupedCategoryEvents,
+  filters,
+  reset,
+}) {
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const handleReset = () => {
-    onFilter({ category: "", city: "" });
-  };
-
   return (
     <div className="filter-container">
       <button className="filter-toggle" onClick={toggleFilter}>
         Filter{" "}
-        <i
-          className={`fas ${
-            isFilterVisible ? "fa-chevron-up" : "fa-chevron-down"
-          }`}
-        ></i>
       </button>
       {isFilterVisible && (
         <div className="filter-options">
           <label htmlFor="queryCity">City:</label>
-          <select
-            id="queryCity"
-            onChange={(e) => onFilter({ city: e.target.value })}
-            value={filter.city || ""}
-          >
-            <option value="">All</option>
-            {cities &&
-              cities.map((city) => (
-                <option key={city} value={city.toLowerCase()}>
-                  {city}
-                </option>
-              ))}
+          <select name="city" onChange={onChange} value={filters.city}>
+            <option>All</option>
+            {groupedCityEvents.map((city) => (
+              <option key={city.name}>{city.name}</option>
+            ))}
           </select>
           <label htmlFor="queryCategory">Category:</label>
-
-          <select
-            id="queryCategory"
-            onChange={(e) => onFilter({ category: e.target.value })}
-            value={filter.category || ""}
-          >
-            <option value="">All</option>
-            {categories &&
-              categories.map((category) => (
-                <option key={category} value={category.toLowerCase()}>
-                  {category}
-                </option>
-              ))}
+          <select name="category" onChange={onChange} value={filters.category}>
+            <option>All</option>
+            {groupedCategoryEvents.map((category) => (
+              <option key={category.name}>{category.name}</option>
+            ))}
           </select>
-          <button onClick={handleReset}>Reset</button>
+
+          <button onClick={reset}>Reset</button>
         </div>
       )}
     </div>
