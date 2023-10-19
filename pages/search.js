@@ -11,11 +11,19 @@ export default function Search() {
     data: events,
     error,
     isLoading,
-  } = useSWR(`/api/events?search=${searchQuery}`);
+  } = useSWR(`/api/search?events=${searchQuery}`);
 
   if (isLoading) return <Loading />;
   if (error) return <Error>{error.message}</Error>;
-  if (!events.length) return <p>Sorry, no events found.</p>;
+
+  if (!events.length)
+    return (
+      <>
+        {" "}
+        <Button onClick={() => router.back()}>Back</Button>
+        <p>Sorry, no events found.</p>
+      </>
+    );
   return (
     <>
       <Button onClick={() => router.back()}>Back</Button>

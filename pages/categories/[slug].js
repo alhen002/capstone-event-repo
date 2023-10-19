@@ -6,6 +6,9 @@ import FilterBar from "@/components/FilterBar";
 import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import Button from "@/components/Button";
+import useSWR from "swr";
+import { getCategoryURL } from "@/lib/utils";
+import useFilters from "@/hooks/useFilters";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -15,21 +18,17 @@ const StyledContainer = styled.div`
   margin-block: 2rem;
 `;
 
-export default function Category({
-  groupedCategoryEvents,
-  groupedCityEvents,
-  isLoading,
-  error,
-  filters,
-  onChange,
-  reset,
-}) {
+export default function Category() {
   const router = useRouter();
   const { slug } = router.query;
+  const { filters, reset, onChange } = useFilters({ city: "", category: "" });
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useSWR(getCategoryURL(filters));
 
-  const foundCategory = groupedCategoryEvents.find(
-    (category) => category.slug === slug
-  );
+  const foundCategory = categories?.find((category) => category.slug === slug);
 
   if (isLoading) return <Loading>Category not found</Loading>;
   if (error)
@@ -42,12 +41,7 @@ export default function Category({
       <h1>{foundCategory?.name}</h1>
       <StyledContainer>
         <Button onClick={() => router.back()}>Back</Button>
-        <FilterBar
-          filters={filters}
-          groupedCityEvents={groupedCityEvents}
-          onChange={onChange}
-          reset={reset}
-        />
+        <FilterBar filters={filters} onChange={onChange} reset={reset} />
       </StyledContainer>
 
       {foundCategory ? (

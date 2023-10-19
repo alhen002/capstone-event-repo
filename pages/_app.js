@@ -12,27 +12,12 @@ import useFilters from "@/hooks/useFilters";
 import Layout from "@/components/Layout";
 
 export default function App({ Component, pageProps }) {
-  const { filters, reset, onChange } = useFilters({ city: "", category: "" });
-  const { data: events, isLoading, error } = useSWR(getURL(filters), fetcher);
-
-  const groupedCategoryEvents = groupByProperty(events, "category");
-  const groupedCityEvents = groupByProperty(events, "city");
-
   return (
     <>
       <SWRConfig value={{ fetcher }}>
         <Layout>
           <GlobalStyle />
-          <Component
-            {...pageProps}
-            filters={filters}
-            onChange={onChange}
-            groupedCategoryEvents={groupedCategoryEvents}
-            reset={reset}
-            groupedCityEvents={groupedCityEvents}
-            isLoading={isLoading}
-            error={error}
-          />
+          <Component {...pageProps} />
         </Layout>
       </SWRConfig>
     </>

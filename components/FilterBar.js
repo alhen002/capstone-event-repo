@@ -2,25 +2,22 @@ import { useState } from "react";
 import useFilters from "@/hooks/useFilters";
 import styled from "styled-components";
 import Button from "./Button";
-
+import useSWR from "swr";
 const StyledDiv = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 1rem;
   align-items: center;
 `;
-export default function FilterBar({
-  onChange,
-  groupedCityEvents,
-  groupedCategoryEvents,
-  filters,
-  reset,
-}) {
+export default function FilterBar({ onChange, filters, reset }) {
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+
+  const { data: cities } = useSWR("/api/cities");
+  const { data: categories } = useSWR("/api/categories");
 
   return (
     <StyledDiv>
@@ -29,7 +26,7 @@ export default function FilterBar({
       </Button>
       {isFilterVisible && (
         <div className="filter-options">
-          {groupedCityEvents && (
+          {cities && (
             <>
               <label htmlFor="city">City:</label>
               <select
@@ -39,13 +36,13 @@ export default function FilterBar({
                 value={filters.city}
               >
                 <option>All</option>
-                {groupedCityEvents.map((city) => (
+                {cities.map((city) => (
                   <option key={city.name}>{city.name}</option>
                 ))}
               </select>
             </>
           )}
-          {groupedCategoryEvents && (
+          {categories && (
             <>
               <label htmlFor="category">Category:</label>
               <select
@@ -55,7 +52,7 @@ export default function FilterBar({
                 value={filters.category}
               >
                 <option>All</option>
-                {groupedCategoryEvents.map((category) => (
+                {categories.map((category) => (
                   <option key={category.name}>{category.name}</option>
                 ))}
               </select>
