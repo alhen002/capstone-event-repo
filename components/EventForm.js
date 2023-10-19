@@ -51,6 +51,8 @@ export default function EventForm() {
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
   const [eventAddress, setEventAddress] = useState("Fischmarkt1");
+  const [lng, setLng] = useState();
+  const [lat, setLat] = useState();
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -70,7 +72,9 @@ export default function EventForm() {
 
   useEffect(() => {
     async function handleFetch() {
-      getCoordinates(eventAddress);
+      const object = await getCoordinates(eventAddress);
+      setLat(object.lat);
+      setLng(object.lng);
     }
     handleFetch();
   }, [eventAddress]);
@@ -253,7 +257,13 @@ export default function EventForm() {
                 aria-labelledby="organizerLabel"
                 placeholder="Pick your name or that of your organisation"
               ></input>
-              <Map location={{ lng: 10, lat: 53, zoom: 14 }} />
+              <Map
+                lat={lat}
+                lng={lng}
+                setLng={setLng}
+                setLat={setLat}
+                zoom={14}
+              />
 
               <small> *required fields</small>
             </StyledFieldset>

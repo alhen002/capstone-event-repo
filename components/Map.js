@@ -4,12 +4,17 @@ import { useRef, useState, useEffect } from "react";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-export default function Map({ location = {} }) {
+export default function Map({
+  lng = 10,
+  lat = 13,
+  zoom,
+  setLng,
+  setLat,
+  setZoom,
+}) {
+  console.log(lng, lat);
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(location.lng);
-  const [lat, setLat] = useState(location.lat);
-  const [zoom, setZoom] = useState(location.zoom);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -22,7 +27,7 @@ export default function Map({ location = {} }) {
     map.current.on("move", () => {
       setLng(map.current.getCenter().lng.toFixed(4));
       setLat(map.current.getCenter().lat.toFixed(4));
-      setZoom(map.current.getZoom().toFixed(2));
+      //   setZoom(map.current.getZoom().toFixed(2));
     });
   }, [lat, lng, zoom]);
 
