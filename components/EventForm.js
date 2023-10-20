@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import dynamic from "next/dynamic";
 
@@ -91,6 +91,13 @@ export default function EventForm() {
     event.target.reset();
     router.push("/");
   }
+  // need to be memorized, otherwise multiple re-renderings happen, which will lead to buggy markers
+  const handleSetCoordinates = useCallback(function handleSetCoordinates(
+    coords
+  ) {
+    setCoordinates([coords.lng, coords.lat]);
+  },
+  []);
 
   return (
     <>
@@ -282,13 +289,15 @@ export default function EventForm() {
                 value={organizer}
               />
 
-              <Map eventAddress={address} setCoordinates={setCoordinates} />
+              <Map
+                eventAddress={address}
+                handleSetCoordinates={handleSetCoordinates}
+              />
             </StyledFieldset>
           </AddressAutofill>
         ) : (
           ""
         )}
-
         <ButtonContainer>
           <small> *required fields</small>
           {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
