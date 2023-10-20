@@ -23,7 +23,6 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
       center: [lng, lat],
       zoom: zoom,
     });
-
     marker.current = new mapboxgl.Marker({
       color: "blue",
       draggable: false,

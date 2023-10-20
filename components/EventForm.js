@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import getCoordinates from "@/lib/getCoordinates";
 
 const AddressAutofill = dynamic(
@@ -15,7 +14,6 @@ const AddressAutofill = dynamic(
 import Map from "./Map";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
 const StyledForm = styled.form`
   padding-top: 3rem;
   margin-inline: auto;
@@ -24,7 +22,6 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
-
 const StyledFieldset = styled.fieldset`
   border: none;
   display: flex;
@@ -66,9 +63,6 @@ export default function EventForm() {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [organizer, setOrganizer] = useState("");
-
-  // const searchAddress = `${address}${city}`;
-
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
 
@@ -95,13 +89,6 @@ export default function EventForm() {
     event.target.reset();
     router.push("/");
   }
-  // need to be memorized, otherwise multiple re-renderings happen, which will lead to buggy markers
-  const handleSetCoordinates = useCallback(function handleSetCoordinates(
-    coords
-  ) {
-    setCoordinates([coords.lng, coords.lat]);
-  },
-  []);
 
   useEffect(() => {
     if (address.length < 5) return;
@@ -111,7 +98,6 @@ export default function EventForm() {
     }
     handleCoordinates();
   }, [address]);
-
   return (
     <>
       <ProgressBar currentStep={formStep} />
