@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import getDate from "@/lib/getDate";
-
+import Map from "./Map";
 import { useState } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -92,6 +92,7 @@ export default function EventDetail({ event = {} }) {
     await deleteEvent(event._id);
     router.push("/");
   }
+
   return (
     <>
       <StyledContainer>
@@ -157,6 +158,9 @@ export default function EventDetail({ event = {} }) {
             </StyledLabel>
             <Button color={"green"}>Save</Button>
           </StyledForm>
+        )}
+        {event.coordinates && (
+          <Map posLng={event.coordinates.lng} posLat={event.coordinates.lat} />
         )}
       </StyledContainer>
       <StyledContainer>

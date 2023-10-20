@@ -58,12 +58,14 @@ export default function EventForm() {
   const [imageUrl, setImageUrl] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState("-");
   const [coordinates, setCoordinates] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [organizer, setOrganizer] = useState("");
+
+  // const searchAddress = `${address}${city}`;
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -290,7 +292,7 @@ export default function EventForm() {
               />
 
               <Map
-                eventAddress={address}
+                address={address}
                 handleSetCoordinates={handleSetCoordinates}
               />
             </StyledFieldset>
