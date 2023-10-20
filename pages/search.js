@@ -23,10 +23,7 @@ export default function Search() {
   return (
     <>
       <Button onClick={() => router.back()}>Back</Button>
-      <h1>
-        Your Search for &apos;{searchQuery}&apos; revealed the following
-        results:
-      </h1>
+      <h1>Your Search for &apos;{q}&apos; revealed the following results:</h1>
       <EventList events={events} />
     </>
   );
