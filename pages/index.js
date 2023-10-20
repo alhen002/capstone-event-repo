@@ -1,42 +1,45 @@
-import useSWR from "swr";
-import { useState } from "react";
-import { unique } from "@/lib/utils";
-import { getURL } from "@/lib/utils";
-//components
+//* Components
 import Error from "@/components/Error";
 import Loading from "@/components/Loading";
-import EventList from "@/components/EventList";
+import CategoryHighlight from "@/components/CategoryHighlight";
+import SearchBar from "@/components/SearchBar";
 import FilterBar from "@/components/FilterBar";
+import styled from "styled-components";
+import useSWR from "swr";
+import useFilters from "@/hooks/useFilters";
+import { getCategoryURL } from "@/lib/utils";
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 36rem;
+  margin-inline: auto;
+  justify-content: center;
+`;
 
 export default function HomePage() {
-  const [filter, setFilter] = useState({ city: "", category: "" });
+  const { filters, reset, onChange } = useFilters({ category: "", city: "" });
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useSWR(getCategoryURL(filters));
 
-  const { data: events, isLoading, error } = useSWR(getURL(filter));
-
-  function handleUpdateFilter(filterObject) {
-    setFilter((currentFilter) => ({ ...currentFilter, ...filterObject }));
-  }
-
-  const cities = unique(events, "city");
-  const categories = unique(events, "category");
+  if (isLoading) return <Loading />;
+  if (error) return <Error>{error.message}</Error>;
 
   return (
     <>
-      <FilterBar
-        filter={filter}
-        onFilter={handleUpdateFilter}
-        categories={categories}
-        cities={cities}
-      />
-      {isLoading && <Loading />}
-      {error && (
-        <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
-      )}
-      {events && (
-        <>
-          {events?.length === 0 && <p>Sorry no events were found.</p>}
-          <EventList events={events} />
-        </>
+      <StyledContainer>
+        <SearchBar />
+        <FilterBar filters={filters} onChange={onChange} reset={reset} />
+      </StyledContainer>
+      {categories?.length ? (
+        categories.map((category) => (
+          <CategoryHighlight key={category.name} category={category} />
+        ))
+      ) : (
+        <p>Sorry, nothing found based on your filters. Please reset.</p>
       )}
     </>
   );

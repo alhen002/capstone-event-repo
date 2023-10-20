@@ -297,7 +297,7 @@ export default function EventForm() {
             <Button onClick={nextFormStep}>Check all entered Data</Button>
           )}
           {formStep === stepCount && (
-            <Button color="green" type="submit">
+            <Button variant="confirm" type="submit">
               Submit
             </Button>
           )}

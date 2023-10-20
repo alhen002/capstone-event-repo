@@ -1,60 +1,65 @@
 import { useState } from "react";
-
-export default function FilterBar({ onFilter, cities, categories, filter }) {
+import styled from "styled-components";
+import Button from "./Button";
+import useSWR from "swr";
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  align-items: center;
+`;
+export default function FilterBar({ onChange, filters, reset }) {
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const handleReset = () => {
-    onFilter({ category: "", city: "" });
-  };
+  const { data: cities } = useSWR("/api/cities");
+  const { data: categories } = useSWR("/api/categories");
 
   return (
-    <div className="filter-container">
-      <button className="filter-toggle" onClick={toggleFilter}>
-        Filter{" "}
-        <i
-          className={`fas ${
-            isFilterVisible ? "fa-chevron-up" : "fa-chevron-down"
-          }`}
-        ></i>
-      </button>
+    <StyledContainer>
+      <Button onClick={toggleFilter}>Filter </Button>
       {isFilterVisible && (
         <div className="filter-options">
-          <label htmlFor="queryCity">City:</label>
-          <select
-            id="queryCity"
-            onChange={(e) => onFilter({ city: e.target.value })}
-            value={filter.city || ""}
-          >
-            <option value="">All</option>
-            {cities &&
-              cities.map((city) => (
-                <option key={city} value={city.toLowerCase()}>
-                  {city}
-                </option>
-              ))}
-          </select>
-          <label htmlFor="queryCategory">Category:</label>
-
-          <select
-            id="queryCategory"
-            onChange={(e) => onFilter({ category: e.target.value })}
-            value={filter.category || ""}
-          >
-            <option value="">All</option>
-            {categories &&
-              categories.map((category) => (
-                <option key={category} value={category.toLowerCase()}>
-                  {category}
-                </option>
-              ))}
-          </select>
-          <button onClick={handleReset}>Reset</button>
+          {cities && (
+            <>
+              <label htmlFor="city">City:</label>
+              <select
+                id="city"
+                name="city"
+                onChange={onChange}
+                value={filters.city}
+              >
+                <option>All</option>
+                {cities.map((city) => (
+                  <option key={city.name}>{city.name}</option>
+                ))}
+              </select>
+            </>
+          )}
+          {categories && (
+            <>
+              <label htmlFor="category">Category:</label>
+              <select
+                id="category"
+                name="category"
+                onChange={onChange}
+                value={filters.category}
+              >
+                <option>All</option>
+                {categories.map((category) => (
+                  <option key={category.name}>{category.name}</option>
+                ))}
+              </select>
+            </>
+          )}
+          <Button variant="delete" onClick={reset}>
+            Reset
+          </Button>
         </div>
       )}
-    </div>
+    </StyledContainer>
   );
 }

@@ -4,6 +4,7 @@ import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import EventDetail from "@/components/EventDetail";
 import LinkButton from "@/components/LinkButton";
+import Button from "@/components/Button";
 
 export default function Event() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function Event() {
 
   return (
     <>
-      <LinkButton />
+      <Button onClick={() => router.back()}>Back</Button>
       {isLoading && <Loading />}
       {error && (
         <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>
