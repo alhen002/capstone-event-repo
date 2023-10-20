@@ -15,7 +15,7 @@ export default function SearchBar() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    router.push(`/search?searchQuery=${inputValue}`);
+    router.push(`/search?q=${inputValue}`);
     setInputValue("");
   }
 
@@ -29,7 +29,7 @@ export default function SearchBar() {
           onChange={(e) => setInputValue(e.target.value)}
         />
       </label>
-      <Button color="green">Search</Button>
+      <Button variant="confirm">Search</Button>
     </StyledForm>
   );
 }

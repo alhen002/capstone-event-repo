@@ -10,24 +10,20 @@ const StyledButton = styled.button`
   text-align: center;
   text-decoration: none;
   background-color: ${(props) => {
-    switch (props.$color) {
-      case "green":
+    switch (props.$variant) {
+      case "confirm":
         return "var(--bright-green)";
-      case "rose":
+      case "delete":
         return "var(--rose)";
-      case "purple":
-        return "#C4AEF2";
       default:
         return "var(--mid-grey)";
     }
   }};
   color: ${(props) => {
-    switch (props.$color) {
-      case "green":
+    switch (props.$variant) {
+      case "confirm":
         return "var(--black)";
-      case "purple":
-        return "var(--black)";
-      case "rose":
+      case "delete":
         return "var(--black)";
       default:
         return "var(--white)";
@@ -35,9 +31,9 @@ const StyledButton = styled.button`
   }};
 `;
 
-export default function Button({ children, color, onClick }) {
+export default function Button({ children, variant, onClick }) {
   return (
-    <StyledButton onClick={onClick} $color={color}>
+    <StyledButton onClick={onClick} $variant={variant}>
       {children}
     </StyledButton>
   );

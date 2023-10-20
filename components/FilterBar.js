@@ -1,9 +1,8 @@
 import { useState } from "react";
-import useFilters from "@/hooks/useFilters";
 import styled from "styled-components";
 import Button from "./Button";
 import useSWR from "swr";
-const StyledDiv = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   justify-content: space-around;
   gap: 1rem;
@@ -20,10 +19,8 @@ export default function FilterBar({ onChange, filters, reset }) {
   const { data: categories } = useSWR("/api/categories");
 
   return (
-    <StyledDiv>
-      <Button color="purple" onClick={toggleFilter}>
-        Filter{" "}
-      </Button>
+    <StyledContainer>
+      <Button onClick={toggleFilter}>Filter </Button>
       {isFilterVisible && (
         <div className="filter-options">
           {cities && (
@@ -58,11 +55,11 @@ export default function FilterBar({ onChange, filters, reset }) {
               </select>
             </>
           )}
-          <Button color="rose" onClick={reset}>
+          <Button variant="delete" onClick={reset}>
             Reset
           </Button>
         </div>
       )}
-    </StyledDiv>
+    </StyledContainer>
   );
 }

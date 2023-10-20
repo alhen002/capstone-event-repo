@@ -6,12 +6,8 @@ import Loading from "@/components/Loading";
 import Button from "@/components/Button";
 export default function Search() {
   const router = useRouter();
-  const { searchQuery } = router.query;
-  const {
-    data: events,
-    error,
-    isLoading,
-  } = useSWR(`/api/search?events=${searchQuery}`);
+  const { q } = router.query;
+  const { data: events, error, isLoading } = useSWR(`/api/search?events=${q}`);
 
   if (isLoading) return <Loading />;
   if (error) return <Error>{error.message}</Error>;
