@@ -5,6 +5,8 @@ import Button from "components/Button.js";
 import { useState, useCallback } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import getCoordinates from "@/lib/getCoordinates";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -58,8 +60,8 @@ export default function EventForm() {
   const [imageUrl, setImageUrl] = useState("");
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
-  const [address, setAddress] = useState("-");
-  const [coordinates, setCoordinates] = useState("");
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({ lng: 0, lat: 0 });
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
@@ -100,6 +102,15 @@ export default function EventForm() {
     setCoordinates([coords.lng, coords.lat]);
   },
   []);
+
+  useEffect(() => {
+    if (address.length < 5) return;
+    async function handleCoordinates() {
+      const coordinates = await getCoordinates(address);
+      setCoordinates(coordinates);
+    }
+    handleCoordinates();
+  }, [address]);
 
   return (
     <>
@@ -291,10 +302,7 @@ export default function EventForm() {
                 value={organizer}
               />
 
-              <Map
-                address={address}
-                handleSetCoordinates={handleSetCoordinates}
-              />
+              <Map posLng={coordinates.lng} posLat={coordinates.lat} />
             </StyledFieldset>
           </AddressAutofill>
         ) : (
