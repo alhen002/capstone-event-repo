@@ -5,6 +5,10 @@ const { Schema } = mongoose;
 const eventSchema = new Schema({
   title: { type: String },
   city: { type: String },
+  address: { type: String },
+  coordinates: { lng: Number, lat: Number },
+  postalCode: { type: String },
+  country: { type: String },
   category: { type: String },
   description: { type: String },
   imageUrl: { type: String },

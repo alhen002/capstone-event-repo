@@ -73,10 +73,8 @@ export default function EventDetail({ event = {} }) {
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
   const { day, month, year, dateString, time } = getDate(event.startDateTime);
-
   // toggle for Edit Mode
   const [isEditMode, setIsEditMode] = useState(false);
-
   // handle functions
   async function handleSubmit(jsEvent) {
     jsEvent.preventDefault();
@@ -161,7 +159,6 @@ export default function EventDetail({ event = {} }) {
           </StyledForm>
         )}
       </StyledContainer>
-
       <StyledContainer>
         <Button
           color={isEditMode ? "" : "green"}
