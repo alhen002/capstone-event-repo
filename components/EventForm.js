@@ -4,7 +4,11 @@ import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useState } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
-import { AddressAutofill } from "@mapbox/search-js-react";
+import dynamic from "next/dynamic";
+const AddressAutofill = dynamic(
+  () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
+  { ssr: false }
+);
 import Map from "./Map";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
@@ -47,9 +51,18 @@ export default function EventForm() {
   const currentStep = formStep; // unnötig oder?
   const stepCount = 4;
 
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [category, setCategory] = useState();
+  const [imageUrl, setImageUrl] = useState();
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
   const [eventAddress, setEventAddress] = useState("");
+  const [coordinates, setCoordinates] = useState("");
+  const [city, setCity] = useState();
+  const [PLZ, setPLZ] = useState();
+  const [country, setCountry] = useState();
+  const [organizer, setOrganizer] = useState();
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -60,9 +73,27 @@ export default function EventForm() {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const events = Object.fromEntries(formData);
-    createNewEvent(events);
+    const formObject = Object.fromEntries(formData);
 
+    // needs to be manual to avoid using auto name of mapbox
+
+    const events = {
+      title: formObject.title,
+      city: formObject.city,
+      address: eventAddress, // used state instead of formObject because autofill automatically adds address-search to the name.
+      coordinates: { lng: coordinates[0], lat: coordinates[1] },
+      postalCode: formObject.postalCode,
+      country: formObject.country,
+      category: formObject.category,
+      description: formObject.description,
+      imageUrl: formObject.imageUrl,
+      startDateTime: formObject.startDateTime,
+      endDateTime: formObject.endDateTime,
+      organizer: formObject.organizer,
+    };
+
+    createNewEvent(events);
+    console.log(events);
     event.target.reset();
     router.push("/");
   }
@@ -87,8 +118,10 @@ export default function EventForm() {
             name="title"
             aria-labelledby="titleLabel"
             placeholder="What is your event called?"
+            onChange={(event) => settitle(event.target.value)}
+            value={title}
             required
-          ></input>
+          />
 
           <label htmlFor="description" id="descriptionLabel">
             Description*
@@ -98,9 +131,11 @@ export default function EventForm() {
             name="description"
             aria-labelledby="descriptionLabel"
             placeholder="Describe your event here"
+            onChange={(event) => setDescription(event.target.value)}
+            value={description}
             rows="5"
             required
-          ></textarea>
+          />
           {formStep < stepCount && <small> *required fields</small>}
         </StyledFieldset>
 
@@ -119,6 +154,8 @@ export default function EventForm() {
             name="category"
             aria-labelledby="categoryLabel"
             required
+            onChange={(event) => setCategory(event.target.value)}
+            value={category}
           >
             <option value=""> --Please pick a category-- </option>
             <option value="Nightlife & Clubs">Nightlife & Clubs</option>
@@ -137,9 +174,11 @@ export default function EventForm() {
             aria-labelledby="imageLabel"
             placeholder="Which https://images.unsplash.com/ URL should we use for your event?"
             type="url"
+            onChange={(event) => setImageUrl(event.target.value)}
+            value={imageUrl}
             pattern="^https://images\.unsplash\.com/.*$"
             required
-          ></input>
+          />
           {formStep < stepCount && <small> *required fields</small>}
         </StyledFieldset>
 
@@ -161,6 +200,7 @@ export default function EventForm() {
               min={today}
               max={endDateTime}
               onChange={(event) => setStartDateTime(event.target.value)}
+              value={startDateTime}
               required
             ></input>
 
@@ -174,6 +214,7 @@ export default function EventForm() {
               type="datetime-local"
               min={startDateTime}
               onChange={(event) => setEndDateTime(event.target.value)}
+              value={endDateTime}
               required
             ></input>
 
@@ -193,11 +234,11 @@ export default function EventForm() {
               </label>
               <input
                 id="address"
-                name="location"
                 aria-labelledby="addressLabel"
                 placeholder="Street"
                 autoComplete="street-address"
-                onChange={(event) => setEventAddress(event.target.value)}
+                value={eventAddress}
+                onBlur={(event) => setEventAddress(event.target.value)}
                 required
               />
 
@@ -210,6 +251,8 @@ export default function EventForm() {
                 aria-labelledby="cityLabel"
                 placeholder="Where is your event happening?"
                 autoComplete="address-level2"
+                value={city}
+                onChange={(event) => setCity(event.target.value)}
                 required
               ></input>
 
@@ -221,6 +264,8 @@ export default function EventForm() {
                 name="PLZ"
                 aria-labelledby="PLZLabel"
                 autoComplete="postal-code"
+                value={PLZ}
+                onChange={(event) => setPLZ(event.target.value)}
                 required
               ></input>
 
@@ -232,6 +277,8 @@ export default function EventForm() {
                 name="country"
                 aria-labelledby="countryLabel"
                 autoComplete="country-name"
+                value={country}
+                onChange={(event) => setCountry(event.target.value)}
                 required
               ></input>
 
@@ -243,8 +290,14 @@ export default function EventForm() {
                 name="organizer"
                 aria-labelledby="organizerLabel"
                 placeholder="Pick your name or that of your organisation"
+                onChange={(event) => setOrganizer(event.target.value)}
+                value={organizer}
               ></input>
-              {/* <Map eventAddress={eventAddress} /> */}
+
+              <Map
+                eventAddress={eventAddress}
+                setCoordinates={setCoordinates}
+              />
 
               <small> *required fields</small>
             </StyledFieldset>
