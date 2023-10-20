@@ -2,11 +2,10 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import { AddressAutofill } from "@mapbox/search-js-react";
 import Map from "./Map";
-import getCoordinates from "@/lib/getCoordinates";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -45,14 +44,12 @@ const ButtonContainer = styled.div`
 
 export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
-  const currentStep = formStep;
+  const currentStep = formStep; // unnötig oder?
   const stepCount = 4;
 
   const [startDateTime, setStartDateTime] = useState();
   const [endDateTime, setEndDateTime] = useState();
-  const [eventAddress, setEventAddress] = useState("Fischmarkt1");
-  const [lng, setLng] = useState();
-  const [lat, setLat] = useState();
+  const [eventAddress, setEventAddress] = useState("");
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -70,15 +67,6 @@ export default function EventForm() {
     router.push("/");
   }
 
-  useEffect(() => {
-    async function handleFetch() {
-      const object = await getCoordinates(eventAddress);
-      setLat(object.lat);
-      setLng(object.lng);
-    }
-    handleFetch();
-  }, [eventAddress]);
-
   return (
     <>
       <ProgressBar currentStep={currentStep} />
@@ -91,7 +79,6 @@ export default function EventForm() {
           }
         >
           <legend>Event Basics</legend>
-
           <label htmlFor="title" id="titleLabel">
             Title*
           </label>
@@ -109,7 +96,7 @@ export default function EventForm() {
           <textarea
             id="description"
             name="description"
-            aria-labelledy="descriptionLabel"
+            aria-labelledby="descriptionLabel"
             placeholder="Describe your event here"
             rows="5"
             required
@@ -212,7 +199,7 @@ export default function EventForm() {
                 autoComplete="street-address"
                 onChange={(event) => setEventAddress(event.target.value)}
                 required
-              ></input>
+              />
 
               <label htmlFor="city" id="cityLabel">
                 City*
@@ -257,13 +244,7 @@ export default function EventForm() {
                 aria-labelledby="organizerLabel"
                 placeholder="Pick your name or that of your organisation"
               ></input>
-              <Map
-                lat={lat}
-                lng={lng}
-                setLng={setLng}
-                setLat={setLat}
-                zoom={14}
-              />
+              {/* <Map eventAddress={eventAddress} /> */}
 
               <small> *required fields</small>
             </StyledFieldset>
