@@ -58,7 +58,10 @@ export default function EventForm() {
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({ lng: 0, lat: 0 });
+  const [coordinates, setCoordinates] = useState({
+    lng: 15.27875,
+    lat: 37.073955,
+  });
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
@@ -219,13 +222,12 @@ export default function EventForm() {
         )}
 
         {formStep == 3 || formStep == stepCount ? (
-          <AddressAutofill accessToken={mapboxAccessToken}>
-            <StyledFieldset>
-              <legend>Event Location</legend>
-
-              <label htmlFor="address" id="addressLabel">
-                Address*
-              </label>
+          <StyledFieldset>
+            <legend>Event Location</legend>
+            <label htmlFor="address" id="addressLabel">
+              Address*
+            </label>{" "}
+            <AddressAutofill accessToken={mapboxAccessToken}>
               <input
                 id="address"
                 aria-labelledby="addressLabel"
@@ -235,62 +237,57 @@ export default function EventForm() {
                 onChange={(event) => setAddress(event.target.value)}
                 required
               />
-
-              <label htmlFor="city" id="cityLabel">
-                City*
-              </label>
-              <input
-                id="city"
-                name="city"
-                aria-labelledby="cityLabel"
-                placeholder="Where is your event happening?"
-                autoComplete="address-level2"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-                required
-              />
-
-              <label htmlFor="postalCode" id="postalCodeLabel">
-                PLZ*
-              </label>
-              <input
-                id="postalCode"
-                name="postalCode"
-                aria-labelledby="postalCodeLabel"
-                autoComplete="postal-code"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-                required
-              />
-
-              <label htmlFor="country" id="countryLabel">
-                Country*
-              </label>
-              <input
-                id="country"
-                name="country"
-                aria-labelledby="countryLabel"
-                autoComplete="country-name"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
-                required
-              />
-
-              <label htmlFor="organizer" id="organizerLabel">
-                Organizer
-              </label>
-              <input
-                id="organizer"
-                name="organizer"
-                aria-labelledby="organizerLabel"
-                placeholder="Pick your name or that of your organisation"
-                onChange={(event) => setOrganizer(event.target.value)}
-                value={organizer}
-              />
-
-              <Map posLng={coordinates.lng} posLat={coordinates.lat} />
-            </StyledFieldset>
-          </AddressAutofill>
+            </AddressAutofill>
+            <label htmlFor="city" id="cityLabel">
+              City*
+            </label>
+            <input
+              id="city"
+              name="city"
+              aria-labelledby="cityLabel"
+              placeholder="Where is your event happening?"
+              autoComplete="address-level2"
+              value={city}
+              onChange={(event) => setCity(event.target.value)}
+              required
+            />
+            <label htmlFor="postalCode" id="postalCodeLabel">
+              PLZ*
+            </label>
+            <input
+              id="postalCode"
+              name="postalCode"
+              aria-labelledby="postalCodeLabel"
+              autoComplete="postal-code"
+              value={postalCode}
+              onChange={(event) => setPostalCode(event.target.value)}
+              required
+            />
+            <label htmlFor="country" id="countryLabel">
+              Country*
+            </label>
+            <input
+              id="country"
+              name="country"
+              aria-labelledby="countryLabel"
+              autoComplete="country-name"
+              value={country}
+              onChange={(event) => setCountry(event.target.value)}
+              required
+            />
+            <label htmlFor="organizer" id="organizerLabel">
+              Organizer
+            </label>
+            <input
+              id="organizer"
+              name="organizer"
+              aria-labelledby="organizerLabel"
+              placeholder="Pick your name or that of your organisation"
+              onChange={(event) => setOrganizer(event.target.value)}
+              value={organizer}
+            />
+            <Map posLng={coordinates.lng} posLat={coordinates.lat} />
+          </StyledFieldset>
         ) : (
           ""
         )}
