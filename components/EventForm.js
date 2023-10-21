@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import ProgressBar from "./EventForm_ProgressBar";
 import dynamic from "next/dynamic";
 import getCoordinates from "@/lib/getCoordinates";
+import Minimap from "./Minimap";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -28,16 +29,6 @@ const StyledFieldset = styled.fieldset`
   flex-direction: column;
   padding: 1rem;
   display: flex;
-  /* ${(props) => {
-    switch (props.$visibility) {
-      case "visible":
-        return "flex";
-      case "hidden":
-        return "none";
-      default:
-        return "flex";
-    }
-  }}; */
 `;
 
 const ButtonContainer = styled.div`
@@ -66,11 +57,33 @@ export default function EventForm() {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [organizer, setOrganizer] = useState("");
+
+  const [mapFeature, setMapFeature] = useState();
+
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
 
   const today = new Date().toISOString().slice(0, -8);
   const router = useRouter();
+
+  const handleRetrievedAutofill = (response) => {
+    const feature = response.features[0];
+    const object = {
+      lng: feature.geometry.coordinates[0],
+      lat: feature.geometry.coordinates[1],
+    };
+    setCoordinates(object);
+    setMapFeature(feature);
+    console.log(feature);
+  };
+
+  function handleUpdatedMarkerToCoordinates(markerCoordinates) {
+    const object = {
+      lng: markerCoordinates[0],
+      lat: markerCoordinates[1],
+    };
+    setCoordinates(object);
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -93,14 +106,14 @@ export default function EventForm() {
     router.push("/");
   }
 
-  useEffect(() => {
-    if (address.length < 5) return;
-    async function handleCoordinates() {
-      const coordinates = await getCoordinates(address);
-      setCoordinates(coordinates);
-    }
-    handleCoordinates();
-  }, [address]);
+  // useEffect(() => {
+  //   if (address.length < 5) return;
+  //   async function handleCoordinates() {
+  //     const coordinates = await getCoordinates(address);
+  //     setCoordinates(coordinates);
+  //   }
+  //   handleCoordinates();
+  // }, [address]);
   return (
     <>
       <ProgressBar currentStep={formStep} />
@@ -227,7 +240,10 @@ export default function EventForm() {
             <label htmlFor="address" id="addressLabel">
               Address*
             </label>{" "}
-            <AddressAutofill accessToken={mapboxAccessToken}>
+            <AddressAutofill
+              accessToken={mapboxAccessToken}
+              onRetrieve={handleRetrievedAutofill}
+            >
               <input
                 id="address"
                 aria-labelledby="addressLabel"
@@ -286,7 +302,13 @@ export default function EventForm() {
               onChange={(event) => setOrganizer(event.target.value)}
               value={organizer}
             />
-            <Map posLng={coordinates.lng} posLat={coordinates.lat} />
+            <Minimap
+              accessToken={mapboxAccessToken}
+              show={true}
+              feature={mapFeature}
+              handleUpdateCoords={handleUpdatedMarkerToCoordinates}
+            />
+            {/* <Map posLng={coordinates.lng} posLat={coordinates.lat} /> */}
           </StyledFieldset>
         ) : (
           ""
