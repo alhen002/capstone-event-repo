@@ -91,7 +91,7 @@ export default function EventForm() {
       title,
       city,
       address,
-      coordinates: { lng: coordinates[0], lat: coordinates[1] },
+      coordinates,
       postalCode,
       country,
       category,
