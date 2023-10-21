@@ -74,7 +74,6 @@ export default function EventForm() {
     };
     setCoordinates(object);
     setMapFeature(feature);
-    console.log(feature);
   };
 
   function handleUpdatedMarkerToCoordinates(markerCoordinates) {
@@ -313,6 +312,7 @@ export default function EventForm() {
         ) : (
           ""
         )}
+
         <ButtonContainer>
           <small> *required fields</small>
           {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}

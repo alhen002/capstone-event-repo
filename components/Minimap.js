@@ -26,6 +26,7 @@ export default function Minimap({
         satelliteToggle={true}
         canAdjustMarker={true}
         keepMarkerCentered={true}
+        footer={false}
         onSaveMarkerLocation={(coord) => {
           handleUpdateCoords(coord);
         }}
