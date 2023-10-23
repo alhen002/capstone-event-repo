@@ -8,8 +8,14 @@ import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
-// ui styles
+import dynamic from "next/dynamic";
+const AddressAutofill = dynamic(
+  () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
+  { ssr: false }
+);
+const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
+// ui styles
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -62,6 +68,12 @@ const StyledInput = styled.input`
   border-radius: 5px;
 `;
 
+const StyledSelect = styled.select`
+  font-size: 1rem;
+  border: 1px solid #000000;
+  border-radius: 5px;
+`;
+
 const StyledTextarea = styled.textarea`
   font-size: 1rem;
   border: 1px solid #000000;
@@ -72,15 +84,43 @@ export default function EventDetail({ event = {} }) {
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
-  const { day, month, year, dateString, time } = getDate(event.startDateTime);
+  const {
+    day: startDay,
+    month: startMonth,
+    year: startYear,
+    dateString: startDateString,
+    time: startTime,
+  } = getDate(event.startDateTime);
+  const {
+    day: endDay,
+    month: endMonth,
+    year: endYear,
+    dateString: endDateString,
+    time: endTime,
+  } = getDate(event.endDateTime);
   // toggle for Edit Mode
   const [isEditMode, setIsEditMode] = useState(false);
+  const [coordinates, setCoordinates] = useState(event.coordinates);
+
   // handle functions
   async function handleSubmit(jsEvent) {
     jsEvent.preventDefault();
     const formData = new FormData(jsEvent.target);
     const data = Object.fromEntries(formData);
-    await updateEvent(event._id, data);
+    const newEvent = {
+      title: data.title,
+      city: data.city,
+      address: data["address address-search"],
+      coordinates: coordinates,
+      postalCode: data.postalCode,
+      country: data.country,
+      category: data.category,
+      description: data.description,
+      startDateTime: data.startDateTime,
+      endDateTime: data.endDateTime,
+      organizer: data.organizer,
+    };
+    await updateEvent(event._id, newEvent);
     setIsEditMode(false);
     mutate();
   }
@@ -92,6 +132,15 @@ export default function EventDetail({ event = {} }) {
     await deleteEvent(event._id);
     router.push("/");
   }
+
+  const handleRetrievedAutofill = (response) => {
+    const feature = response.features[0];
+    const object = {
+      lng: feature.geometry.coordinates[0],
+      lat: feature.geometry.coordinates[1],
+    };
+    setCoordinates(object);
+  };
 
   return (
     <>
@@ -106,10 +155,15 @@ export default function EventDetail({ event = {} }) {
           <StyledEventInfoContainer>
             <StyledTitle>{event.title}</StyledTitle>
             <StyledEventInfo $right>{event.category}</StyledEventInfo>
+            <StyledEventInfo>{event.address}</StyledEventInfo>
+            <StyledEventInfo
+              $right
+            >{`Start: ${startDay}. ${startMonth} ${startYear}, ${startTime}`}</StyledEventInfo>
             <StyledEventInfo>{event.city}</StyledEventInfo>
             <StyledEventInfo
               $right
-            >{`${day}. ${month} ${year}, ${time}`}</StyledEventInfo>
+            >{`End: ${endDay}. ${endMonth} ${endYear}, ${endTime}`}</StyledEventInfo>
+
             <StyledEventInfo>{event.organizer}</StyledEventInfo>
             <StyledDescription>{event.description}</StyledDescription>
           </StyledEventInfoContainer>
@@ -121,23 +175,75 @@ export default function EventDetail({ event = {} }) {
             </StyledLabel>
             <StyledLabel htmlFor="category">
               category
-              <StyledInput
+              <StyledSelect
                 id="category"
                 defaultValue={event.category}
                 name="category"
-              />
+              >
+                <option value=""> --Please pick a category-- </option>
+                <option value="Nightlife & Clubs">Nightlife & Clubs</option>
+                <option value="Culture & Arts">Culture & Arts</option>
+                <option value="Activities & Games">Activities & Games</option>
+                <option value="Live Shows"> Live Shows</option>
+                <option value="Community Meet-up">Community Meet-up</option>
+              </StyledSelect>
+            </StyledLabel>
+            <StyledLabel htmlFor="address">
+              Address
+              <AddressAutofill
+                accessToken={mapboxAccessToken}
+                onRetrieve={handleRetrievedAutofill}
+              >
+                <StyledInput
+                  id="address"
+                  defaultValue={event.address}
+                  name="address"
+                />
+              </AddressAutofill>
             </StyledLabel>
             <StyledLabel htmlFor="city">
               city
-              <StyledInput id="city" defaultValue={event.city} name="city" />
+              <StyledInput
+                id="city"
+                defaultValue={event.city}
+                name="city"
+                autoComplete="address-level2"
+              />
+            </StyledLabel>
+            <StyledLabel htmlFor="postalCode">
+              PLZ
+              <StyledInput
+                id="postalCode"
+                name="postalCode"
+                defaultValue={event.postalCode}
+                autoComplete="postal-code"
+              />
+            </StyledLabel>
+            <StyledLabel htmlFor="country">
+              city
+              <StyledInput
+                id="country"
+                defaultValue={event.country}
+                name="country"
+                autoComplete="country-name"
+              />
             </StyledLabel>
             <StyledLabel htmlFor="date">
-              date
+              start
               <StyledInput
                 id="date"
                 type="datetime-local"
-                defaultValue={dateString}
+                defaultValue={startDateString}
                 name="startDateTime"
+              />
+            </StyledLabel>
+            <StyledLabel htmlFor="date">
+              end
+              <StyledInput
+                id="date"
+                type="datetime-local"
+                defaultValue={endDateString}
+                name="endDateTime"
               />
             </StyledLabel>
             <StyledLabel htmlFor="organizer">

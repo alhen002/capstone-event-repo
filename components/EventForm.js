@@ -2,17 +2,15 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState, useEffect } from "react";
-import ProgressBar from "./EventForm_ProgressBar";
+import { useState } from "react";
+import ProgressBar from "./EventFormProgressBar";
 import dynamic from "next/dynamic";
-import getCoordinates from "@/lib/getCoordinates";
-import Minimap from "./Minimap";
-
+import Map from "./Map";
+import useSWR from "swr";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
 );
-import Map from "./Map";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 const StyledForm = styled.form`
@@ -40,6 +38,7 @@ const ButtonContainer = styled.div`
 
 export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
+  const { mutate } = useSWR("/api/Events");
   const stepCount = 4;
 
   const [title, setTitle] = useState("");
@@ -58,8 +57,6 @@ export default function EventForm() {
   const [country, setCountry] = useState("");
   const [organizer, setOrganizer] = useState("");
 
-  const [mapFeature, setMapFeature] = useState();
-
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
 
@@ -73,16 +70,7 @@ export default function EventForm() {
       lat: feature.geometry.coordinates[1],
     };
     setCoordinates(object);
-    setMapFeature(feature);
   };
-
-  function handleUpdatedMarkerToCoordinates(markerCoordinates) {
-    const object = {
-      lng: markerCoordinates[0],
-      lat: markerCoordinates[1],
-    };
-    setCoordinates(object);
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -102,17 +90,10 @@ export default function EventForm() {
     };
     createNewEvent(events);
     event.target.reset();
+    mutate();
     router.push("/");
   }
 
-  // useEffect(() => {
-  //   if (address.length < 5) return;
-  //   async function handleCoordinates() {
-  //     const coordinates = await getCoordinates(address);
-  //     setCoordinates(coordinates);
-  //   }
-  //   handleCoordinates();
-  // }, [address]);
   return (
     <>
       <ProgressBar currentStep={formStep} />
@@ -122,6 +103,7 @@ export default function EventForm() {
         {formStep == 0 || formStep == stepCount ? (
           <StyledFieldset>
             <legend>Event Basics</legend>
+
             <label htmlFor="title" id="titleLabel">
               Title*
             </label>
@@ -301,13 +283,7 @@ export default function EventForm() {
               onChange={(event) => setOrganizer(event.target.value)}
               value={organizer}
             />
-            <Minimap
-              accessToken={mapboxAccessToken}
-              show={true}
-              feature={mapFeature}
-              handleUpdateCoords={handleUpdatedMarkerToCoordinates}
-            />
-            {/* <Map posLng={coordinates.lng} posLat={coordinates.lat} /> */}
+            <Map posLng={coordinates.lng} posLat={coordinates.lat} />
           </StyledFieldset>
         ) : (
           ""
