@@ -2,18 +2,17 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
 import Button from "components/Button.js";
-import { useState, useCallback } from "react";
-import ProgressBar from "./EventForm_ProgressBar";
+import { useState } from "react";
+import ProgressBar from "./EventFormProgressBar";
 import dynamic from "next/dynamic";
-
+import Map from "./Map";
+import useSWR from "swr";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
 );
-import Map from "./Map";
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
 const StyledForm = styled.form`
   padding-top: 3rem;
   margin-inline: auto;
@@ -22,23 +21,12 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
 `;
-
 const StyledFieldset = styled.fieldset`
   border: none;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   display: flex;
-  /* ${(props) => {
-    switch (props.$visibility) {
-      case "visible":
-        return "flex";
-      case "hidden":
-        return "none";
-      default:
-        return "flex";
-    }
-  }}; */
 `;
 
 const ButtonContainer = styled.div`
@@ -50,6 +38,7 @@ const ButtonContainer = styled.div`
 
 export default function EventForm() {
   const [formStep, setFormStep] = useState(0);
+  const { mutate } = useSWR("/api/Events");
   const stepCount = 4;
 
   const [title, setTitle] = useState("");
@@ -59,7 +48,10 @@ export default function EventForm() {
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    lng: 15.27875,
+    lat: 37.073955,
+  });
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
@@ -71,13 +63,22 @@ export default function EventForm() {
   const today = new Date().toISOString().slice(0, -8);
   const router = useRouter();
 
+  const handleRetrievedAutofill = (response) => {
+    const feature = response.features[0];
+    const object = {
+      lng: feature.geometry.coordinates[0],
+      lat: feature.geometry.coordinates[1],
+    };
+    setCoordinates(object);
+  };
+
   function handleSubmit(event) {
     event.preventDefault();
     const events = {
       title,
       city,
       address,
-      coordinates: { lng: coordinates[0], lat: coordinates[1] },
+      coordinates,
       postalCode,
       country,
       category,
@@ -89,15 +90,9 @@ export default function EventForm() {
     };
     createNewEvent(events);
     event.target.reset();
+    mutate();
     router.push("/");
   }
-  // need to be memorized, otherwise multiple re-renderings happen, which will lead to buggy markers
-  const handleSetCoordinates = useCallback(function handleSetCoordinates(
-    coords
-  ) {
-    setCoordinates([coords.lng, coords.lat]);
-  },
-  []);
 
   return (
     <>
@@ -108,6 +103,7 @@ export default function EventForm() {
         {formStep == 0 || formStep == stepCount ? (
           <StyledFieldset>
             <legend>Event Basics</legend>
+
             <label htmlFor="title" id="titleLabel">
               Title*
             </label>
@@ -220,13 +216,15 @@ export default function EventForm() {
         )}
 
         {formStep == 3 || formStep == stepCount ? (
-          <AddressAutofill accessToken={mapboxAccessToken}>
-            <StyledFieldset>
-              <legend>Event Location</legend>
-
-              <label htmlFor="address" id="addressLabel">
-                Address*
-              </label>
+          <StyledFieldset>
+            <legend>Event Location</legend>
+            <label htmlFor="address" id="addressLabel">
+              Address*
+            </label>{" "}
+            <AddressAutofill
+              accessToken={mapboxAccessToken}
+              onRetrieve={handleRetrievedAutofill}
+            >
               <input
                 id="address"
                 aria-labelledby="addressLabel"
@@ -236,68 +234,61 @@ export default function EventForm() {
                 onChange={(event) => setAddress(event.target.value)}
                 required
               />
-
-              <label htmlFor="city" id="cityLabel">
-                City*
-              </label>
-              <input
-                id="city"
-                name="city"
-                aria-labelledby="cityLabel"
-                placeholder="Where is your event happening?"
-                autoComplete="address-level2"
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
-                required
-              />
-
-              <label htmlFor="postalCode" id="postalCodeLabel">
-                PLZ*
-              </label>
-              <input
-                id="postalCode"
-                name="postalCode"
-                aria-labelledby="postalCodeLabel"
-                autoComplete="postal-code"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-                required
-              />
-
-              <label htmlFor="country" id="countryLabel">
-                Country*
-              </label>
-              <input
-                id="country"
-                name="country"
-                aria-labelledby="countryLabel"
-                autoComplete="country-name"
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
-                required
-              />
-
-              <label htmlFor="organizer" id="organizerLabel">
-                Organizer
-              </label>
-              <input
-                id="organizer"
-                name="organizer"
-                aria-labelledby="organizerLabel"
-                placeholder="Pick your name or that of your organisation"
-                onChange={(event) => setOrganizer(event.target.value)}
-                value={organizer}
-              />
-
-              <Map
-                eventAddress={address}
-                handleSetCoordinates={handleSetCoordinates}
-              />
-            </StyledFieldset>
-          </AddressAutofill>
+            </AddressAutofill>
+            <label htmlFor="city" id="cityLabel">
+              City*
+            </label>
+            <input
+              id="city"
+              name="city"
+              aria-labelledby="cityLabel"
+              placeholder="Where is your event happening?"
+              autoComplete="address-level2"
+              value={city}
+              onChange={(event) => setCity(event.target.value)}
+              required
+            />
+            <label htmlFor="postalCode" id="postalCodeLabel">
+              PLZ*
+            </label>
+            <input
+              id="postalCode"
+              name="postalCode"
+              aria-labelledby="postalCodeLabel"
+              autoComplete="postal-code"
+              value={postalCode}
+              onChange={(event) => setPostalCode(event.target.value)}
+              required
+            />
+            <label htmlFor="country" id="countryLabel">
+              Country*
+            </label>
+            <input
+              id="country"
+              name="country"
+              aria-labelledby="countryLabel"
+              autoComplete="country-name"
+              value={country}
+              onChange={(event) => setCountry(event.target.value)}
+              required
+            />
+            <label htmlFor="organizer" id="organizerLabel">
+              Organizer
+            </label>
+            <input
+              id="organizer"
+              name="organizer"
+              aria-labelledby="organizerLabel"
+              placeholder="Pick your name or that of your organisation"
+              onChange={(event) => setOrganizer(event.target.value)}
+              value={organizer}
+            />
+            <Map posLng={coordinates.lng} posLat={coordinates.lat} />
+          </StyledFieldset>
         ) : (
           ""
         )}
+
         <ButtonContainer>
           <small> *required fields</small>
           {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}
