@@ -1,6 +1,5 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "!mapbox-gl";
-import getCoordinates from "@/lib/getCoordinates";
 import { useRef, useState, useEffect } from "react";
 import { set } from "mongoose";
 
