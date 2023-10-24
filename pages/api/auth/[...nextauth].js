@@ -4,7 +4,11 @@ import clientPromise from "@/db/mongoDB";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 
 export const authOptions = {
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise, {
+    collections: {
+      Sessions: "sessions",
+    },
+  }),
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GithubProvider({
@@ -16,11 +20,13 @@ export const authOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    session: ({ session, token }) => ({ ...session, id: token.sub }),
+    session({ session, token, user }) {
+      return { ...session, id: token.sub };
+    },
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl;
+    // },
   },
 };
 
 export default NextAuth(authOptions);
-
-// ist hier noch laut youtube tutotial drin:
-// export {handler as GET, handler as POST};
