@@ -10,14 +10,16 @@
     "test": "jest --watchAll"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^2.0.3",
     "@mapbox/search-js-react": "^1.0.0-beta.18",
     "@mapbox/search-js-web": "^1.0.0-beta.18",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.8",
     "mapbox-gl": "^2.15.0",
-    "mongodb": "^6.1.0",
+    "mongodb": "^6.2.0",
     "mongoose": "^7.6.1",
     "next": "13.4.8",
+    "next-auth": "^4.24.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^6.0.2",
