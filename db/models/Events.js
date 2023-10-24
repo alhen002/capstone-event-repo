@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import User from "./Users";
 const { Schema } = mongoose;
 
 const eventSchema = new Schema(
@@ -15,7 +15,10 @@ const eventSchema = new Schema(
     imageUrl: { type: String },
     startDateTime: { type: Date },
     endDateTime: { type: Date },
-    organizer: { type: String },
+    organizer: {
+      type: Schema.Types.ObjectId,
+      ref: User,
+    },
   },
   {
     timestamps: {

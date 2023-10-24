@@ -17,7 +17,7 @@ export default function Login() {
       Not signed in <br />
       <Button
         onClick={() => {
-          signIn("github");
+          signIn("github", { callbackUrl: "/" });
         }}
       >
         Sign in

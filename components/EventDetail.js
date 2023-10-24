@@ -164,7 +164,7 @@ export default function EventDetail({ event = {} }) {
               $right
             >{`End: ${endDay}. ${endMonth} ${endYear}, ${endTime}`}</StyledEventInfo>
 
-            <StyledEventInfo>{event.organizer}</StyledEventInfo>
+            <StyledEventInfo>{event.organizer.name}</StyledEventInfo>
             <StyledDescription>{event.description}</StyledDescription>
           </StyledEventInfoContainer>
         ) : (
@@ -244,14 +244,6 @@ export default function EventDetail({ event = {} }) {
                 type="datetime-local"
                 defaultValue={endDateString}
                 name="endDateTime"
-              />
-            </StyledLabel>
-            <StyledLabel htmlFor="organizer">
-              organizer
-              <StyledInput
-                id="organizer"
-                defaultValue={event.organizer}
-                name="organizer"
               />
             </StyledLabel>
             <StyledLabel $full htmlFor="description">
