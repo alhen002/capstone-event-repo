@@ -4,24 +4,27 @@ import { useRouter } from "next/router";
 export default function Login() {
   const { data: session } = useSession();
   const router = useRouter();
-  if (session) {
-    return (
-      <>
-        Signed in as {session.user.name} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    );
-  }
+
   return (
     <>
-      Not signed in <br />
-      <Button
-        onClick={() => {
-          signIn("github");
-        }}
-      >
-        Sign in
-      </Button>
+      {session ? (
+        <>
+          <p>Signed in as {session.user.name} </p> <br />
+          <button onClick={() => signOut()}>Sign out</button>
+        </>
+      ) : (
+        <>
+          <p>Not signed in </p>
+          <br />
+          <Button
+            onClick={() => {
+              signIn("github");
+            }}
+          >
+            Sign in
+          </Button>
+        </>
+      )}
     </>
   );
 }
