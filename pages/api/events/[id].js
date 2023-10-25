@@ -57,7 +57,9 @@ export default async function handler(request, response) {
           return response.status(403).json({ message: "Permission denied" });
         } else {
           const deleteEvent = await Event.findByIdAndDelete(id);
-          return response.status(204).send();
+          return response
+            .status(200)
+            .json({ message: "Event successfully deleted." });
         }
       } catch (error) {
         return response.status(500).json({ message: error.message });
@@ -67,21 +69,3 @@ export default async function handler(request, response) {
       return response.status(405).json({ message: "Method not allowed" });
   }
 }
-
-// try {
-//  const event = await Event.deleteOne({event._id: {id} && organizer: {session.id}})
-//}
-
-// case "DELETE":
-//       try {
-//         const eventResponse = await Event.findByIdAndDelete(id);
-//         if (!eventResponse) {
-//           response.status(404).json({ message: "No event found" });
-//           return;
-//         }
-//         return response
-//           .status(200)
-//           .json({ message: "Event successfully deleted." });
-//       } catch (error) {
-//         return response.status(500).json({ message: error.message });
-//       }
