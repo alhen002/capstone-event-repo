@@ -38,17 +38,15 @@ export default function Header() {
   }
 
   return (
-    <div ref={ref}>
-      <StyledHeader>
-        <LogoWrapper>
-          <Link href="/">Event Collective</Link>
-        </LogoWrapper>
+    <StyledHeader>
+      <LogoWrapper>
+        <Link href="/">Event Collective</Link>
+      </LogoWrapper>
 
-        <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
-        {menuOpen && (
-          <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
-        )}
-      </StyledHeader>
-    </div>
+      <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
+      {menuOpen && (
+        <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
+      )}
+    </StyledHeader>
   );
 }
