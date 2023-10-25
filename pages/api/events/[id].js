@@ -8,8 +8,6 @@ export default async function handler(request, response) {
   await dbConnect();
   const { id } = request.query;
 
-
-
   switch (request.method) {
     case "GET":
       try {
@@ -37,29 +35,42 @@ export default async function handler(request, response) {
       }
 
     case "DELETE":
-try {
-      const event = await Event.findById(id).populate ("organizer");
-if(!event) {
-  return response(404).json({message: "Event not found"});
-}
+      try {
+        const session = await getServerSession(request, response, authOptions);
+        if (!session) {
+          return response
+            .status(401)
+            .json({ message: "You must be logged in to access this route." });
+        }
 
-const user = await User.findById(session.id);
-if(!user) {
-  return response.status(404).json({message: "User not found"});
-}
+        const event = await Event.findById(id).populate("organizer");
+        if (!event) {
+          return response(404).json({ message: "Event not found" });
+        }
 
-if (event.userId.toString() !== session.id) {
-  return response.status(403).json({message: "Permission denied"});}
+        const user = await User.findById(session.id);
+        if (!user) {
+          return response.status(404).json({ message: "User not found" });
+        }
 
-else {const deleteEvent = await Event.findByIdAndDelete(id);
-    return response.status(204).send();}
- 
-} catch (error) {return response.status(500).json({ message: error.message });}
-  
-default:
-    return response.status(405).json({message: "Method not allowed"});
+        if (event.organizer.id !== session.id) {
+          return response.status(403).json({ message: "Permission denied" });
+        } else {
+          const deleteEvent = await Event.findByIdAndDelete(id);
+          return response.status(204).send();
+        }
+      } catch (error) {
+        return response.status(500).json({ message: error.message });
+      }
 
+    default:
+      return response.status(405).json({ message: "Method not allowed" });
   }
+}
+
+// try {
+//  const event = await Event.deleteOne({event._id: {id} && organizer: {session.id}})
+//}
 
 // case "DELETE":
 //       try {

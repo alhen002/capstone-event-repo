@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -81,6 +82,8 @@ const StyledTextarea = styled.textarea`
 `;
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
 export default function EventDetail({ event = {} }) {
+  const { data: session } = useSession();
+  const isOwner = session?.id === event.organizer._id;
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
   // destructuring a formatted date of the event object
@@ -270,9 +273,11 @@ export default function EventDetail({ event = {} }) {
         >
           {isEditMode ? "Cancel" : "Edit"}
         </Button>
-        <Button color={"rose"} onClick={handleDelete}>
-          Delete
-        </Button>
+        {isOwner && (
+          <Button color={"rose"} onClick={handleDelete}>
+            Delete
+          </Button>
+        )}
       </StyledContainer>
     </>
   );
