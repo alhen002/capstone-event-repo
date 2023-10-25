@@ -1,4 +1,3 @@
-// hier drin müssen alle posts des nutzers zurückgegeben werden
 import dbConnect from "@/db/dbConnect";
 import Event from "@/db/models/Events";
 import { getServerSession } from "next-auth";

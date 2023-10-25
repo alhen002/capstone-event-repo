@@ -1,4 +1,3 @@
-// hier werden alle informationen des nutzers zurückgegeben
 import dbConnect from "@/db/dbConnect";
 import { authOptions } from "../../auth/[...nextauth]";
 import { getServerSession } from "next-auth";
