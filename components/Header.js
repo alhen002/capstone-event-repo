@@ -126,7 +126,7 @@ export default function Header() {
           </StyledLink>
 
           {!session?.user ? (
-            <Button onClick={() => signIn()}>Login</Button>
+            <Button onClick={() => signIn("github")}>Login</Button>
           ) : (
             <Button onClick={() => signOut()}>Logout</Button>
           )}
