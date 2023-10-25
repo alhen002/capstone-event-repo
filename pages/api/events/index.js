@@ -28,7 +28,6 @@ export default async function handler(request, response) {
       }
     case "POST":
       const session = await getServerSession(request, response, authOptions);
-      console.log(session);
       if (!session) {
         return response
           .status(401)

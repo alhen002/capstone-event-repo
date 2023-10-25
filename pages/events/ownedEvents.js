@@ -13,7 +13,7 @@ export default function MyEvents() {
 
   return (
     <>
-      <h1>My Events</h1>
+      <h2>My Events</h2>
       <Button onClick={() => router.back()}>Back</Button>
       {!events.length ? "No events yet" : <EventList events={events} />}
     </>
