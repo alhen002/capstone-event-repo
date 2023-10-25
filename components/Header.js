@@ -3,6 +3,9 @@ import Menu from "./Menu";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession, signOut, signIn } from "next-auth/react";
+import Button from "./Button";
+import Image from "next/image";
 
 const StyledHeader = styled.header`
   background: var(--mid-grey);
@@ -19,6 +22,8 @@ const StyledHeader = styled.header`
 const StyledNavigation = styled.nav`
   padding: 1rem;
   position: fixed;
+  display: flex;
+  flex-direction: column;
   background: #ffffff70;
   justify-content: center;
   display: flex;
@@ -48,7 +53,13 @@ const LogoWrapper = styled.div`
   grid-column: 2;
 `;
 
+const StyledText = styled.p`
+  color: var(--black);
+  font-weight: bold;
+`;
+
 export default function Header() {
+  const { data: session } = useSession();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const ref = useRef();
@@ -86,15 +97,33 @@ export default function Header() {
       </StyledHeader>
       {menuOpen && (
         <StyledNavigation>
+          {session?.user && (
+            <>
+              <Image
+                alt={session.user.name}
+                src={session.user.image}
+                height={60}
+                width={60}
+              />
+              <StyledText>Hi, {session.user.name} </StyledText>
+            </>
+          )}
+
           <StyledLink href="/" $active={router.pathname === "/"}>
-            <div onClick={handleMenuClose}>home</div>
+            <div onClick={handleMenuClose}>Home</div>
           </StyledLink>
           <StyledLink
             href="/events/create"
             $active={router.pathname === "/events/create"}
           >
-            <div onClick={handleMenuClose}>create</div>
+            <div onClick={handleMenuClose}>Create</div>
           </StyledLink>
+
+          {!session?.user ? (
+            <Button onClick={() => signIn()}>Login</Button>
+          ) : (
+            <Button onClick={() => signOut()}>Logout</Button>
+          )}
         </StyledNavigation>
       )}
     </div>

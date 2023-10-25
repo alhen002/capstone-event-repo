@@ -14,7 +14,11 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["unsplash.com", "images.unsplash.com"],
+    domains: [
+      "unsplash.com",
+      "images.unsplash.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 };
 
