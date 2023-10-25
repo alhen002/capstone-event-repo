@@ -29,9 +29,6 @@ export const authOptions = {
     session({ session, token, user }) {
       return { ...session, id: token.sub };
     },
-    // async redirect({ url, baseUrl }) {
-    //   return baseUrl;
-    // },
   },
 };
 
