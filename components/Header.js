@@ -97,12 +97,7 @@ export default function Header() {
       </StyledHeader>
       {menuOpen && (
         <StyledNavigation>
-          {!session?.user ? (
-            // <StyledLink href="/login" $active={router.pathname === "/login"}>
-            //   <div onClick={handleMenuClose}>Login</div>
-            // </StyledLink>
-            <p></p>
-          ) : (
+          {session?.user && (
             <>
               <Image
                 alt={session.user.name}
@@ -111,6 +106,12 @@ export default function Header() {
                 width={60}
               />
               <StyledText>Hi, {session.user.name} </StyledText>
+              <StyledLink
+                href="/events/ownedEvents"
+                $active={router.pathname === "/events/ownedEvents"}
+              >
+                <div onClick={handleMenuClose}>owned Events</div>
+              </StyledLink>
             </>
           )}
 
@@ -125,9 +126,6 @@ export default function Header() {
           </StyledLink>
 
           {!session?.user ? (
-            // <StyledLink href="/login" $active={router.pathname === "/login"}>
-            //   <div onClick={handleMenuClose}>Login</div>
-            // </StyledLink>
             <Button onClick={() => signIn()}>Login</Button>
           ) : (
             <Button onClick={() => signOut()}>Logout</Button>
