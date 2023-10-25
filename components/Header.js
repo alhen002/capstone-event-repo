@@ -22,7 +22,7 @@ const StyledHeader = styled.header`
 const StyledNavigation = styled.nav`
   padding: 1rem;
   position: fixed;
-  display flex;
+  display: flex;
   flex-direction: column;
   background: #ffffff70;
   justify-content: center;
