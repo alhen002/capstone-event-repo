@@ -106,6 +106,12 @@ export default function Header() {
                 width={60}
               />
               <StyledText>Hi, {session.user.name} </StyledText>
+              <StyledLink
+                href="/events/ownedEvents"
+                $active={router.pathname === "/events/ownedEvents"}
+              >
+                <div onClick={handleMenuClose}>owned Events</div>
+              </StyledLink>
             </>
           )}
 
@@ -120,7 +126,7 @@ export default function Header() {
           </StyledLink>
 
           {!session?.user ? (
-            <Button onClick={() => signIn()}>Login</Button>
+            <Button onClick={() => signIn("github")}>Login</Button>
           ) : (
             <Button onClick={() => signOut()}>Logout</Button>
           )}

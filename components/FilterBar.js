@@ -15,8 +15,8 @@ export default function FilterBar({ onChange, filters, reset }) {
     setIsFilterVisible(!isFilterVisible);
   };
 
-  const { data: cities } = useSWR("/api/cities");
-  const { data: categories } = useSWR("/api/categories");
+  const { data: cities } = useSWR("/api/events/cities");
+  const { data: categories } = useSWR("/api/events/categories");
 
   return (
     <StyledContainer>

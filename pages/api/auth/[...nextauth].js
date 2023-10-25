@@ -12,14 +12,8 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GithubProvider({
-      clientId:
-        process.env.NODE_ENV === "DEV"
-          ? process.env.GITHUB_CLIENT_ID_DEV
-          : process.env.GITHUB_CLIENT_ID_PROD,
-      clientSecret:
-        process.env.NODE_ENV === "DEV"
-          ? process.env.GITHUB_CLIENT_SECRET_DEV
-          : process.env.GITHUB_CLIENT_SECRET_PROD,
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
   ],
   session: {
@@ -31,5 +25,4 @@ export const authOptions = {
     },
   },
 };
-
 export default NextAuth(authOptions);

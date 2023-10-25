@@ -55,7 +55,6 @@ export default function EventForm() {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
-  const [organizer, setOrganizer] = useState("");
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -86,7 +85,6 @@ export default function EventForm() {
       imageUrl,
       startDateTime,
       endDateTime,
-      organizer,
     };
     createNewEvent(events);
     event.target.reset();
@@ -271,17 +269,6 @@ export default function EventForm() {
               value={country}
               onChange={(event) => setCountry(event.target.value)}
               required
-            />
-            <label htmlFor="organizer" id="organizerLabel">
-              Organizer
-            </label>
-            <input
-              id="organizer"
-              name="organizer"
-              aria-labelledby="organizerLabel"
-              placeholder="Pick your name or that of your organisation"
-              onChange={(event) => setOrganizer(event.target.value)}
-              value={organizer}
             />
             <Map posLng={coordinates.lng} posLat={coordinates.lat} />
           </StyledFieldset>
