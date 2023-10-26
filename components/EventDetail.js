@@ -74,7 +74,6 @@ const StyledSelect = styled.select`
   border: 1px solid #000000;
   border-radius: 5px;
 `;
-
 const StyledTextarea = styled.textarea`
   font-size: 1rem;
   border: 1px solid #000000;
@@ -83,10 +82,12 @@ const StyledTextarea = styled.textarea`
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
 export default function EventDetail({ event = {} }) {
   const { data: session } = useSession();
-  const isOwner = session?.id === event.organizer._id;
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-  // destructuring a formatted date of the event object
+
+  // true oder false
+  const isOwner = session?.id === event.organizer._id;
+
   const {
     day: startDay,
     month: startMonth,
@@ -265,18 +266,20 @@ export default function EventDetail({ event = {} }) {
         )}
       </StyledContainer>
       <StyledContainer>
-        <Button
-          color={isEditMode ? "" : "green"}
-          onClick={() =>
-            setIsEditMode((currentIsEditMode) => !currentIsEditMode)
-          }
-        >
-          {isEditMode ? "Cancel" : "Edit"}
-        </Button>
         {isOwner && (
-          <Button color={"rose"} onClick={handleDelete}>
-            Delete
-          </Button>
+          <>
+            <Button
+              color={isEditMode ? "" : "green"}
+              onClick={() =>
+                setIsEditMode((currentIsEditMode) => !currentIsEditMode)
+              }
+            >
+              {isEditMode ? "Cancel" : "Edit"}
+            </Button>
+            <Button color={"rose"} onClick={handleDelete}>
+              Delete
+            </Button>
+          </>
         )}
       </StyledContainer>
     </>
