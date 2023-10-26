@@ -11,7 +11,7 @@ export default function MyEvents() {
   const { data: session, status } = useSession();
 
   if (status === "unauthenticated") {
-    return <p>Access Denied</p>;
+    router.push("/login");
   }
   if (isLoading) return <Loading />;
   if (error) return <Error>{error.message}</Error>;
