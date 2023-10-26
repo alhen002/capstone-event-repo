@@ -81,10 +81,9 @@ const StyledTextarea = styled.textarea`
 `;
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
 export default function EventDetail({ event = {} }) {
+  const { data: session } = useSession();
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-
-  const { data: session } = useSession();
 
   // true oder false
   const isOwner = session?.id === event.organizer._id;

@@ -1,7 +1,8 @@
 import dbConnect from "@/db/dbConnect.js";
 import Event from "@/db/models/Events";
-import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { getServerSession } from "next-auth";
+import User from "@/db/models/Users";
 
 export default async function handler(request, response) {
   await dbConnect();
@@ -45,21 +46,38 @@ export default async function handler(request, response) {
       } catch (error) {
         return response.status(500).json({ message: error.message });
       }
-    default:
-      return response.status(405).json({ message: "Method not allowed" });
 
     case "DELETE":
       try {
-        const eventResponse = await Event.findByIdAndDelete(id);
-        if (!eventResponse) {
-          response.status(404).json({ message: "No event found" });
-          return;
+        if (!session) {
+          return response
+            .status(401)
+            .json({ message: "You must be logged in to access this route." });
         }
-        return response
-          .status(200)
-          .json({ message: "Event successfully deleted." });
+
+        const event = await Event.findById(id).populate("organizer");
+        if (!event) {
+          return response(404).json({ message: "Event not found" });
+        }
+
+        const user = await User.findById(session.id);
+        if (!user) {
+          return response.status(404).json({ message: "User not found" });
+        }
+
+        if (event.organizer.id !== session.id) {
+          return response.status(403).json({ message: "Permission denied" });
+        } else {
+          const deleteEvent = await Event.findByIdAndDelete(id);
+          return response
+            .status(200)
+            .json({ message: "Event successfully deleted." });
+        }
       } catch (error) {
         return response.status(500).json({ message: error.message });
       }
+
+    default:
+      return response.status(405).json({ message: "Method not allowed" });
   }
 }

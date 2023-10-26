@@ -1,8 +1,6 @@
 import styled from "styled-components";
-
 import { useState } from "react";
 import Link from "next/link";
-
 import Navigation from "./Navigation";
 import MenuToggle from "./MenuToggle";
 
