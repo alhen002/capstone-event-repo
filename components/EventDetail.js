@@ -11,6 +11,7 @@ import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { toggleAttending } from "@/lib/api";
+import AttendingUsersPreview from "./AttendingUsers";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -179,6 +180,7 @@ export default function EventDetail({ event = {} }) {
 
             <StyledEventInfo>{event.organizer.name}</StyledEventInfo>
             <StyledDescription>{event.description}</StyledDescription>
+            <AttendingUsersPreview attendingUsers={event.attendingUsers} />
           </StyledEventInfoContainer>
         ) : (
           <StyledForm onSubmit={handleSubmit}>
