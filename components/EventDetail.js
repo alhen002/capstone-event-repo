@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -73,7 +74,6 @@ const StyledSelect = styled.select`
   border: 1px solid #000000;
   border-radius: 5px;
 `;
-
 const StyledTextarea = styled.textarea`
   font-size: 1rem;
   border: 1px solid #000000;
@@ -83,7 +83,12 @@ const confirmDeleteMessage = "Are you sure you want to delete the event?";
 export default function EventDetail({ event = {} }) {
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-  // destructuring a formatted date of the event object
+
+  const { data: session } = useSession();
+
+  // true oder false
+  const isOwner = session?.id === event.organizer._id;
+
   const {
     day: startDay,
     month: startMonth,
@@ -262,17 +267,21 @@ export default function EventDetail({ event = {} }) {
         )}
       </StyledContainer>
       <StyledContainer>
-        <Button
-          color={isEditMode ? "" : "green"}
-          onClick={() =>
-            setIsEditMode((currentIsEditMode) => !currentIsEditMode)
-          }
-        >
-          {isEditMode ? "Cancel" : "Edit"}
-        </Button>
-        <Button color={"rose"} onClick={handleDelete}>
-          Delete
-        </Button>
+        {isOwner && (
+          <>
+            <Button
+              color={isEditMode ? "" : "green"}
+              onClick={() =>
+                setIsEditMode((currentIsEditMode) => !currentIsEditMode)
+              }
+            >
+              {isEditMode ? "Cancel" : "Edit"}
+            </Button>
+            <Button color={"rose"} onClick={handleDelete}>
+              Delete
+            </Button>
+          </>
+        )}
       </StyledContainer>
     </>
   );
