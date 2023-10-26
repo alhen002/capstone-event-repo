@@ -17,29 +17,4 @@ export default function Page() {
   if (error) return <Error>{error.message}</Error>;
 
   return <EventForm />;
-
-  // {
-  //   return ({
-  //     router.push
-
-  //     redirect: {
-  //       destination: '/login', // Redirect to the login page
-  //       permanent: false,
-  //     },
-  //   };)
-
-  // <>
-  //   <p>Access Denied. Please Login to to create new events.</p>
-  //   <LinkButton href="/login"> Go to Login </LinkButton>
-  // </>
-  //);
 }
-
-// if (!session) {
-//   return {
-//     redirect: {
-//       destination: '/login', // Redirect to the login page
-//       permanent: false,
-//     },
-//   };
-// }
