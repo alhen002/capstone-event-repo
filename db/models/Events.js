@@ -19,6 +19,7 @@ const eventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: User,
     },
+    attendingUsers: [{ type: Schema.Types.ObjectId, ref: User }],
   },
   {
     timestamps: {

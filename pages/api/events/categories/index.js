@@ -15,8 +15,10 @@ export default async function handler(request, response) {
         if (city) {
           filter.city = new RegExp(city, "i");
         }
-        const events = await Event.find(filter);
+
+        const events = await Event.find(filter).populate("organizer").exec();
         const categories = groupByProperty(events, "category");
+        console.log(categories);
         return response.status(200).json(categories);
       } catch (error) {
         return response.status(400).json({ message: error.message });

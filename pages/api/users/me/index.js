@@ -20,8 +20,18 @@ export default async function handler(request, response) {
         return response.status(404).json({ message: "User not found" });
       }
       return response.status(200).json(user);
-
     default:
       return response.status(405).json({ message: "Method not allowed" });
   }
+
+  // if (request.method === "POST") {
+  //   const { eventId } = request.body;
+  //   const user = await User.findOne({ email: session.user.email });
+
+  //   // const user = await User.findById(userId).populate('attending');
+
+  //   user.bookmarkedEvents.push(eventId);
+  //   await user.save();
+  //   response.status(200).json({ message: "Event bookmarked" });
+  // }
 }

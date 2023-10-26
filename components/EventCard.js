@@ -2,6 +2,9 @@ import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
 import getDate from "@/lib/getDate";
+import Button from "./Button";
+import { useState } from "react";
+import { updateBookmark } from "@/lib/api";
 
 const StyledLink = styled(Link)`
   position: relative;
@@ -39,18 +42,25 @@ export default function EventCard({ event }) {
   // computed from event prop
   const { day, month } = getDate(event.startDateTime);
 
+  function handleBookmark() {
+    updateBookmark(event._id);
+  }
+
   return (
-    <StyledLink href={`/events/${event._id}`}>
-      <StyledImage
-        src={event.imageUrl}
-        alt={event.title.toLowerCase()}
-        fill={true}
-        quality={50}
-      />
-      <StyledTitle>
-        {event.title}, <StyledCity>{event.city}</StyledCity>
-      </StyledTitle>
-      <StyledDate>{`${day}. ${month}`}</StyledDate>
-    </StyledLink>
+    <>
+      <StyledLink href={`/events/${event._id}`}>
+        <StyledImage
+          src={event.imageUrl}
+          alt={event.title.toLowerCase()}
+          fill={true}
+          quality={50}
+        />
+        <StyledTitle>
+          {event.title}, <StyledCity>{event.city}</StyledCity>
+        </StyledTitle>
+        <StyledDate>{`${day}. ${month}`}</StyledDate>
+      </StyledLink>{" "}
+      <Button onClick={handleBookmark}>Bookmark</Button>{" "}
+    </>
   );
 }
