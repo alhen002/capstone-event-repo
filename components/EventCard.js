@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import getDate from "@/lib/getDate";
 import Button from "./Button";
+import { toggleAttending } from "@/lib/api";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 import { useState } from "react";
-import { updateBookmark } from "@/lib/api";
-
 const StyledLink = styled(Link)`
   position: relative;
   padding-inline: 1rem;
@@ -39,11 +40,15 @@ const StyledDate = styled.p`
 `;
 
 export default function EventCard({ event }) {
-  // computed from event prop
   const { day, month } = getDate(event.startDateTime);
+  const { data: session } = useSession();
+  const { mutate } = useSWR("/api/events/categories");
 
-  function handleBookmark() {
-    updateBookmark(event._id);
+  const isAttending = event.attendingUsers.some((user) => user === session?.id);
+
+  async function handleToggleAttending() {
+    await toggleAttending(event._id);
+    mutate();
   }
 
   return (
@@ -60,7 +65,11 @@ export default function EventCard({ event }) {
         </StyledTitle>
         <StyledDate>{`${day}. ${month}`}</StyledDate>
       </StyledLink>{" "}
-      <Button onClick={handleBookmark}>Bookmark</Button>{" "}
+      {session?.id && (
+        <Button onClick={handleToggleAttending}>
+          {isAttending ? "Won't attend" : "Attend"}
+        </Button>
+      )}
     </>
   );
 }

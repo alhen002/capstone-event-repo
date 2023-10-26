@@ -18,7 +18,7 @@ export default async function handler(request, response) {
 
         const events = await Event.find(filter).populate("organizer").exec();
         const categories = groupByProperty(events, "category");
-        console.log(categories);
+
         return response.status(200).json(categories);
       } catch (error) {
         return response.status(400).json({ message: error.message });

@@ -21,11 +21,17 @@ export default async function handler(request, response) {
           .status(404)
           .json({ message: "The Event was not found." });
       }
-
+      if (event.attendingUsers.some((user) => user.toString() === session.id)) {
+        const newEvent = await Event.findByIdAndUpdate(id, {
+          $pull: { attendingUsers: session.id },
+        });
+        return response.status(200).json({
+          message: `Successfully removed the user ${session.id} to the event with the id ${newEvent._id}`,
+        });
+      }
       const newEvent = await Event.findByIdAndUpdate(id, {
         $addToSet: { attendingUsers: session.id },
       });
-
       return response.status(200).json({
         message: `Successfully added the user ${session.id} to the event with the id ${newEvent._id}`,
       });

@@ -10,6 +10,7 @@ import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { toggleAttending } from "@/lib/api";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -87,6 +88,7 @@ export default function EventDetail({ event = {} }) {
 
   // true oder false
   const isOwner = session?.id === event.organizer._id;
+  const isAttending = event.attendingUsers.some((user) => user === session?.id);
 
   const {
     day: startDay,
@@ -135,6 +137,11 @@ export default function EventDetail({ event = {} }) {
     }
     await deleteEvent(event._id);
     router.push("/");
+  }
+
+  async function handleToggleAttending() {
+    await toggleAttending(event._id);
+    mutate();
   }
 
   const handleRetrievedAutofill = (response) => {
@@ -280,6 +287,11 @@ export default function EventDetail({ event = {} }) {
               Delete
             </Button>
           </>
+        )}
+        {session?.id && (
+          <Button onClick={handleToggleAttending}>
+            {isAttending ? "Won't attend" : "Attend"}
+          </Button>
         )}
       </StyledContainer>
     </>

@@ -65,7 +65,7 @@ export default async function handler(request, response) {
           return response.status(404).json({ message: "User not found" });
         }
 
-        if (event.organizer.id !== session.id) {
+        if (event.organizer.id.toString() !== session.id) {
           return response.status(403).json({ message: "Permission denied" });
         } else {
           const deleteEvent = await Event.findByIdAndDelete(id);
