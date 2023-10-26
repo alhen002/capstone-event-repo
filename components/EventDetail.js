@@ -88,7 +88,9 @@ export default function EventDetail({ event = {} }) {
   console.log(event);
   // true oder false
   const isOwner = session?.id === event.organizer._id;
-  const isAttending = event.attendingUsers.some((user) => user === session?.id);
+  const isAttending = event.attendingUsers.some(
+    (user) => user._id === session?.id
+  );
 
   const {
     day: startDay,
