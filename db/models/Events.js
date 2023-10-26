@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./Users";
 const { Schema } = mongoose;
 const eventSchema = new Schema(
   {
@@ -15,9 +16,9 @@ const eventSchema = new Schema(
     endDateTime: { type: Date },
     organizer: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: User,
     },
-    attendingUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    attendingUsers: [{ type: Schema.Types.ObjectId, ref: User }],
   },
   {
     timestamps: {

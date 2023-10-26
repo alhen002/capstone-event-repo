@@ -13,7 +13,10 @@ export default async function handler(request, response) {
   switch (request.method) {
     case "GET":
       try {
-        const event = await Event.findById(id).populate("organizer");
+        const event = await Event.findById(id)
+          .populate("organizer")
+          .populate("attendingUsers")
+          .exec();
         if (!event) {
           return response.status(404).json({ message: "Event not found." });
         }
