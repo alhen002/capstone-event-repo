@@ -8,6 +8,11 @@ import { useRouter } from "next/router";
 export default function MyEvents() {
   const { data: events, isLoading, error } = useSWR("/api/users/me/events");
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
   if (isLoading) return <Loading />;
   if (error) return <Error>{error.message}</Error>;
 
