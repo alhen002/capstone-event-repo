@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "./Users";
+
 const { Schema } = mongoose;
 const eventSchema = new Schema(
   {

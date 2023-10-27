@@ -15,7 +15,7 @@ export default function OwnedEvents() {
 
   return (
     <>
-      <h2>Owned Events</h2>
+      <h1>Here are all your owned Events</h1>
       <Button onClick={() => router.back()}>Back</Button>
       <EventList owned />
     </>

@@ -18,10 +18,12 @@ export default function EventList({
   searchQuery = "",
   attending = false,
   owned = false,
+  category = "",
 }) {
   const SWRString =
     (attending && "/api/events/attending") ||
     (owned && "/api/users/me/events") ||
+    (category && `/api/categories/${category}/events`) ||
     (searchQuery && `/api/search?events=${searchQuery}`);
 
   const { data: events, isLoading, error, mutate } = useSWR(SWRString);

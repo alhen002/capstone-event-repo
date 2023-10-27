@@ -14,7 +14,7 @@ export default function AttendingEvents() {
 
   return (
     <>
-      <h2>Attending Events</h2>
+      <h1>Attending Events</h1>
       <Button onClick={() => router.back()}>Back</Button>
       <EventList attending />
     </>

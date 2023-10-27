@@ -39,11 +39,13 @@ const StyledDate = styled.p`
   bottom: 0.5rem;
 `;
 
-export default function EventCard({ event, mutate }) {
+export default function EventCard({ event = {}, mutate }) {
   const { day, month } = getDate(event.startDateTime);
   const { data: session } = useSession();
 
-  const isAttending = event.attendingUsers.some((user) => user === session?.id);
+  const isAttending = event?.attendingUsers?.some(
+    (user) => user === session?.id
+  );
 
   async function handleToggleAttending() {
     await toggleAttending(event._id);
