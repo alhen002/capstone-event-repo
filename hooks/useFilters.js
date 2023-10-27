@@ -30,6 +30,7 @@ export default function useFilters(
         slug: router.query.slug,
       },
     });
+    setFilters({ city: "", category: "" });
   }
 
   return {

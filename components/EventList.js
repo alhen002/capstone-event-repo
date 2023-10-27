@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import EventCard from "./EventCard";
-import FilterBar from "./FilterBar";
+import Filters from "./Filters";
 import useSWR from "swr";
 import Loading from "./Loading";
 import Error from "./Error";
 import useFilters from "@/hooks/useFilters";
+import ResetButton from "./ResetButton";
 
 const StyledSection = styled.section`
   margin-inline: auto;
@@ -50,14 +51,14 @@ export default function EventList({
   return (
     <>
       {filterConfig?.map((filter, index) => (
-        <FilterBar
+        <Filters
           key={index}
-          reset={reset}
           onChange={onChange}
           filters={filters}
           type={filter}
         />
       ))}
+      <ResetButton reset={reset}>Reset</ResetButton>
       {!events?.length ? (
         <p>Sorry, no events found.</p>
       ) : (

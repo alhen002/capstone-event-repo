@@ -46,9 +46,6 @@ export default function FilterBar({ onChange, filters, reset, type }) {
             </select>
           </>
         )}
-        <Button variant="delete" onClick={reset}>
-          Reset
-        </Button>
       </StyledContainer>
     </>
   );
