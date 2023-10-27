@@ -11,7 +11,7 @@ export default function Category() {
     <>
       <h1>{category?.name}</h1>
       <Button onClick={() => router.back()}>Back</Button>
-      <EventList category={slug} />
+      <EventList category={slug} filterConfig={["city"]} />
     </>
   );
 }

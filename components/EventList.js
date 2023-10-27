@@ -20,11 +20,12 @@ export default function EventList({
   attending = false,
   owned = false,
   category = "",
+  filterConfig = [],
 }) {
   const { filters, reset, onChange } = useFilters({ city: "", category: "" });
 
   const SWRString =
-    (attending && "/api/events/attending") ||
+    (attending && "/api/users/me/attending") ||
     (owned && "/api/users/me/events") ||
     (category && `/api/categories/${category}/events`) ||
     (searchQuery && `/api/search?events=${searchQuery}`);
@@ -48,12 +49,20 @@ export default function EventList({
 
   return (
     <>
+      {filterConfig?.map((filter, index) => (
+        <FilterBar
+          key={index}
+          reset={reset}
+          onChange={onChange}
+          filters={filters}
+          type={filter}
+        />
+      ))}
       {!events?.length ? (
         <p>Sorry, no events found.</p>
       ) : (
         <>
           <StyledSection>
-            <FilterBar reset={reset} onChange={onChange} filters={filters} />
             {events?.map((event) => (
               <EventCard event={event} key={event._id} mutate={mutate} />
             ))}

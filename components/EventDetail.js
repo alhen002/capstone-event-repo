@@ -86,7 +86,6 @@ export default function EventDetail({ event = {} }) {
   const { data: session } = useSession();
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-  console.log(event);
   // true oder false
   const isOwner = session?.id === event.organizer._id;
   const isAttending = event.attendingUsers.some(

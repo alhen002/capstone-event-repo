@@ -16,7 +16,7 @@ export default function AttendingEvents() {
     <>
       <h1>Attending Events</h1>
       <Button onClick={() => router.back()}>Back</Button>
-      <EventList attending />
+      <EventList attending filterConfig={["city", "category"]} />
     </>
   );
 }

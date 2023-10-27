@@ -5,7 +5,7 @@ import { authOptions } from "../../auth/[...nextauth]";
 
 export default async function handler(request, response) {
   await dbConnect();
-
+  const { city, category } = request.query;
   const session = await getServerSession(request, response, authOptions);
 
   if (!session) {
@@ -16,7 +16,15 @@ export default async function handler(request, response) {
 
   switch (request.method) {
     case "GET":
-      const ownedEvents = await Event.find({ organizer: session.id })
+      const filter = {};
+      if (category) {
+        filter.category = new RegExp(category, "i");
+      }
+      if (city) {
+        filter.city = new RegExp(city, "i");
+      }
+
+      const ownedEvents = await Event.find({ ...filter, organizer: session.id })
         .populate("organizer")
         .exec();
 

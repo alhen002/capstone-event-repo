@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 export default function OwnedEvents() {
   const router = useRouter();
 
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   if (status === "unauthenticated") {
     router.push("/login");
@@ -17,7 +17,7 @@ export default function OwnedEvents() {
     <>
       <h1>Here are all your owned Events</h1>
       <Button onClick={() => router.back()}>Back</Button>
-      <EventList owned />
+      <EventList owned filterConfig={["city", "category"]} />
     </>
   );
 }

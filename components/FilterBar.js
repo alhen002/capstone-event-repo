@@ -12,9 +12,9 @@ export default function FilterBar({ onChange, filters, reset, type }) {
   const { data: categories } = useSWR("/api/categories");
 
   return (
-    <StyledContainer>
-      <div>
-        {cities && (
+    <>
+      <StyledContainer>
+        {type === "city" && (
           <>
             <label htmlFor="city">City:</label>
             <select
@@ -24,15 +24,15 @@ export default function FilterBar({ onChange, filters, reset, type }) {
               value={filters.city}
             >
               <option>All</option>
-              {cities.map((city) => (
+              {cities?.map((city) => (
                 <option key={city.name}>{city.name}</option>
               ))}
             </select>
           </>
         )}
-        {categories && (
+        {type === "category" && (
           <>
-            <label htmlFor="category">Category:</label>
+            <label htmlFor="category">Categories:</label>
             <select
               id="category"
               name="category"
@@ -40,7 +40,7 @@ export default function FilterBar({ onChange, filters, reset, type }) {
               value={filters.category}
             >
               <option>All</option>
-              {categories.map((category) => (
+              {categories?.map((category) => (
                 <option key={category.name}>{category.name}</option>
               ))}
             </select>
@@ -49,7 +49,7 @@ export default function FilterBar({ onChange, filters, reset, type }) {
         <Button variant="delete" onClick={reset}>
           Reset
         </Button>
-      </div>
-    </StyledContainer>
+      </StyledContainer>
+    </>
   );
 }
