@@ -7,12 +7,14 @@ import ProgressBar from "./EventFormProgressBar";
 import dynamic from "next/dynamic";
 import Map from "./Map";
 import useSWR from "swr";
+import toast from "react-hot-toast";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
 );
 
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+
 const StyledForm = styled.form`
   padding-top: 3rem;
   margin-inline: auto;
@@ -89,6 +91,7 @@ export default function EventForm() {
     createNewEvent(events);
     event.target.reset();
     mutate();
+    toast.success("You've successfully created your event.");
     router.push("/");
   }
 
@@ -275,7 +278,6 @@ export default function EventForm() {
         ) : (
           ""
         )}
-
         <ButtonContainer>
           <small> *required fields</small>
           {formStep > 0 && <Button onClick={prevFormStep}>Back</Button>}

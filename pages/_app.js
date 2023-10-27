@@ -1,6 +1,7 @@
 import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
 import { SessionProvider } from "next-auth/react";
+import Notification from "@/components/Notification";
 // * utils
 import fetcher from "@/lib/fetcher";
 
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }) {
         <SWRConfig value={{ fetcher }}>
           <Layout>
             <GlobalStyle />
+            <Notification />
             <Component {...pageProps} />
           </Layout>
         </SWRConfig>

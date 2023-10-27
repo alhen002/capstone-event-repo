@@ -10,6 +10,7 @@ import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import toast from "react-hot-toast";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -126,6 +127,7 @@ export default function EventDetail({ event = {} }) {
     };
     await updateEvent(event._id, newEvent);
     setIsEditMode(false);
+    toast.success("You've successfully edited your event.");
     mutate();
   }
 
@@ -134,6 +136,7 @@ export default function EventDetail({ event = {} }) {
       return;
     }
     await deleteEvent(event._id);
+    toast.success("You've successfully deleted your event.");
     router.push("/");
   }
 
