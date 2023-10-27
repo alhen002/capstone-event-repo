@@ -1,5 +1,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@/components/Button";
+import LinkButton from "@/components/LinkButton";
+import { useRouter } from "next/router";
 export default function Login() {
   const { data: session } = useSession();
   return (
@@ -11,7 +13,7 @@ export default function Login() {
         </>
       ) : (
         <>
-          <p>Not signed in </p>
+          <p>The site you tried to access requires a login. </p>
           <Button
             onClick={() => {
               signIn("github");
