@@ -10,7 +10,6 @@ export default function Layout({ children }) {
   return (
     <>
       <Header />
-
       <StyledMain>{children}</StyledMain>
     </>
   );

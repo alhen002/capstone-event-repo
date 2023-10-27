@@ -6,6 +6,7 @@ import Loading from "./Loading";
 import Error from "./Error";
 import useFilters from "@/hooks/useFilters";
 import ResetButton from "./ResetButton";
+import { getURLParams } from "@/lib/utils";
 
 const StyledSection = styled.section`
   margin-inline: auto;
@@ -30,13 +31,6 @@ export default function EventList({
     (owned && "/api/users/me/events") ||
     (category && `/api/categories/${category}/events`) ||
     (searchQuery && `/api/search?events=${searchQuery}`);
-
-  function getURLParams(url, filter = {}) {
-    const params = new URLSearchParams();
-    filter.category && params.append("category", filter.category);
-    filter.city && params.append("city", filter.city);
-    return `${url}${params.size ? `?${params}` : ""}`;
-  }
 
   const {
     data: events,
