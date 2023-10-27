@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Button from "./Button";
 import useSWR from "swr";
+
 const StyledContainer = styled.div`
   display: flex;
   justify-content: space-around;
