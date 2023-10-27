@@ -42,7 +42,7 @@ const StyledDate = styled.p`
 export default function EventCard({ event }) {
   const { day, month } = getDate(event.startDateTime);
   const { data: session } = useSession();
-  const { mutate } = useSWR("/api/events/categories");
+  const { mutate } = useSWR(`/api/events/categories`);
 
   const isAttending = event.attendingUsers.some((user) => user === session?.id);
 
