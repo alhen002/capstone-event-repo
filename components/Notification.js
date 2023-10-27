@@ -1,6 +1,20 @@
 import { Toaster } from "react-hot-toast";
 import styled from "styled-components";
 
+const CustomToastContainer = styled.div`
+  background: #363636;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+const CustomToastSuccess = styled(CustomToastContainer)`
+  background: #d7c3fa;
+`;
+
+const CustomToastError = styled(CustomToastContainer)`
+  background: #f44336;
+`;
 export default function Notification() {
   return (
     <Toaster
@@ -8,7 +22,6 @@ export default function Notification() {
       reverseOrder={false}
       gutter={8}
       containerClassName=""
-      containerStyle={{}}
       toastOptions={{
         // Define default options
         className: "",

@@ -1,8 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@/components/Button";
-import LinkButton from "@/components/LinkButton";
-import { useRouter } from "next/router";
-import toast from "react-hot-toast";
+
 export default function Login() {
   const { data: session } = useSession();
 
