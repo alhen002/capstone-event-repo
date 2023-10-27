@@ -6,7 +6,7 @@ import Error from "@/components/Error";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 export default function MyEvents() {
-  const { data: events, isLoading, error } = useSWR("/api/users/me/events");
+  const { data: events, isLoading, error } = useSWR("/api/events/attending");
   const router = useRouter();
 
   const { data: session, status } = useSession();
