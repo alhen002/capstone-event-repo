@@ -4,10 +4,16 @@ import { groupByProperty } from "@/lib/utils";
 
 export default async function handler(request, response) {
   await dbConnect();
-  const { slug } = request.query;
-
+  const { slug, category, city } = request.query;
+  const filter = {};
   switch (request.method) {
     case "GET":
+      if (category) {
+        filter.category = new RegExp(category, "i");
+      }
+      if (city) {
+        filter.city = new RegExp(city, "i");
+      }
       try {
         const events = await Event.find().populate("organizer").exec();
         const categories = groupByProperty(events, "category");
@@ -17,6 +23,7 @@ export default async function handler(request, response) {
         );
 
         const filteredEvents = await Event.find({
+          ...filter,
           category: filteredCategories.at(0).name,
         });
 
