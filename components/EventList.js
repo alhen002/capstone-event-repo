@@ -34,7 +34,9 @@ export default function EventList({
       {!events?.length ? (
         <p>Sorry, no events found.</p>
       ) : (
-        events?.map((event) => <EventCard event={event} key={event._id} />)
+        events?.map((event) => (
+          <EventCard event={event} key={event._id} mutate={mutate} />
+        ))
       )}
     </StyledSection>
   );
