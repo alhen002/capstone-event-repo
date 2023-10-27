@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import EventCard from "./EventCard";
-import LinkButton from "./LinkButton";
+
+import useSWR from "swr";
+import Loading from "./Loading";
+import Error from "./Error";
 
 const StyledSection = styled.section`
   margin-inline: auto;
@@ -11,12 +14,28 @@ const StyledSection = styled.section`
   gap: 2rem;
 `;
 
-export default function EventList({ events }) {
+export default function EventList({
+  searchQuery = "",
+  attending = false,
+  owned = false,
+}) {
+  const SWRString =
+    (attending && "/api/events/attending") ||
+    (owned && "/api/users/me/events") ||
+    (searchQuery && `/api/search?events=${searchQuery}`);
+
+  const { data: events, isLoading, error, mutate } = useSWR(SWRString);
+
+  if (isLoading) return <Loading />;
+  if (error) return <Error>{error.message}</Error>;
+
   return (
     <StyledSection>
-      {events.map((event) => (
-        <EventCard event={event} key={event._id} />
-      ))}
+      {!events?.length ? (
+        <p>Sorry, no events found.</p>
+      ) : (
+        events?.map((event) => <EventCard event={event} key={event._id} />)
+      )}
     </StyledSection>
   );
 }

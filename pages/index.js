@@ -19,6 +19,7 @@ const StyledContainer = styled.div`
 
 export default function HomePage() {
   const { filters, reset, onChange } = useFilters({ category: "", city: "" });
+
   const {
     data: categories,
     isLoading,
