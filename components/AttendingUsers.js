@@ -14,7 +14,7 @@ const AttendingUsersContainer = styled.div`
 export default function AttendingUsersPreview({ attendingUsers }) {
   return (
     <AttendingUsersContainer>
-      {attendingUsers.length > 0 && <p>Also attending:</p>}
+      <p>Also attending:</p>
       {attendingUsers.slice(0, 10).map((attendingUser) => (
         <StyledPreviewImage
           key={attendingUser._id}

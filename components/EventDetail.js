@@ -180,7 +180,9 @@ export default function EventDetail({ event = {} }) {
 
             <StyledEventInfo>{event.organizer.name}</StyledEventInfo>
             <StyledDescription>{event.description}</StyledDescription>
-            <AttendingUsersPreview attendingUsers={event.attendingUsers} />
+            {event.attendingUsers.length > 0 && (
+              <AttendingUsersPreview attendingUsers={event.attendingUsers} />
+            )}
           </StyledEventInfoContainer>
         ) : (
           <StyledForm onSubmit={handleSubmit}>
