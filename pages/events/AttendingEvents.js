@@ -5,15 +5,21 @@ import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
-export default function MyEvents() {
+
+export default function AttendingEvents() {
   const { data: events, isLoading, error } = useSWR("/api/users/me/events");
   const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+
   if (isLoading) return <Loading />;
   if (error) return <Error>{error.message}</Error>;
 
   return (
     <>
-      <h2>Owned Events</h2>
+      <h2>Attending Events</h2>
       <Button onClick={() => router.back()}>Back</Button>
       {!events.length ? "No events yet" : <EventList events={events} />}
     </>

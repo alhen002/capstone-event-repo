@@ -70,6 +70,12 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
             >
               <div onClick={handleMenuClose}>Owned Events</div>
             </StyledLink>
+            <StyledLink
+              href="/events/attendingEvents"
+              $active={router.pathname === "/events/attendingEvents"}
+            >
+              <div onClick={handleMenuClose}>Attending Events</div>
+            </StyledLink>
           </>
         )}
 
