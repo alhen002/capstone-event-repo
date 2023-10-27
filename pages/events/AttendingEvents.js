@@ -5,10 +5,11 @@ import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
-
-export default function AttendingEvents() {
+export default function MyEvents() {
   const { data: events, isLoading, error } = useSWR("/api/users/me/events");
   const router = useRouter();
+
+  const { data: session, status } = useSession();
 
   if (status === "unauthenticated") {
     router.push("/login");
