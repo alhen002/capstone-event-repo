@@ -7,7 +7,7 @@ const StyledContainer = styled.div`
   gap: 1rem;
   align-items: center;
 `;
-export default function FilterBar({ onChange, filters, reset, type }) {
+export default function FilterBar({ onChange, filters, type }) {
   const { data: cities } = useSWR("/api/events/cities");
   const { data: categories } = useSWR("/api/categories");
 
