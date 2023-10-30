@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Heading from "@/components/ui/Heading";
 import Paragraph from "@/components/ui/Paragraph";
 import { useRouter } from "next/router";
+
 const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
