@@ -108,7 +108,7 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke={theme === "dark" ? "var(--selected)" : "var(--deselected)"}
+          stroke={theme === "dark" ? "var(--deselected)" : "var(--selected)"}
           onClick={() => setTheme("light")}
         >
           <path
@@ -123,7 +123,7 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          stroke={theme === "light" ? "var(--selected)" : "var(--deselected)"}
+          stroke={theme === "light" ? "var(--deselected)" : "var(--selected)"}
           onClick={() => setTheme("dark")}
         >
           <path
