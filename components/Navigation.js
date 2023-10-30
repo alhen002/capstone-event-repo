@@ -3,6 +3,7 @@ import Button from "./Button";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
 import Greeting from "./Greeting";
 import MenuToggle from "./MenuToggle";
 
@@ -17,11 +18,20 @@ const StyledContainer = styled.div`
   display: grid;
   place-items: center;
   padding: 2rem;
+  background: var(--background);
 `;
 const StyledMenuContainer = styled.div`
   position: absolute;
   right: 15px;
   top: 15px;
+`;
+
+const StyledIconContainer = styled.div`
+  display: flex;
+  position: absolute;
+  gap: 1rem;
+  bottom: 25px;
+  left: 25px;
 `;
 
 const StyledNavigation = styled.nav`
@@ -32,8 +42,14 @@ const StyledNavigation = styled.nav`
   gap: 2rem;
 `;
 
+const StyledIcon = styled.svg`
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+`;
+
 const StyledLink = styled(Link)`
-  color: var(--black);
+  color: var(--primary);
   font-weight: bold;
   text-decoration: ${(props) => (props.$active ? "underline" : "none")};
   text-decoration-thickness: 3px;
@@ -44,6 +60,7 @@ const StyledLink = styled(Link)`
 export default function Navigation({ handleMenuClose, menuOpen }) {
   const router = useRouter();
   const { data: session } = useSession();
+  const { theme, setTheme } = useTheme();
 
   return (
     <StyledContainer>
@@ -91,6 +108,37 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
           <Button onClick={() => signOut()}>Logout</Button>
         )}
       </StyledNavigation>
+      <StyledIconContainer>
+        <StyledIcon
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke={theme === "dark" ? "var(--deselected)" : "var(--selected)"}
+          onClick={() => setTheme("light")}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+          />
+        </StyledIcon>
+
+        <StyledIcon
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke={theme === "light" ? "var(--deselected)" : "var(--selected)"}
+          onClick={() => setTheme("dark")}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+          />
+        </StyledIcon>
+      </StyledIconContainer>
     </StyledContainer>
   );
 }

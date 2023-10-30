@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+
 export default createGlobalStyle`
 :root {
   --black: #000000;
@@ -8,7 +9,45 @@ export default createGlobalStyle`
   --white: #ffffff;
   --rose: #F2C9C9;
   --light-grey: #E4E4E4;
+
+  --primary: #6636E4;
+  --primary-pressed: #4D23C4;
+  --transparent-pressed: #6636E470;
+  --text-on-primary: #FCFAFF;
+  --subtle-text-on-primary: #FCFAFF70;
+  --background: #FCFAFF;
+
+// Dark Mode Buttons
+  --selected: #6636E4;
+  --deselected: #332649;
+  --button-bg: #FCFAFF;
 }
+
+/* [data-theme='light'] {
+  --primary: #6636E4;
+  --primary-pressed: #4D23C4;
+  --transparent-pressed: #6636E470;
+  --text-on-primary: #FCFAFF;
+  --subtle-text-on-primary: #FCFAFF70;
+  --background: #FCFAFF;
+
+// Dark Mode Buttons
+  --selected: #6636E4;
+  --deselected: #332649;
+  --button-bg: #FCFAFF;
+} */
+[data-theme='dark'] {
+  --primary: #D7C3FA;
+  --primary-pressed: #AD92EF;
+  --transparent-pressed: #D7C3FA06;
+  --text-on-primary: #332649;
+  --subtle-text-on-primary: #33264970;
+  --background: #2F2F2F;
+
+// Dark Mode Buttons
+  --selected: #D4C5F6;
+  --deselected: #F2F2F2;
+  --button-bg: #2B2B2B; }
 
   *,
   *::before,

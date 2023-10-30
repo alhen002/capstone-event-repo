@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 
 const StyledText = styled.p`
-  color: var(--black);
+  color: var(--primary);
   font-weight: bold;
 `;
 
