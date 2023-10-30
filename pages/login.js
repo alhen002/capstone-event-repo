@@ -3,7 +3,6 @@ import Button from "@/components/Button";
 
 export default function Login() {
   const { data: session } = useSession();
-
   return (
     <>
       {session ? (

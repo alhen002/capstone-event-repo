@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import User from "./Users";
-const { Schema } = mongoose;
 
+const { Schema } = mongoose;
 const eventSchema = new Schema(
   {
     title: { type: String },
@@ -19,6 +19,7 @@ const eventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: User,
     },
+    attendingUsers: [{ type: Schema.Types.ObjectId, ref: User }],
   },
   {
     timestamps: {
@@ -27,7 +28,6 @@ const eventSchema = new Schema(
     },
   }
 );
-
 const Event = mongoose.models.Event || mongoose.model("Event", eventSchema);
 
 export default Event;

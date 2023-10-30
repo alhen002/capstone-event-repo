@@ -12,13 +12,13 @@ const StyledSection = styled.section`
   gap: 2rem;
 `;
 
-export default function CategoryHighlight({ category }) {
+export default function CategoryHighlight({ category, mutate }) {
   return (
     <>
       <StyledSection>
         <h2>{category.name}</h2>
         {category.events.slice(0, 3).map((event) => (
-          <EventCard key={event._id} event={event} />
+          <EventCard key={event._id} event={event} mutate={mutate} />
         ))}
         <LinkButton href={`/categories/${category.slug}`}>Show more</LinkButton>
       </StyledSection>

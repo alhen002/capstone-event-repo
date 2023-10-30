@@ -10,7 +10,10 @@ import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { toggleAttending } from "@/lib/api";
+import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
+
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -85,9 +88,11 @@ export default function EventDetail({ event = {} }) {
   const { data: session } = useSession();
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-
   // true oder false
   const isOwner = session?.id === event.organizer._id;
+  const isAttending = event.attendingUsers.some(
+    (user) => user._id === session?.id
+  );
 
   const {
     day: startDay,
@@ -140,6 +145,11 @@ export default function EventDetail({ event = {} }) {
     router.push("/");
   }
 
+  async function handleToggleAttending() {
+    await toggleAttending(event._id);
+    mutate();
+  }
+
   const handleRetrievedAutofill = (response) => {
     const feature = response.features[0];
     const object = {
@@ -173,6 +183,9 @@ export default function EventDetail({ event = {} }) {
 
             <StyledEventInfo>{event.organizer.name}</StyledEventInfo>
             <StyledDescription>{event.description}</StyledDescription>
+            {event.attendingUsers.length > 0 && (
+              <AttendingUsersPreview attendingUsers={event.attendingUsers} />
+            )}
           </StyledEventInfoContainer>
         ) : (
           <StyledForm onSubmit={handleSubmit}>
@@ -283,6 +296,11 @@ export default function EventDetail({ event = {} }) {
               Delete
             </Button>
           </>
+        )}
+        {session?.id && (
+          <Button onClick={handleToggleAttending}>
+            {isAttending ? "Won't attend" : "Attend"}
+          </Button>
         )}
       </StyledContainer>
     </>

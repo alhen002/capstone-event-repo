@@ -15,7 +15,7 @@ export default function SearchBar() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    router.push(`/search?q=${inputValue}`);
+    router.push(`/events/search?q=${inputValue}`);
     setInputValue("");
   }
 

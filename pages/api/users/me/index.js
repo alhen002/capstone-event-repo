@@ -20,7 +20,6 @@ export default async function handler(request, response) {
         return response.status(404).json({ message: "User not found" });
       }
       return response.status(200).json(user);
-
     default:
       return response.status(405).json({ message: "Method not allowed" });
   }

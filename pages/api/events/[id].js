@@ -13,7 +13,10 @@ export default async function handler(request, response) {
   switch (request.method) {
     case "GET":
       try {
-        const event = await Event.findById(id).populate("organizer");
+        const event = await Event.findById(id)
+          .populate("organizer")
+          .populate("attendingUsers")
+          .exec();
         if (!event) {
           return response.status(404).json({ message: "Event not found." });
         }
@@ -65,7 +68,7 @@ export default async function handler(request, response) {
           return response.status(404).json({ message: "User not found" });
         }
 
-        if (event.organizer.id !== session.id) {
+        if (event.organizer.id.toString() !== session.id) {
           return response.status(403).json({ message: "Permission denied" });
         } else {
           const deleteEvent = await Event.findByIdAndDelete(id);

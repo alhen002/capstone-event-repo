@@ -2,7 +2,11 @@ import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
 import getDate from "@/lib/getDate";
-
+import Button from "./Button";
+import { toggleAttending } from "@/lib/api";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import { useState } from "react";
 const StyledLink = styled(Link)`
   position: relative;
   padding-inline: 1rem;
@@ -35,22 +39,38 @@ const StyledDate = styled.p`
   bottom: 0.5rem;
 `;
 
-export default function EventCard({ event }) {
-  // computed from event prop
+export default function EventCard({ event = {}, mutate }) {
   const { day, month } = getDate(event.startDateTime);
+  const { data: session } = useSession();
+
+  const isAttending = event?.attendingUsers?.some(
+    (user) => user === session?.id
+  );
+
+  async function handleToggleAttending() {
+    await toggleAttending(event._id);
+    mutate();
+  }
 
   return (
-    <StyledLink href={`/events/${event._id}`}>
-      <StyledImage
-        src={event.imageUrl}
-        alt={event.title.toLowerCase()}
-        fill={true}
-        quality={50}
-      />
-      <StyledTitle>
-        {event.title}, <StyledCity>{event.city}</StyledCity>
-      </StyledTitle>
-      <StyledDate>{`${day}. ${month}`}</StyledDate>
-    </StyledLink>
+    <>
+      <StyledLink href={`/events/${event._id}`}>
+        <StyledImage
+          src={event.imageUrl}
+          alt={event.title.toLowerCase()}
+          fill={true}
+          quality={50}
+        />
+        <StyledTitle>
+          {event.title}, <StyledCity>{event.city}</StyledCity>
+        </StyledTitle>
+        <StyledDate>{`${day}. ${month}`}</StyledDate>
+      </StyledLink>{" "}
+      {session?.id && (
+        <Button onClick={handleToggleAttending}>
+          {isAttending ? "Won't attend" : "Attend"}
+        </Button>
+      )}
+    </>
   );
 }

@@ -3,7 +3,6 @@ import useSWR from "swr";
 import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import EventDetail from "@/components/EventDetail";
-import LinkButton from "@/components/LinkButton";
 import Button from "@/components/Button";
 
 export default function Event() {
