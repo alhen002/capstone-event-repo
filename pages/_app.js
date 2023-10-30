@@ -1,6 +1,8 @@
 import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
+
 import Notification from "@/components/Notification";
 // * utils
 import fetcher from "@/lib/fetcher";
@@ -12,13 +14,15 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <SessionProvider>
-        <SWRConfig value={{ fetcher }}>
-          <Layout>
-            <GlobalStyle />
-            <Notification />
-            <Component {...pageProps} />
-          </Layout>
-        </SWRConfig>
+        <ThemeProvider>
+          <SWRConfig value={{ fetcher }}>
+            <Layout>
+              <GlobalStyle />
+              <Notification />
+              <Component {...pageProps} />
+            </Layout>
+          </SWRConfig>
+        </ThemeProvider>
       </SessionProvider>
     </>
   );
