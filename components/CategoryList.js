@@ -19,7 +19,7 @@ export default function CategoryList() {
       {categories?.length ? (
         categories.map((category) => (
           <CategoryHighlight
-            key={category.name}
+            key={category.slug}
             category={category}
             mutate={mutate}
           />
