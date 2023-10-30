@@ -5,7 +5,6 @@ import Button from "@/components/Button";
 
 export default function AttendingEvents() {
   const router = useRouter();
-
   const { data: session, status } = useSession();
 
   if (status === "unauthenticated") {
