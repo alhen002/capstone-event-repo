@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import Map from "./Map";
 import useSWR from "swr";
 import toast from "react-hot-toast";
+import { uploadImage } from "@/lib/utils";
+import FileInput from "./FileInput";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -57,6 +59,7 @@ export default function EventForm() {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
+  const [file, setFile] = useState(null);
 
   const nextFormStep = () => setFormStep(formStep + 1);
   const prevFormStep = () => setFormStep(formStep - 1);
@@ -73,8 +76,9 @@ export default function EventForm() {
     setCoordinates(object);
   };
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
     const events = {
       title,
       city,
@@ -88,7 +92,9 @@ export default function EventForm() {
       startDateTime,
       endDateTime,
     };
-    createNewEvent(events);
+
+    await createNewEvent(events);
+
     event.target.reset();
     mutate();
     toast.success("You've successfully created your event.");
@@ -159,20 +165,21 @@ export default function EventForm() {
               <option value="Community Meet-up">Community Meet-up</option>
             </select>
 
-            <label htmlFor="imageUrl" id="imageLabel">
-              Picture*
+            {/* <label htmlFor="cover" id="coverLabel">
+              Cover
             </label>
             <input
-              id="imageUrl"
-              name="imageUrl"
-              aria-labelledby="imageLabel"
-              placeholder="Which https://images.unsplash.com/ URL should we use for your event?"
-              type="url"
+              id="cover"
+              name="cover"
+              aria-labelledby="coverLabel"
+              type="file"
               onChange={(event) => setImageUrl(event.target.value)}
               value={imageUrl}
               pattern="^https://images\.unsplash\.com/.*$"
               required
-            />
+            /> */}
+
+            <FileInput onSetFile={setFile} file={file} />
           </StyledFieldset>
         ) : (
           ""

@@ -15,12 +15,21 @@ const eventSchema = new Schema(
     imageUrl: { type: String },
     startDateTime: { type: Date },
     endDateTime: { type: Date },
+    cover: {
+      type: new Schema({
+        width: Number,
+        height: Number,
+        url: String,
+      }),
+      required: true,
+    },
     organizer: {
       type: Schema.Types.ObjectId,
       ref: User,
     },
     attendingUsers: [{ type: Schema.Types.ObjectId, ref: User }],
   },
+
   {
     timestamps: {
       createAt: "created_at",
