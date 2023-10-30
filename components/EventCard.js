@@ -13,6 +13,7 @@ const StyledLink = styled(Link)`
 `;
 const StyledImage = styled(Image)`
   z-index: -1;
+  object-fit: cover;
 `;
 
 const StyledTitle = styled.h2`
