@@ -80,7 +80,13 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
         )}
 
         {!session?.user ? (
-          <Button onClick={() => signIn("github")}>Login</Button>
+          <Button
+            onClick={() => {
+              signIn("github");
+            }}
+          >
+            Login
+          </Button>
         ) : (
           <Button onClick={() => signOut()}>Logout</Button>
         )}

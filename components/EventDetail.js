@@ -10,8 +10,12 @@ import { deleteEvent } from "@/lib/api";
 import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+<<<<<<< HEAD
 import { toggleAttending } from "@/lib/api";
 import AttendingUsersPreview from "./AttendingUsers";
+=======
+import toast from "react-hot-toast";
+>>>>>>> main
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -130,6 +134,7 @@ export default function EventDetail({ event = {} }) {
     };
     await updateEvent(event._id, newEvent);
     setIsEditMode(false);
+    toast.success("You've successfully edited your event.");
     mutate();
   }
 
@@ -138,6 +143,7 @@ export default function EventDetail({ event = {} }) {
       return;
     }
     await deleteEvent(event._id);
+    toast.success("You've successfully deleted your event.");
     router.push("/");
   }
 
