@@ -61,7 +61,7 @@ export default createGlobalStyle`
     transition: color 0.3s, background-color 0.3s;
     min-height: 100vh;
     line-height: 1.5;
-    font-family: sans-serif;
+    font-family: Inter;
   }
 
   input,
