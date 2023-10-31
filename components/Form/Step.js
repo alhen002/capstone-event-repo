@@ -38,7 +38,7 @@ const StyledContainer = styled.div`
 export default function Step({
   isVisible,
   children,
-  onNext,
+  handleNext,
   legend,
   index,
   handleBackToStart,
@@ -51,9 +51,9 @@ export default function Step({
     if (address) {
       // lol, it actually works
       delete data[" address-search"];
-      onNext({ ...data, address });
+      handleNext({ ...data, address });
     } else {
-      onNext(data);
+      handleNext(data);
     }
   }
 

@@ -1,25 +1,44 @@
-import { useRef, useEffect } from "react";
+import { uploadImage } from "@/lib/utils";
+import styled from "styled-components";
+import { useState } from "react";
+import Image from "next/image";
+const StyledInput = styled.input``;
 
-export default function FileInput({ onSetFile, file }) {
-  const inputRef = useRef(file);
+const StyledLabel = styled.label``;
 
-  useEffect(() => {
-    if (inputRef.current) {
-      const dataTransfer = new DataTransfer();
-      inputRef.current.files = dataTransfer.files[0];
-    }
-  }, [file]);
+export default function FileInput({ handleUpload }) {
+  const [cover, setCover] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleChangeFile(event) {
-    onSetFile(event.target.files[0]);
+  async function onChange(event) {
+    setIsLoading(true);
+    const cover = await uploadImage(event.target.files[0]);
+    setCover(cover);
+    setIsLoading(false);
+    handleUpload(cover);
   }
 
   return (
-    <input
-      type="file"
-      ref={inputRef}
-      data-testid="uploader"
-      onChange={handleChangeFile}
-    />
+    <>
+      <StyledLabel htmlFor="cover" id="coverLabel">
+        Cover
+        <StyledInput
+          id="cover"
+          aria-labelledby="coverLabel"
+          required
+          type="file"
+          onChange={onChange}
+        />
+      </StyledLabel>
+      {isLoading && <p>Image is uploading...</p>}
+      {cover && (
+        <Image
+          src={cover?.url}
+          width={cover?.width}
+          height={cover?.height}
+          alt="cover-image"
+        />
+      )}
+    </>
   );
 }

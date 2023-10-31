@@ -8,9 +8,8 @@ import dynamic from "next/dynamic";
 import Map from "../Map";
 import useSWR from "swr";
 import toast from "react-hot-toast";
-import { uploadImage } from "@/lib/utils";
 import Step from "./Step";
-import FileInput from "./FileInput";
+import ImageInput from "./FileInput";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -51,7 +50,7 @@ export default function EventForm() {
     router.push("/");
   }
 
-  function onNext(data) {
+  function handleNext(data) {
     setAllData((prev) => ({ ...prev, ...data }));
     setStep((prev) => prev + 1);
   }
@@ -60,12 +59,16 @@ export default function EventForm() {
     setStep(0);
   }
 
+  function handleUpload(image) {
+    setAllData((prev) => ({ ...prev, image }));
+  }
+
   return (
     <section>
       <ProgressBar currentStep={step} />
       <Step
         index={0}
-        onNext={onNext}
+        handleNext={handleNext}
         isVisible={step === 0}
         legend="General Information"
         step={step}
@@ -95,7 +98,7 @@ export default function EventForm() {
       </Step>
       <Step
         index={1}
-        onNext={onNext}
+        handleNext={handleNext}
         legend="Details"
         isVisible={step === 1}
         step={step}
@@ -117,14 +120,13 @@ export default function EventForm() {
           <option value="Live Shows"> Live Shows</option>
           <option value="Community Meet-up">Community Meet-up</option>
         </select>
-        {/* hier kommt noc hdas upload select hin */}
-        {/* <FileInput onSetFile={setFile} file={file} /> */}
+        <ImageInput handleUpload={handleUpload} />
       </Step>
 
       <Step
         index={2}
         legend="Date & Time"
-        onNext={onNext}
+        handleNext={handleNext}
         isVisible={step === 2}
         step={step}
         handleBackToStart={handleBackToStart}
@@ -154,7 +156,7 @@ export default function EventForm() {
       <Step
         legend="Location"
         index={3}
-        onNext={onNext}
+        handleNext={handleNext}
         isVisible={step === 3}
         step={step}
         handleBackToStart={handleBackToStart}
@@ -214,7 +216,7 @@ export default function EventForm() {
       <Step
         index={4}
         isVisible={step === 4}
-        onNext={onNext}
+        handleNext={handleNext}
         legend="Check your Data"
         step={step}
         handleBackToStart={handleBackToStart}
