@@ -7,6 +7,7 @@ import { toggleAttending } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { useState } from "react";
+
 const StyledLink = styled(Link)`
   position: relative;
   padding-inline: 1rem;
@@ -40,6 +41,27 @@ const StyledDate = styled.p`
   bottom: 0.5rem;
 `;
 
+// NEW CARD
+
+const StyledEventCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--secondary-pressed);
+  min-height: 9rem;
+`;
+
+const StyledEventCardImage = styled(Image)`
+  z-index: -1;
+  object-fit: cover;
+`;
+
+const StyledEventCardImageContainer = styled.div`
+  border-radius: 20px 20px 0px 0px;
+  display: relative;
+`;
+
 export default function EventCard({ event = {}, mutate }) {
   const { day, month } = getDate(event.startDateTime);
   const { data: session } = useSession();
@@ -68,10 +90,20 @@ export default function EventCard({ event = {}, mutate }) {
         <StyledDate>{`${day}. ${month}`}</StyledDate>
       </StyledLink>{" "}
       {session?.id && (
-        <Button onClick={handleToggleAttending}>
+        <Button variant={"secondary"} onClick={handleToggleAttending}>
           {isAttending ? "Won't attend" : "Attend"}
         </Button>
       )}
+      <StyledEventCard>
+        <StyledEventCardImageContainer>
+          {/* <StyledEventCardImage
+            src={event.imageUrl}
+            alt={event.title.toLowerCase()}
+            quality={50}
+            fill={true}
+          />{" "} */}
+        </StyledEventCardImageContainer>
+      </StyledEventCard>
     </>
   );
 }

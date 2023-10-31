@@ -23,23 +23,23 @@ export default createGlobalStyle`
   --button-bg: #FCFAFF;
 }
 
-/* [data-theme='light'] {
+[data-theme='light'] {
   --primary: #6636E4;
-  --primary-pressed: #4D23C4;
-  --transparent-pressed: #6636E470;
+  --primary-pressed: #4D23C4; 
+  --secondary-pressed: #EFEAFC;
   --text-on-primary: #FCFAFF;
   --subtle-text-on-primary: #FCFAFF70;
   --background: #FCFAFF;
-
-// Dark Mode Buttons
+ 
+// Light Mode Buttons
   --selected: #6636E4;
   --deselected: #332649;
   --button-bg: #FCFAFF;
-} */
+} 
 [data-theme='dark'] {
   --primary: #D7C3FA;
   --primary-pressed: #AD92EF;
-  --transparent-pressed: #D7C3FA06;
+  --secondary-pressed: #39383B;
   --text-on-primary: #332649;
   --subtle-text-on-primary: #33264970;
   --background: #2F2F2F;

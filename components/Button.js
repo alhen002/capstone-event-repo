@@ -1,40 +1,66 @@
 import styled from "styled-components";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
-const StyledButton = styled.button`
-  position: relative;
-  padding-inline: 1rem;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  min-height: 1rem;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-  background-color: ${(props) => {
+const StyledArrowLeft = styled(ArrowLeftIcon)`
+  width: 20px;
+  height: 16px;
+  ${(props) => {
     switch (props.$variant) {
-      case "confirm":
-        return "var(--bright-green)";
-      case "delete":
-        return "var(--rose)";
+      case "secondary":
+        return "fill: var(--primary); stroke: var(--primary);";
       default:
-        return "var(--mid-grey)";
-    }
-  }};
-  color: ${(props) => {
-    switch (props.$variant) {
-      case "confirm":
-        return "var(--black)";
-      case "delete":
-        return "var(--black)";
-      default:
-        return "var(--white)";
+        return "fill: var(--background); stroke: var(--background);";
     }
   }};
 `;
 
-export default function Button({ children, variant, onClick }) {
+const StyledArrowRight = styled(ArrowRightIcon)`
+  width: 20px;
+  height: 16px;
+  ${(props) => {
+    switch (props.$variant) {
+      case "secondary":
+        return "fill: var(--primary); stroke: var(--primary);";
+      default:
+        return "fill: var(--background); stroke: var(--background);";
+    }
+  }};
+`;
+
+const StyledButton = styled.button`
+  display: inline-flex;
+  padding: 16px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 32px;
+  &:hover {
+    ${(props) => {
+      switch (props.$variant) {
+        case "secondary":
+          return "background-color: var(--secondary-pressed)";
+        default:
+          return "background-color: var(--primary-pressed)";
+      }
+    }}
+  }
+
+  ${(props) => {
+    switch (props.$variant) {
+      case "secondary":
+        return "background-color: var(--background); border: 1px solid var(--primary); color: var(--primary)";
+      default:
+        return "background-color: var(--primary); border: 1px solid var(--background); color: var(--text-on-primary) ";
+    }
+  }}
+`;
+
+export default function Button({ children, variant, onClick, arrow }) {
   return (
     <StyledButton onClick={onClick} $variant={variant}>
+      {arrow == "left" && <StyledArrowLeft $variant={variant} />}
       {children}
+      {arrow == "right" && <StyledArrowRight $variant={variant} />}
     </StyledButton>
   );
 }
