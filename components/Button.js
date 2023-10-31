@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 const StyledArrowLeft = styled(ArrowLeftIcon)`
   width: 20px;
@@ -48,19 +49,62 @@ const StyledButton = styled.button`
   ${(props) => {
     switch (props.$variant) {
       case "secondary":
-        return "background-color: var(--background); border: 1px solid var(--primary); color: var(--primary)";
+        return "background-color: var(--background); border: 1.5px solid var(--primary); color: var(--primary)";
       default:
-        return "background-color: var(--primary); border: 1px solid var(--background); color: var(--text-on-primary) ";
+        return "background-color: var(--primary); border: 1.5px solid var(--background); color: var(--text-on-primary) ";
     }
   }}
 `;
 
-export default function Button({ children, variant, onClick, arrow }) {
+const StyledLink = styled(Link)`
+  display: inline-flex;
+  padding: 16px 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 32px;
+  &:hover {
+    ${(props) => {
+      switch (props.$variant) {
+        case "secondary":
+          return "background-color: var(--secondary-pressed)";
+        default:
+          return "background-color: var(--primary-pressed)";
+      }
+    }}
+  }
+
+  ${(props) => {
+    switch (props.$variant) {
+      case "secondary":
+        return "background-color: var(--background); border: 1.5px solid var(--primary); color: var(--primary)";
+      default:
+        return "background-color: var(--primary); border: 1.5px solid var(--background); color: var(--text-on-primary) ";
+    }
+  }}
+`;
+
+// export default function LinkButton({ href = "/", children = "Back", variant }) {
+//   return (
+//     <StyledLink $variant={variant} href={href}>
+//       {children}
+//     </StyledLink>
+//   );
+
+export default function Button({ children, variant, onClick, arrow, href }) {
   return (
-    <StyledButton onClick={onClick} $variant={variant}>
-      {arrow == "left" && <StyledArrowLeft $variant={variant} />}
-      {children}
-      {arrow == "right" && <StyledArrowRight $variant={variant} />}
-    </StyledButton>
+    <>
+      {href ? (
+        <StyledLink href={href} $variant={variant}>
+          {children}
+        </StyledLink>
+      ) : (
+        <StyledButton onClick={onClick} $variant={variant}>
+          {arrow == "left" && <StyledArrowLeft $variant={variant} />}
+          {children}
+          {arrow == "right" && <StyledArrowRight $variant={variant} />}
+        </StyledButton>
+      )}
+    </>
   );
 }
