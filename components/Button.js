@@ -84,13 +84,6 @@ const StyledLink = styled(Link)`
   }}
 `;
 
-// export default function LinkButton({ href = "/", children = "Back", variant }) {
-//   return (
-//     <StyledLink $variant={variant} href={href}>
-//       {children}
-//     </StyledLink>
-//   );
-
 export default function Button({ children, variant, onClick, arrow, href }) {
   return (
     <>

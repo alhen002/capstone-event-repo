@@ -5,8 +5,8 @@ const StyledMenuToggle = styled.div`
   padding: 5px;
   color: #63f287;
   font-size: xx-large;
-  grid-column: 3;
-  justify-self: end;
+  grid-column: 1;
+  justify-self: start;
 `;
 
 export default function MenuToggle({ menuOpen, handleToggleMenu }) {

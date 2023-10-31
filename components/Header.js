@@ -5,7 +5,6 @@ import Navigation from "./Navigation";
 import MenuToggle from "./MenuToggle";
 
 const StyledHeader = styled.header`
-  background: var(--mid-grey);
   position: fixed;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -37,14 +36,13 @@ export default function Header() {
 
   return (
     <StyledHeader>
-      <LogoWrapper>
-        <Link href="/">Event Collective</Link>
-      </LogoWrapper>
-
       <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
       {menuOpen && (
         <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
       )}
+      <LogoWrapper>
+        <Link href="/">Event Collective</Link>
+      </LogoWrapper>
     </StyledHeader>
   );
 }
