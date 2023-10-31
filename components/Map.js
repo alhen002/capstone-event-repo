@@ -37,7 +37,11 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
 
   return (
     <div
-      style={{ height: "400px" }}
+      style={{
+        height: "400px",
+        borderRadius: "12px",
+        marginTop: "2rem",
+      }}
       ref={mapContainer}
       className="map-container"
     />

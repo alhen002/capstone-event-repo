@@ -10,7 +10,9 @@ import useSWR from "swr";
 import toast from "react-hot-toast";
 import Step from "./Step";
 import ImageInput from "./FileInput";
-
+import Input from "./Input";
+import TextArea from "./Textarea";
+import Select from "./Select";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -21,7 +23,6 @@ const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 export default function EventForm() {
   const router = useRouter();
   const { mutate } = useSWR("/api/Events");
-
   const [step, setStep] = useState(0);
   const [allData, setAllData] = useState({});
   // form data
@@ -42,25 +43,21 @@ export default function EventForm() {
   };
 
   async function handleSubmit() {
-    // await createNewEvent(allData);
-    console.log(allData);
+    await createNewEvent(allData);
     setAllData({});
     mutate();
     toast.success("You've successfully created your event.");
     router.push("/");
   }
-
   function handleNext(data) {
     setAllData((prev) => ({ ...prev, ...data }));
     setStep((prev) => prev + 1);
   }
-
   function handleBackToStart() {
     setStep(0);
   }
-
   function handleUpload(image) {
-    setAllData((prev) => ({ ...prev, image }));
+    setAllData((prev) => ({ ...prev, cover: image }));
   }
 
   return (
@@ -74,27 +71,8 @@ export default function EventForm() {
         step={step}
         handleBackToStart={handleBackToStart}
       >
-        <label htmlFor="title" id="titleLabel">
-          Title*
-        </label>
-        <input
-          id="title"
-          name="title"
-          aria-labelledby="titleLabel"
-          placeholder="What is your event called?"
-          required
-        />
-        <label htmlFor="description" id="descriptionLabel">
-          Description*
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          aria-labelledby="descriptionLabel"
-          placeholder="Describe your event here"
-          rows="5"
-          required
-        />
+        <Input title="Title" required />
+        <TextArea title="Description" required />
       </Step>
       <Step
         index={1}
@@ -104,25 +82,19 @@ export default function EventForm() {
         step={step}
         handleBackToStart={handleBackToStart}
       >
-        <label htmlFor="category" id="categoryLabel">
-          Category*
-        </label>
-        <select
-          id="category"
-          name="category"
-          aria-labelledby="categoryLabel"
+        <Select
           required
-        >
-          <option value=""> --Please pick a category-- </option>
-          <option value="Nightlife & Clubs">Nightlife & Clubs</option>
-          <option value="Culture & Arts">Culture & Arts</option>
-          <option value="Activities & Games">Activities & Games</option>
-          <option value="Live Shows"> Live Shows</option>
-          <option value="Community Meet-up">Community Meet-up</option>
-        </select>
+          title="Category"
+          options={[
+            "Nightlife & Clubs",
+            "Culture & Arts",
+            "Activities & Games",
+            "Live Shows",
+            "Community Meet-up",
+          ]}
+        />
         <ImageInput handleUpload={handleUpload} />
       </Step>
-
       <Step
         index={2}
         legend="Date & Time"
@@ -131,27 +103,8 @@ export default function EventForm() {
         step={step}
         handleBackToStart={handleBackToStart}
       >
-        <label htmlFor="startDateTime" id="startDateTimeLabel">
-          Start*
-        </label>
-        <input
-          id="startDateTime"
-          name="startDateTime"
-          aria-labelledby="startDateTimeLabel"
-          type="datetime-local"
-          min={today}
-          required
-        />
-        <label htmlFor="endDateTime" id="endDateTimeLabel">
-          End*
-        </label>
-        <input
-          id="endDateTime"
-          name="endDateTime"
-          aria-labelledby="endDateTimeLabel"
-          type="datetime-local"
-          required
-        />
+        <Input title="Start Date" type="datetime-local" required min={today} />
+        <Input title="End Date" type="datetime-local" required />
       </Step>
       <Step
         legend="Location"
@@ -161,58 +114,20 @@ export default function EventForm() {
         step={step}
         handleBackToStart={handleBackToStart}
       >
-        <label htmlFor="address" id="addressLabel">
-          Address*
-        </label>
         <AddressAutofill
           accessToken={mapboxAccessToken}
           onRetrieve={handleRetrievedAutofill}
         >
-          <input
-            id="address"
-            aria-labelledby="addressLabel"
-            placeholder="Street"
-            autoComplete="street-address"
-            required
-          />
+          <Input required autoComplete="street-address" title="Address" />
         </AddressAutofill>
-        <label htmlFor="city" id="cityLabel">
-          City*
-        </label>
-        <input
-          id="city"
-          name="city"
-          aria-labelledby="cityLabel"
-          placeholder="Where is your event happening?"
-          autoComplete="address-level2"
-          required
-        />
-        <label htmlFor="postalCode" id="postalCodeLabel">
-          PLZ*
-        </label>
-        <input
-          id="postalCode"
-          name="postalCode"
-          aria-labelledby="postalCodeLabel"
-          autoComplete="postal-code"
-          required
-        />
-        <label htmlFor="country" id="countryLabel">
-          Country*
-        </label>
-        <input
-          id="country"
-          name="country"
-          aria-labelledby="countryLabel"
-          autoComplete="country-name"
-          required
-        />
+        <Input required autoComplete="address-level2" title="City" />
+        <Input required autoComplete="postal-code" title="Postal Code" />
+        <Input required autoComplete="country-name" title="Country" />
         <Map
           posLng={allData?.coordinates?.lng}
           posLat={allData?.coordinates?.lat}
         />
       </Step>
-
       <Step
         index={4}
         isVisible={step === 4}

@@ -2,8 +2,9 @@ import styled from "styled-components";
 import Button from "../Button";
 
 const StyledForm = styled.form`
-  padding-top: 3rem;
+  margin-top: 3rem;
   margin-inline: auto;
+  max-width: 36rem;
   display: ${(props) => {
     switch (props.$display) {
       case true:
@@ -14,25 +15,26 @@ const StyledForm = styled.form`
         return "none";
     }
   }};
-  max-width: 36rem;
-  padding-inline: 1rem;
-  flex-direction: column;
 `;
 const StyledFieldset = styled.fieldset`
   border: none;
   display: flex;
+  margin-top: 3rem;
+  align-items: center;
   flex-direction: column;
-  padding: 1rem;
-  display: flex;
 `;
 
 const StyledLegend = styled.legend`
+  font-size: 2rem;
+  color: var(--primary);
   font-size: 2rem;
 `;
 
 const StyledContainer = styled.div`
   display: flex;
+  justify-content: center;
   gap: 2rem;
+  margin-top: 2rem;
 `;
 
 export default function Step({
@@ -65,7 +67,7 @@ export default function Step({
       </StyledFieldset>
       <StyledContainer>
         {step > 0 && <Button onClick={handleBackToStart}>Back to Start</Button>}
-        {index !== 4 && <Button>Next</Button>}
+        {index !== 4 && <Button variant="confirm">Next</Button>}
       </StyledContainer>
     </StyledForm>
   );
