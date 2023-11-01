@@ -36,7 +36,6 @@ export default function Step({
   legend,
   index,
   handleBack,
-  handleSubmit,
   step,
 }) {
   return (

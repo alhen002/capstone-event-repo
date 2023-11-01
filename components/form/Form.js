@@ -12,6 +12,8 @@ import FileInput from "./FileInput";
 import Input from "./Input";
 import TextArea from "./Textarea";
 import Select from "./Select";
+import Preview from "./Preview";
+
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -25,7 +27,10 @@ export default function EventForm() {
   const { mutate } = useSWR("/api/events");
   const [step, setStep] = useState(0);
   const [allData, setAllData] = useState({});
-  // form data
+  const [allErrors, setAllErrors] = useState({});
+
+
+
   const today = new Date().toISOString().slice(0, -8);
 
     const handleRetrievedAutofill = (response) => {
@@ -64,7 +69,7 @@ export default function EventForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => e.preventDefault()}>
       <ProgressBar currentStep={step} />
       <Step
         index={0}
@@ -139,11 +144,10 @@ export default function EventForm() {
         handleNext={handleNext}
         handleBack={handleBack}
         legend="Check your Data"
-        step={step}
         handleSubmit={handleSubmit}
+        step={step}
       >
-          <p>Confirm</p>
-        <pre>{JSON.stringify(allData, null, 2)}</pre>
+          <Preview allData={allData} />
       </Step>
     </form>
   );
