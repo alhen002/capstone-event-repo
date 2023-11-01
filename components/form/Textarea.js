@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {useState} from "react";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -28,22 +29,33 @@ const StyledTextarea = styled.textarea`
   width: 100%;
 `;
 
-export default function TextArea({ title, required }) {
+export default function TextArea({ label,name, required, handleSetAllData }) {
+    const [value, setValue] = useState("")
+
+    function handleChange(event) {
+        setValue(event.target.value);
+        handleSetAllData(
+            {[name]: event.target.value}
+        )
+    }
+
   return (
     <StyledContainer>
       <StyledLabel
-        htmlFor={title.toLowerCase()}
-        id={`${title.toLowerCase()}_label`}
+        htmlFor={label.toLowerCase()}
+        id={`${label.toLowerCase()}_label`}
       >
-        {title}
+        {label}
         <span>{required && `*`}</span>
       </StyledLabel>
       <StyledTextarea
-        id={title.toLowerCase()}
-        placeholder={title}
+          value={value}
+          onChange={handleChange}
+        id={label.toLowerCase()}
+        placeholder={label}
         rows="5"
-        name={title.toLowerCase()}
-        aria-labelledby={`${title.toLowerCase()}_label`}
+        name={name}
+        aria-labelledby={`${label.toLowerCase()}_label`}
       />
     </StyledContainer>
   );

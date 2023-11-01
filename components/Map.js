@@ -1,7 +1,14 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "!mapbox-gl";
 import { useRef, useState, useEffect } from "react";
-import { set } from "mongoose";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  height: 400px;
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  margin-top: 2rem;
+`;
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -14,17 +21,20 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
   const marker = useRef(null);
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
-
+/*    if (map.current) map.current.resize()*/
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
       center: [lng, lat],
       zoom: zoom,
-    });
+    })
 
-    marker.current = new mapboxgl.Marker({
-      color: "blue",
+      map.current.on('load', function () {
+          map.current.resize();
+      });
+
+      marker.current = new mapboxgl.Marker({
+      color: `var(--primary)`,
       draggable: false,
     });
   }, [lat, lng, zoom]);
@@ -36,14 +46,8 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
   }, [posLng, posLat]);
 
   return (
-    <div
-      style={{
-        height: "400px",
-        borderRadius: "12px",
-        marginTop: "2rem",
-      }}
+    <StyledContainer
       ref={mapContainer}
-      className="map-container"
     />
   );
 }

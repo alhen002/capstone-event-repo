@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { createNewEvent } from "@/lib/api";
-import Button from "components/Button.js";
 import { useState } from "react";
-import ProgressBar from "./EventFormProgressBar";
+import ProgressBar from "./Progressbar";
 import dynamic from "next/dynamic";
 import Map from "../Map";
 import useSWR from "swr";
 import toast from "react-hot-toast";
 import Step from "./Step";
-import ImageInput from "./FileInput";
+import FileInput from "./FileInput";
 import Input from "./Input";
 import TextArea from "./Textarea";
 import Select from "./Select";
+
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -22,14 +22,13 @@ const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 export default function EventForm() {
   const router = useRouter();
-  const { mutate } = useSWR("/api/Events");
+  const { mutate } = useSWR("/api/events");
   const [step, setStep] = useState(0);
   const [allData, setAllData] = useState({});
   // form data
   const today = new Date().toISOString().slice(0, -8);
 
-  // handle functions
-  const handleRetrievedAutofill = (response) => {
+    const handleRetrievedAutofill = (response) => {
     const feature = response.features[0];
     setAllData((prev) => {
       return {
@@ -42,26 +41,30 @@ export default function EventForm() {
     });
   };
 
-  async function handleSubmit() {
+  async function handleSubmit(event) {
+      event.preventDefault();
     await createNewEvent(allData);
     setAllData({});
     mutate();
     toast.success("You've successfully created your event.");
     router.push("/");
   }
-  function handleNext(data) {
+  function handleSetAllData(data) {
     setAllData((prev) => ({ ...prev, ...data }));
-    setStep((prev) => prev + 1);
   }
-  function handleBackToStart() {
-    setStep(0);
+  function handleBack() {
+    setStep(prev => prev -1 );
   }
+  function handleNext() {
+      setStep((prev) => prev + 1);
+  }
+
   function handleUpload(image) {
     setAllData((prev) => ({ ...prev, cover: image }));
   }
 
   return (
-    <section>
+    <form onSubmit={handleSubmit}>
       <ProgressBar currentStep={step} />
       <Step
         index={0}
@@ -69,10 +72,10 @@ export default function EventForm() {
         isVisible={step === 0}
         legend="General Information"
         step={step}
-        handleBackToStart={handleBackToStart}
+        handleBack={handleBack}
       >
-        <Input title="Title" required />
-        <TextArea title="Description" required />
+        <Input label="Title" required handleSetAllData={handleSetAllData} name="title"/>
+        <TextArea label="Description" name="description" required handleSetAllData={handleSetAllData}/>
       </Step>
       <Step
         index={1}
@@ -80,11 +83,13 @@ export default function EventForm() {
         legend="Details"
         isVisible={step === 1}
         step={step}
-        handleBackToStart={handleBackToStart}
+        handleBack={handleBack}
       >
         <Select
           required
-          title="Category"
+          label="Category"
+          name="category"
+          handleSetAllData={handleSetAllData}
           options={[
             "Nightlife & Clubs",
             "Culture & Arts",
@@ -93,7 +98,7 @@ export default function EventForm() {
             "Community Meet-up",
           ]}
         />
-        <ImageInput handleUpload={handleUpload} />
+        <FileInput handleUpload={handleUpload} required/>
       </Step>
       <Step
         index={2}
@@ -101,10 +106,10 @@ export default function EventForm() {
         handleNext={handleNext}
         isVisible={step === 2}
         step={step}
-        handleBackToStart={handleBackToStart}
+        handleBack={handleBack}
       >
-        <Input title="Start Date" type="datetime-local" required min={today} />
-        <Input title="End Date" type="datetime-local" required />
+        <Input label="Start Date" name="startDateTime" type="datetime-local" required min={today} handleSetAllData={handleSetAllData} />
+        <Input label="End Date" name="endDateTime" type="datetime-local" required handleSetAllData={handleSetAllData}/>
       </Step>
       <Step
         legend="Location"
@@ -112,17 +117,17 @@ export default function EventForm() {
         handleNext={handleNext}
         isVisible={step === 3}
         step={step}
-        handleBackToStart={handleBackToStart}
+        handleBack={handleBack}
       >
         <AddressAutofill
           accessToken={mapboxAccessToken}
           onRetrieve={handleRetrievedAutofill}
         >
-          <Input required autoComplete="street-address" title="Address" />
+          <Input required autoComplete="street-address" label="Address" name="address" handleSetAllData={handleSetAllData}/>
         </AddressAutofill>
-        <Input required autoComplete="address-level2" title="City" />
-        <Input required autoComplete="postal-code" title="Postal Code" />
-        <Input required autoComplete="country-name" title="Country" />
+        <Input required autoComplete="address-level2" label="City" name="city" handleSetAllData={handleSetAllData}/>
+        <Input required autoComplete="postal-code" label="Postal Code" name="postalCode" handleSetAllData={handleSetAllData}/>
+        <Input required autoComplete="country-name" label="Country" name="country" handleSetAllData={handleSetAllData}/>
         <Map
           posLng={allData?.coordinates?.lng}
           posLat={allData?.coordinates?.lat}
@@ -132,15 +137,14 @@ export default function EventForm() {
         index={4}
         isVisible={step === 4}
         handleNext={handleNext}
+        handleBack={handleBack}
         legend="Check your Data"
         step={step}
-        handleBackToStart={handleBackToStart}
+        handleSubmit={handleSubmit}
       >
+          <p>Confirm</p>
         <pre>{JSON.stringify(allData, null, 2)}</pre>
-        <Button variant="confirm" onClick={handleSubmit}>
-          Submit
-        </Button>
       </Step>
-    </section>
+    </form>
   );
 }

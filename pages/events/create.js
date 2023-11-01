@@ -1,4 +1,4 @@
-import EventForm from "@/components/Form/Form";
+import EventForm from "@/components/form/Form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 

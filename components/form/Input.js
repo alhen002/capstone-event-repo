@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {useState} from "react";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -26,23 +27,34 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
-export default function Input({ title, type, required, min, autoComplete }) {
+export default function Input({ label, name, type, required, min, autoComplete, handleSetAllData }) {
+    const [value, setValue] = useState("");
+
+    function handleChange(event) {
+        setValue(event.target.value);
+        handleSetAllData(
+            {[name]: event.target.value}
+        )
+    }
+
   return (
     <StyledContainer>
       <StyledLabel
-        htmlFor={title.toLowerCase()}
-        id={`${title.toLowerCase()}_label`}
+        htmlFor={label.toLowerCase()}
+        id={`${label.toLowerCase()}_label`}
       >
-        {title}
+        {label}
         <span>{required && `*`}</span>
       </StyledLabel>
       <StyledInput
         type={type}
         min={min}
-        placeholder={title}
-        id={title.toLowerCase()}
-        name={title.toLowerCase()}
-        aria-labelledby={`${title.toLowerCase()}_label`}
+        placeholder={label}
+        id={label.toLowerCase()}
+        name={name}
+        aria-labelledby={`${label.toLowerCase()}_label`}
+        value={value}
+        onChange={handleChange}
         required={required}
         autoComplete={autoComplete}
       />

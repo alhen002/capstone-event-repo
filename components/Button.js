@@ -30,7 +30,6 @@ const StyledButton = styled.button`
     }
   }};
 `;
-
 export default function Button({ children, variant, onClick }) {
   return (
     <StyledButton onClick={onClick} $variant={variant}>
