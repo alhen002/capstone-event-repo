@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navigation from "./Navigation";
 import MenuToggle from "./MenuToggle";
 import { useSession } from "next-auth/react";
+import SearchBar from "./SearchBar";
 
 const StyledHeader = styled.header`
   position: relative;
@@ -42,7 +43,6 @@ export default function Header() {
 
   function handleToggleMenu() {
     setMenuOpen(!menuOpen);
-    // setMenuOpen((prevMenuOpen) => !prevMenuOpen);
   }
 
   function handleMenuClose() {
@@ -63,6 +63,7 @@ export default function Header() {
             <Link href="/">Hi {session?.user.name}</Link>
           </StyledText>
         )}
+        <SearchBar />
       </StyledHeader>
       {menuOpen && (
         <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />

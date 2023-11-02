@@ -30,7 +30,7 @@ const StyledArrowRight = styled(ArrowRightIcon)`
 
 const StyledButton = styled.button`
   display: inline-flex;
-  padding: 16px 18px;
+  padding: 8px 9px;
   justify-content: center;
   align-items: center;
   gap: 8px;

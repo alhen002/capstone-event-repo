@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
+import SearchIcon from "./ui/Icons/Search";
 
 const StyledForm = styled.form`
   display: flex;
@@ -10,9 +11,24 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 
+const SearchBarContainer = styled.div`
+  place-self: end;
+  align-self: center;
+  grid-column: 3;
+`;
+
 export default function SearchBar() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  function handleToggleSearch() {
+    setSearchOpen(!searchOpen);
+  }
+
+  function handleSearchClose() {
+    setSearchOpen(false);
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -21,16 +37,29 @@ export default function SearchBar() {
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
-      <label>
-        Keyword:
-        <input
-          placeholder="Search Title"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-      </label>
-      <Button variant="confirm">Search</Button>
-    </StyledForm>
+    <SearchBarContainer>
+      {searchOpen ? (
+        <StyledForm onSubmit={handleSubmit}>
+          <label>
+            <input
+              placeholder="Search..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </label>
+          {inputValue.length == 0 ? (
+            <Button onClick={handleToggleSearch}>
+              <SearchIcon />
+            </Button>
+          ) : (
+            <Button variant="confirm">Search</Button>
+          )}
+        </StyledForm>
+      ) : (
+        <Button onClick={handleToggleSearch}>
+          <SearchIcon />
+        </Button>
+      )}
+    </SearchBarContainer>
   );
 }

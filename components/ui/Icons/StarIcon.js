@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { StarIcon } from "@heroicons/react/24/outline";
 
 const StyledStarIcon = styled(StarIcon)`
-  height: 40px;
-  width: 40px;
+  height: 24px;
+  width: 24px;
   ${(props) => {
     switch (props.$variant) {
       case "filled":
