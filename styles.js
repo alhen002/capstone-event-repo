@@ -25,6 +25,7 @@ export default createGlobalStyle`
 
 [data-theme='light'] {
   --primary: #6636E4;
+  --text-accent: #2F2F2F;
   --primary-pressed: #4D23C4; 
   --secondary-pressed: #EFEAFC;
   --text-on-primary: #FCFAFF;
@@ -38,6 +39,7 @@ export default createGlobalStyle`
 } 
 [data-theme='dark'] {
   --primary: #D7C3FA;
+  --text-accent: #FCFAFF;
   --primary-pressed: #AD92EF;
   --secondary-pressed: #39383B;
   --text-on-primary: #332649;

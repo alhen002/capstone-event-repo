@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledMain = styled.main`
   height: 100vh;
   padding-block: 0;
-  padding-inline: 1rem;
+
   background-color: var(--background);
 `;
 

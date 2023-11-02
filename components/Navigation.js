@@ -12,18 +12,13 @@ const StyledContainer = styled.div`
   z-index: 90;
   margin: 0;
   position: absolute;
-  top: 0;
+  top: 80px;
   height: 100vh;
   width: 100vw;
   display: grid;
   place-items: left;
   padding: 2rem;
   background: var(--background);
-`;
-const StyledMenuContainer = styled.div`
-  position: absolute;
-  left: 15px;
-  top: 15px;
 `;
 
 const StyledIconContainer = styled.div`
@@ -65,13 +60,10 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
     <StyledContainer>
       <StyledNavigation>
         <StyledLink href="/" $active={router.pathname === "/"}>
-          <div onClick={handleMenuClose}>Home</div>
+          <div onClick={handleMenuClose}>home</div>
         </StyledLink>
         {session?.user && (
           <>
-            <StyledLink href="/" $active={router.pathname === "/"}>
-              <div onClick={handleMenuClose}>home</div>
-            </StyledLink>
             <StyledLink
               href="/events/create"
               $active={router.pathname === "/events/create"}

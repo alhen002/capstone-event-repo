@@ -7,8 +7,8 @@ import { toggleAttending } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { useState } from "react";
-import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/outline";
+import ChevronRight from "./ui/Icons/ChevronRight";
 
 const StyledEventCard = styled.div`
   align-items: flex-start;
@@ -68,14 +68,6 @@ const StyledEventCardTitle = styled.h2`
   font-weight: 600;
   line-height: 32px;
   color: var(--text-on-primary);
-`;
-const StyledChevronRight = styled(ChevronRightIcon)`
-  height: 44px;
-  width: 44px;
-  stroke: var(--background);
-  position: absolute;
-  right: 12px;
-  bottom: 16px;
 `;
 
 const StyledStarIcon = styled(StarIcon)`
@@ -137,7 +129,7 @@ export default function EventCard({ event = {}, mutate }) {
             <StyledEventCardDate>{`${day}. ${month}`}</StyledEventCardDate>
           </StyledInfoContainer>
           <StyledEventCardTitle>{event.title}</StyledEventCardTitle>
-          <StyledChevronRight />
+          <ChevronRight />
         </StyledEventCardTextContainer>
       </Link>
     </StyledEventCard>
