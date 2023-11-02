@@ -21,19 +21,19 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
   const marker = useRef(null);
 
   useEffect(() => {
-/*    if (map.current) map.current.resize()*/
+    if (map.current) map.current.resize();
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
       center: [lng, lat],
       zoom: zoom,
-    })
+    }).resize();
 
-      map.current.on('load', function () {
-          map.current.resize();
-      });
+    map.current.on("load", function () {
+      map.current.resize();
+    });
 
-      marker.current = new mapboxgl.Marker({
+    marker.current = new mapboxgl.Marker({
       color: `var(--primary)`,
       draggable: false,
     });
@@ -45,9 +45,5 @@ export default function Map({ posLng = -70.9, posLat = 42.35 }) {
     marker.current.addTo(map.current);
   }, [posLng, posLat]);
 
-  return (
-    <StyledContainer
-      ref={mapContainer}
-    />
-  );
+  return <StyledContainer ref={mapContainer} />;
 }

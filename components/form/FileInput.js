@@ -1,8 +1,9 @@
-import {uploadImage} from "@/lib/api";
+import { uploadImage } from "@/lib/api";
 import { useState } from "react";
 import Loading from "@/components/Loading";
 import styled from "styled-components";
 import Image from "next/image";
+import Button from "../Button";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -12,7 +13,6 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 36rem;
 `;
-
 const ImageContainer = styled.div`
   max-width: 36rem;
   display: grid;
@@ -22,31 +22,27 @@ const ImageContainer = styled.div`
   border-radius: 0.75rem;
   border: 1px solid var(--primary);
   position: relative;
-`
+`;
 const StyledImage = styled(Image)`
   object-fit: cover;
-`
-const StyledButton = styled.button`
+  z-index: -1;
+`;
+
+const StyledParagraph = styled.p`
   position: absolute;
-  z-index: 99;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  `
-const StyledParagraph = styled.p`
-    position: absolute;
-    z-index: 99;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: var(--text-accent);
-  `
+  color: var(--text-accent);
+`;
+
 const StyledLoading = styled(Loading)`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  `
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 const StyledInput = styled.input`
   padding: 0.75rem;
   font-size: 1rem;
@@ -97,9 +93,26 @@ export default function FileInput({ handleUpload, required }) {
 
       <ImageContainer>
         {isLoading && <StyledLoading />}
-        {!cover && !isLoading && <StyledParagraph>Upload a cover image</StyledParagraph>}
-        {cover && <StyledButton onClick={handleDelete}>Remove</StyledButton>}
-        {cover && <StyledImage alt="new-cover-image" src={cover.url} fill={true}/>}
+        {!cover && !isLoading && (
+          <StyledParagraph>Upload a cover image</StyledParagraph>
+        )}
+        {cover && (
+          <Button
+            style={{ position: "absolute", zIndex: "99" }}
+            variant="delete"
+            onClick={handleDelete}
+          >
+            Remove
+          </Button>
+        )}
+        {cover && (
+          <StyledImage
+            alt="new-cover-image"
+            src={cover.url}
+            fill={true}
+            quality={30}
+          />
+        )}
       </ImageContainer>
     </StyledContainer>
   );

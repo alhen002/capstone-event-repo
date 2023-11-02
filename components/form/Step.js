@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import Button from "../Button";
 
-const StyledFieldset = styled.fieldset`
+const StyledForm = styled.form`
   margin-top: 3rem;
-  border: none;
   margin-inline: auto;
   max-width: 36rem;
   display: ${(props) => {
@@ -16,6 +15,10 @@ const StyledFieldset = styled.fieldset`
         return "none";
     }
   }};
+`;
+
+const StyledFieldSet = styled.fieldset`
+  border: none;
 `;
 
 const StyledLegend = styled.legend`
@@ -35,18 +38,28 @@ export default function Step({
   handleNext,
   legend,
   index,
-  handleBack,
-  step,
+  handleCreateEvent,
 }) {
+  function handleSubmit(event) {
+    event.preventDefault();
+    handleNext();
+  }
+
   return (
-      <StyledFieldset $display={isVisible}>
+    <StyledForm onSubmit={handleSubmit} $display={isVisible}>
+      <StyledFieldSet>
         {legend && <StyledLegend>{legend}</StyledLegend>}
         {children}
-          <StyledContainer>
-              {step > 0 && <Button onClick={handleBack}>Back</Button>}
-              {index !== 4 && <Button onClick={handleNext} variant="confirm">Next</Button>}
-              {index === 4 && <Button onClick={(event) => handleSubmit(event)} variant="confirm">Submit</Button>}
-          </StyledContainer>
-      </StyledFieldset>
+        <StyledContainer>
+          {index !== 4 ? (
+            <Button variant="confirm">Next</Button>
+          ) : (
+            <Button variant="confirm" onClick={handleCreateEvent}>
+              Create
+            </Button>
+          )}
+        </StyledContainer>
+      </StyledFieldSet>
+    </StyledForm>
   );
 }

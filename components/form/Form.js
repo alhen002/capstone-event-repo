@@ -12,8 +12,7 @@ import FileInput from "./FileInput";
 import Input from "./Input";
 import TextArea from "./Textarea";
 import Select from "./Select";
-import Preview from "./Preview";
-
+import EventPreview from "./EventPreview";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -27,13 +26,10 @@ export default function EventForm() {
   const { mutate } = useSWR("/api/events");
   const [step, setStep] = useState(0);
   const [allData, setAllData] = useState({});
-  const [allErrors, setAllErrors] = useState({});
-
-
 
   const today = new Date().toISOString().slice(0, -8);
 
-    const handleRetrievedAutofill = (response) => {
+  const handleRetrievedAutofill = (response) => {
     const feature = response.features[0];
     setAllData((prev) => {
       return {
@@ -46,8 +42,7 @@ export default function EventForm() {
     });
   };
 
-  async function handleSubmit(event) {
-      event.preventDefault();
+  async function handleCreateEvent() {
     await createNewEvent(allData);
     setAllData({});
     mutate();
@@ -57,19 +52,20 @@ export default function EventForm() {
   function handleSetAllData(data) {
     setAllData((prev) => ({ ...prev, ...data }));
   }
-  function handleBack() {
-    setStep(prev => prev -1 );
+
+  function handleBackToStart() {
+    setStep(0);
+    setAllData({});
   }
   function handleNext() {
-      setStep((prev) => prev + 1);
+    setStep((prev) => prev + 1);
   }
-
   function handleUpload(image) {
     setAllData((prev) => ({ ...prev, cover: image }));
   }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <section>
       <ProgressBar currentStep={step} />
       <Step
         index={0}
@@ -77,10 +73,21 @@ export default function EventForm() {
         isVisible={step === 0}
         legend="General Information"
         step={step}
-        handleBack={handleBack}
+        handleBackToStart={handleBackToStart}
+        allData={allData}
       >
-        <Input label="Title" required handleSetAllData={handleSetAllData} name="title"/>
-        <TextArea label="Description" name="description" required handleSetAllData={handleSetAllData}/>
+        <Input
+          label="Title"
+          required
+          handleSetAllData={handleSetAllData}
+          name="title"
+        />
+        <TextArea
+          label="Description"
+          name="description"
+          required
+          handleSetAllData={handleSetAllData}
+        />
       </Step>
       <Step
         index={1}
@@ -88,7 +95,7 @@ export default function EventForm() {
         legend="Details"
         isVisible={step === 1}
         step={step}
-        handleBack={handleBack}
+        handleBackToStart={handleBackToStart}
       >
         <Select
           required
@@ -103,7 +110,7 @@ export default function EventForm() {
             "Community Meet-up",
           ]}
         />
-        <FileInput handleUpload={handleUpload} required/>
+        <FileInput handleUpload={handleUpload} required />
       </Step>
       <Step
         index={2}
@@ -111,10 +118,23 @@ export default function EventForm() {
         handleNext={handleNext}
         isVisible={step === 2}
         step={step}
-        handleBack={handleBack}
+        handleBackToStart={handleBackToStart}
       >
-        <Input label="Start Date" name="startDateTime" type="datetime-local" required min={today} handleSetAllData={handleSetAllData} />
-        <Input label="End Date" name="endDateTime" type="datetime-local" required handleSetAllData={handleSetAllData}/>
+        <Input
+          label="Start Date"
+          name="startDateTime"
+          type="datetime-local"
+          required
+          min={today}
+          handleSetAllData={handleSetAllData}
+        />
+        <Input
+          label="End Date"
+          name="endDateTime"
+          type="datetime-local"
+          required
+          handleSetAllData={handleSetAllData}
+        />
       </Step>
       <Step
         legend="Location"
@@ -122,17 +142,41 @@ export default function EventForm() {
         handleNext={handleNext}
         isVisible={step === 3}
         step={step}
-        handleBack={handleBack}
+        handleBackToStart={handleBackToStart}
       >
         <AddressAutofill
           accessToken={mapboxAccessToken}
           onRetrieve={handleRetrievedAutofill}
         >
-          <Input required autoComplete="street-address" label="Address" name="address" handleSetAllData={handleSetAllData}/>
+          <Input
+            required
+            autoComplete="street-address"
+            label="Address"
+            name="address"
+            handleSetAllData={handleSetAllData}
+          />
         </AddressAutofill>
-        <Input required autoComplete="address-level2" label="City" name="city" handleSetAllData={handleSetAllData}/>
-        <Input required autoComplete="postal-code" label="Postal Code" name="postalCode" handleSetAllData={handleSetAllData}/>
-        <Input required autoComplete="country-name" label="Country" name="country" handleSetAllData={handleSetAllData}/>
+        <Input
+          required
+          autoComplete="address-level2"
+          label="City"
+          name="city"
+          handleSetAllData={handleSetAllData}
+        />
+        <Input
+          required
+          autoComplete="postal-code"
+          label="Postal Code"
+          name="postalCode"
+          handleSetAllData={handleSetAllData}
+        />
+        <Input
+          required
+          autoComplete="country-name"
+          label="Country"
+          name="country"
+          handleSetAllData={handleSetAllData}
+        />
         <Map
           posLng={allData?.coordinates?.lng}
           posLat={allData?.coordinates?.lat}
@@ -142,13 +186,13 @@ export default function EventForm() {
         index={4}
         isVisible={step === 4}
         handleNext={handleNext}
-        handleBack={handleBack}
-        legend="Check your Data"
-        handleSubmit={handleSubmit}
+        handleBackToStart={handleBackToStart}
+        legend="Your new Event"
+        handleCreateEvent={handleCreateEvent}
         step={step}
       >
-          <Preview allData={allData} />
+        <EventPreview event={allData} />
       </Step>
-    </form>
+    </section>
   );
 }
