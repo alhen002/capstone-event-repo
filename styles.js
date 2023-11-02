@@ -62,7 +62,7 @@ export default createGlobalStyle`
     background: var(--background);
     min-height: 100vh;
     line-height: 1.5;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
   }
 
   input,
