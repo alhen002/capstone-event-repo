@@ -15,6 +15,7 @@ import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
 import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
+import Star from "./ui/icons/StarIcon";
 import Label from "./ui/Label";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -205,6 +206,11 @@ export default function EventDetail({ event = {} }) {
                 alt={event.title}
                 fill={true}
               />
+              {isAttending ? (
+                <Star onClick={handleToggleAttending} variant="filled" />
+              ) : (
+                <Star onClick={handleToggleAttending} />
+              )}
             </StyledImageContainer>
             <StyledEventInfoContainer>
               <StyledContentBox>
