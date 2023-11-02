@@ -31,10 +31,8 @@ const StyledCategoryHeadline = styled.h2`
 const CardContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
   overflow-x: scroll;
   width: 100%;
-  z-index: 10;
 `;
 
 export default function CategoryHighlight({ category, mutate }) {

@@ -9,12 +9,14 @@ import useSWR from "swr";
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/24/outline";
 import ChevronRight from "./ui/Icons/ChevronRight";
+import Star from "./ui/Icons/StarIcon";
 
 const StyledEventCard = styled.div`
   align-items: flex-start;
   min-height: 9rem;
   width: 288px;
   flex-shrink: 0;
+  margin: 1rem;
 `;
 
 const StyledEventCardImageContainer = styled.div`
@@ -107,11 +109,7 @@ export default function EventCard({ event = {}, mutate }) {
       <StyledEventCardImageContainer>
         {session?.id && (
           <button onClick={handleToggleAttending}>
-            {isAttending ? (
-              <StyledStarIcon />
-            ) : (
-              <StyledStarIcon $variant={"filled"} />
-            )}
+            {isAttending ? <Star variant={"filled"} /> : <Star />}
           </button>
         )}
 
