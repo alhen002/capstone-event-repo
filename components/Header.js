@@ -41,7 +41,8 @@ export default function Header() {
   const { data: session } = useSession();
 
   function handleToggleMenu() {
-    setMenuOpen((prevMenuOpen) => !prevMenuOpen);
+    setMenuOpen(!menuOpen);
+    // setMenuOpen((prevMenuOpen) => !prevMenuOpen);
   }
 
   function handleMenuClose() {
@@ -49,21 +50,23 @@ export default function Header() {
   }
 
   return (
-    <StyledHeader>
-      <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
+    <>
+      <StyledHeader>
+        <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
+
+        {!session?.user ? (
+          <LogoWrapper>
+            <Link href="/">Event Collective</Link>
+          </LogoWrapper>
+        ) : (
+          <StyledText>
+            <Link href="/">Hi {session?.user.name}</Link>
+          </StyledText>
+        )}
+      </StyledHeader>
       {menuOpen && (
         <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
-      )}
-
-      {!session?.user ? (
-        <LogoWrapper>
-          <Link href="/">Event Collective</Link>
-        </LogoWrapper>
-      ) : (
-        <StyledText>
-          <Link href="/">Hi {session?.user.name}</Link>
-        </StyledText>
-      )}
-    </StyledHeader>
+      )}{" "}
+    </>
   );
 }

@@ -41,7 +41,7 @@ const StyledInfoContainer = styled.div`
   align-items: flex-start;
   gap: 10px;
 `;
-const StyledEventCardCity = styled.span`
+const StyledEventCardCity = styled.p`
   font-family: Inter;
   font-size: 18px;
   font-style: normal;

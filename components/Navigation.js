@@ -8,15 +8,15 @@ import Greeting from "./Greeting";
 import MenuToggle from "./MenuToggle";
 
 const StyledContainer = styled.div`
-  background: #fff;
-  z-index: 100;
+  background: var(--background);
+  z-index: 90;
   margin: 0;
   position: absolute;
   top: 0;
   height: 100vh;
   width: 100vw;
   display: grid;
-  place-items: center;
+  place-items: left;
   padding: 2rem;
   background: var(--background);
 `;
@@ -37,7 +37,7 @@ const StyledIconContainer = styled.div`
 const StyledNavigation = styled.nav`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   display: flex;
   gap: 2rem;
 `;
@@ -50,11 +50,10 @@ const StyledIcon = styled.svg`
 
 const StyledLink = styled(Link)`
   color: var(--primary);
-  font-weight: bold;
   text-decoration: ${(props) => (props.$active ? "underline" : "none")};
   text-decoration-thickness: 3px;
   text-decoration-color: ${(props) =>
-    props.$active ? "var(--bright-green)" : "var(--black)"};
+    props.$active ? "var(--primary)" : "var(--black)"};
 `;
 
 export default function Navigation({ handleMenuClose, menuOpen }) {
@@ -64,34 +63,32 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
 
   return (
     <StyledContainer>
-      <StyledMenuContainer>
-        <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleMenuClose} />
-      </StyledMenuContainer>
-
       <StyledNavigation>
-        <Greeting user={session?.user} />
         <StyledLink href="/" $active={router.pathname === "/"}>
           <div onClick={handleMenuClose}>Home</div>
         </StyledLink>
         {session?.user && (
           <>
+            <StyledLink href="/" $active={router.pathname === "/"}>
+              <div onClick={handleMenuClose}>home</div>
+            </StyledLink>
             <StyledLink
               href="/events/create"
               $active={router.pathname === "/events/create"}
             >
-              <div onClick={handleMenuClose}>Create</div>
+              <div onClick={handleMenuClose}>create</div>
             </StyledLink>
             <StyledLink
               href="/events/ownedEvents"
               $active={router.pathname === "/events/ownedEvents"}
             >
-              <div onClick={handleMenuClose}>Owned Events</div>
+              <div onClick={handleMenuClose}>owned events</div>
             </StyledLink>
             <StyledLink
               href="/events/attendingEvents"
               $active={router.pathname === "/events/attendingEvents"}
             >
-              <div onClick={handleMenuClose}>Attending Events</div>
+              <div onClick={handleMenuClose}>attending events</div>
             </StyledLink>
           </>
         )}
@@ -102,10 +99,10 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
               signIn("github");
             }}
           >
-            Login
+            login
           </Button>
         ) : (
-          <Button onClick={() => signOut()}>Logout</Button>
+          <Button onClick={() => signOut()}>logout</Button>
         )}
       </StyledNavigation>
       <StyledIconContainer>
