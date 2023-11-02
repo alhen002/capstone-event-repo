@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import getDate from "../../lib/getDate";
 import Image from "next/image";
-import SubHeading from "../ui/Subheading";
+import SubHeading from "../ui/SubHeading";
 
 const StyledContainer = styled.div`
   position: relative;
