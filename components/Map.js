@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
-  height: 400px;
+  height: 200px;
   border: 1px solid var(--primary);
   border-radius: 12px;
   margin-top: 2rem;

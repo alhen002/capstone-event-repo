@@ -13,7 +13,7 @@ import dynamic from "next/dynamic";
 import { toggleAttending } from "@/lib/api";
 import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
-
+import SubHeading from "./ui/SubHeading";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -21,6 +21,7 @@ const AddressAutofill = dynamic(
 const mapboxAccessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 // ui styles
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,28 +29,56 @@ const StyledContainer = styled.div`
   margin-block: 2rem;
   max-width: 36rem;
   margin-inline: auto;
+  background-color: var(--primary);
+  border-radius: 0.75rem;
+  overflow: hidden;
+`;
+
+const StyledImageContainer = styled.div`
+  max-width: 36rem;
+  height: 12rem;
+  position: relative;
+  border-top-right-radius: 0.75rem;
+  border-top-left-radius: 0.75rem;
+  z-index: 2;
+`;
+const StyledButton = styled.button`
+  position: absolute;
+  z-index: 1;
+  top: 15px;
+  left: 15px;
+`;
+
+const StyledThirdHeading = styled.h3`
+  color: var(--);
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 `;
 
 const StyledHeaderImage = styled(Image)`
-  width: 100%;
+  object-fit: cover;
+  z-index: -1;
 `;
+
 const StyledTitle = styled.p`
   font-size: 1rem;
 `;
 
-const StyledEventInfoContainer = styled.div`
+const StyledEventInfoContainer = styled.div``;
+const StyledContentBox = styled.div`
+  border: 1px solid green;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.15rem;
+`;
+const StyledContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  justify-content: space-between;
-  align-items: baseline;
-`;
-const StyledEventInfo = styled.p`
-  justify-self: ${(props) => (props.$right ? "end" : "start")};
-`;
-
-const StyledDescription = styled.p`
-  font-size: 1rem;
-  grid-column: 1 / -1;
 `;
 
 // form styles
@@ -78,17 +107,18 @@ const StyledSelect = styled.select`
   border: 1px solid #000000;
   border-radius: 5px;
 `;
+
 const StyledTextarea = styled.textarea`
   font-size: 1rem;
   border: 1px solid #000000;
   border-radius: 5px;
 `;
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
+
 export default function EventDetail({ event = {} }) {
   const { data: session } = useSession();
   const router = useRouter();
   const { mutate } = useSWR(`/api/events/${event._id}`);
-  // true oder false
   const isOwner = session?.id === event.organizer._id;
   const isAttending = event.attendingUsers.some(
     (user) => user._id === session?.id
@@ -162,32 +192,49 @@ export default function EventDetail({ event = {} }) {
   return (
     <>
       <StyledContainer>
-        <StyledHeaderImage
-          src={event.imageUrl}
-          alt={event.title}
-          width={260}
-          height={260}
-        />
+        {/* ab hier ist das styling für die normale view */}
         {!isEditMode ? (
-          <StyledEventInfoContainer>
-            <StyledTitle>{event.title}</StyledTitle>
-            <StyledEventInfo $right>{event.category}</StyledEventInfo>
-            <StyledEventInfo>{event.address}</StyledEventInfo>
-            <StyledEventInfo
-              $right
-            >{`Start: ${startDay}. ${startMonth} ${startYear}, ${startTime}`}</StyledEventInfo>
-            <StyledEventInfo>{event.city}</StyledEventInfo>
-            <StyledEventInfo
-              $right
-            >{`End: ${endDay}. ${endMonth} ${endYear}, ${endTime}`}</StyledEventInfo>
+          <>
+            <StyledImageContainer>
+              <StyledButton onClick={() => router.back()}>Back</StyledButton>
+              <StyledHeaderImage
+                src={event.cover.url}
+                alt={event.title}
+                fill={true}
+              />
+            </StyledImageContainer>
+            <StyledEventInfoContainer>
+              <StyledContentBox>
+                <p>{event.city}</p>
 
-            <StyledEventInfo>{event.organizer.name}</StyledEventInfo>
-            <StyledDescription>{event.description}</StyledDescription>
-            {event.attendingUsers.length > 0 && (
-              <AttendingUsersPreview attendingUsers={event.attendingUsers} />
-            )}
-          </StyledEventInfoContainer>
+                {event.attendingUsers.length > 0 && (
+                  <AttendingUsersPreview
+                    attendingUsers={event.attendingUsers}
+                  />
+                )}
+                <SubHeading>{event.title}</SubHeading>
+                <p>{event.category}</p>
+              </StyledContentBox>
+              <StyledContentGrid>
+                <StyledThirdHeading>Start</StyledThirdHeading>
+                <StyledThirdHeading>End</StyledThirdHeading>
+                <p>{`${startDay}. ${startMonth} ${startYear}, ${startTime}`}</p>
+                <p>{`${endDay}. ${endMonth} ${endYear}, ${endTime}`}</p>
+                <StyledThirdHeading>Location</StyledThirdHeading>
+                <p>
+                  {event.address}
+                  {event.postalCode}
+                  {event.city}
+                </p>
+              </StyledContentGrid>
+              <StyledContentBox>
+                <StyledThirdHeading>Description</StyledThirdHeading>
+                <p>{event.description}</p>
+              </StyledContentBox>
+            </StyledEventInfoContainer>
+          </>
         ) : (
+          // ab hier ist das styling für den edit mode
           <StyledForm onSubmit={handleSubmit}>
             <StyledLabel htmlFor="title">
               title
@@ -281,7 +328,8 @@ export default function EventDetail({ event = {} }) {
           <Map posLng={event.coordinates.lng} posLat={event.coordinates.lat} />
         )}
       </StyledContainer>
-      <StyledContainer>
+      {/* hier sind nur die buttons, das wird ja eh anders */}
+      {/* <StyledContainer>
         {isOwner && (
           <>
             <Button
@@ -302,7 +350,7 @@ export default function EventDetail({ event = {} }) {
             {isAttending ? "Won't attend" : "Attend"}
           </Button>
         )}
-      </StyledContainer>
+      </StyledContainer> */}
     </>
   );
 }
