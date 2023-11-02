@@ -6,13 +6,22 @@ const StyledText = styled.p`
   font-weight: bold;
 `;
 
+const StyledProfileImage = styled(Image)`
+  border-radius: 50%;
+`;
+
 export default function Greeting({ user }) {
   return (
     <>
       {user ? (
         <>
-          <Image alt={user.name} src={user.image} height={60} width={60} />
-          <StyledText>Hi, {user.name}</StyledText>
+          <StyledProfileImage
+            alt={user.name}
+            src={user.image}
+            height={50}
+            width={50}
+          />
+          <StyledText>Hi {user.name}</StyledText>
         </>
       ) : (
         <StyledText>Hello, Guest. Please Login.</StyledText>

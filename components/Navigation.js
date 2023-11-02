@@ -22,7 +22,7 @@ const StyledContainer = styled.div`
 `;
 const StyledMenuContainer = styled.div`
   position: absolute;
-  right: 15px;
+  left: 15px;
   top: 15px;
 `;
 
