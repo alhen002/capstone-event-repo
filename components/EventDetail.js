@@ -14,6 +14,8 @@ import { toggleAttending } from "@/lib/api";
 import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
 import SubHeading from "./ui/SubHeading";
+import Paragraph from "./ui/Paragraph";
+import Label from "./ui/Label";
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -50,10 +52,11 @@ const StyledButton = styled.button`
 `;
 
 const StyledThirdHeading = styled.h3`
-  color: var(--);
+  color: var(--subtle-text-on-primary);
   font-family: Inter, sans-serif;
   font-size: 1rem;
   font-style: normal;
+  margin-bottom: 0.25rem;
   font-weight: 500;
   line-height: normal;
 `;
@@ -63,22 +66,22 @@ const StyledHeaderImage = styled(Image)`
   z-index: -1;
 `;
 
-const StyledTitle = styled.p`
-  font-size: 1rem;
-`;
-
 const StyledEventInfoContainer = styled.div``;
+
 const StyledContentBox = styled.div`
-  border: 1px solid green;
   display: flex;
   flex-wrap: wrap;
+  row-gap: 0.75rem;
   justify-content: space-between;
   width: 100%;
-  padding: 0.15rem;
+  padding-inline: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
 const StyledContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding-inline: 0.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 // form styles
@@ -205,7 +208,7 @@ export default function EventDetail({ event = {} }) {
             </StyledImageContainer>
             <StyledEventInfoContainer>
               <StyledContentBox>
-                <p>{event.city}</p>
+                <Paragraph>{event.city}</Paragraph>
 
                 {event.attendingUsers.length > 0 && (
                   <AttendingUsersPreview
@@ -213,23 +216,23 @@ export default function EventDetail({ event = {} }) {
                   />
                 )}
                 <SubHeading>{event.title}</SubHeading>
-                <p>{event.category}</p>
+                <Label>{event.category}</Label>
               </StyledContentBox>
               <StyledContentGrid>
                 <StyledThirdHeading>Start</StyledThirdHeading>
                 <StyledThirdHeading>End</StyledThirdHeading>
-                <p>{`${startDay}. ${startMonth} ${startYear}, ${startTime}`}</p>
-                <p>{`${endDay}. ${endMonth} ${endYear}, ${endTime}`}</p>
+                <Paragraph>{`${startDay}. ${startMonth} ${startYear}, ${startTime}`}</Paragraph>
+                <Paragraph>{`${endDay}. ${endMonth} ${endYear}, ${endTime}`}</Paragraph>
                 <StyledThirdHeading>Location</StyledThirdHeading>
-                <p>
+                <Paragraph left>
                   {event.address}
-                  {event.postalCode}
-                  {event.city}
-                </p>
+                  <br />
+                  {event.postalCode} {event.city}
+                </Paragraph>
               </StyledContentGrid>
               <StyledContentBox>
                 <StyledThirdHeading>Description</StyledThirdHeading>
-                <p>{event.description}</p>
+                <Paragraph>{event.description}</Paragraph>
               </StyledContentBox>
             </StyledEventInfoContainer>
           </>

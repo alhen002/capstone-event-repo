@@ -7,7 +7,6 @@ const StyledContainer = styled.div`
   height: 200px;
   border: 1px solid var(--primary);
   border-radius: 12px;
-  margin-top: 2rem;
 `;
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
