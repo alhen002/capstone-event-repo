@@ -5,6 +5,7 @@ import useSWR from "swr";
 export default function Category() {
   const router = useRouter();
   const { slug } = router.query;
+
   const { data: category } = useSWR(`/api/categories/${slug}`);
 
   return (

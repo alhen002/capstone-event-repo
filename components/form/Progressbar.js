@@ -25,7 +25,7 @@ const ProgressBarContainer = styled.div`
   margin: auto;
 `;
 
-export default function ProgressBar({ steps, currentStep }) {
+export default function ProgressBar({  currentStep }) {
   return (
     <ProgressBarContainer>
       <ProgressBarSegment

@@ -56,12 +56,14 @@ export default function EventCard({ event = {}, mutate }) {
   return (
     <>
       <StyledLink href={`/events/${event._id}`}>
-        <StyledImage
-          src={event.imageUrl}
-          alt={event.title.toLowerCase()}
-          fill={true}
-          quality={50}
-        />
+        {event.cover && (
+          <StyledImage
+            src={event?.cover?.url}
+            alt={event?.title.toLowerCase()}
+            fill={true}
+            quality={50}
+          />
+        )}
         <StyledTitle>
           {event.title}, <StyledCity>{event.city}</StyledCity>
         </StyledTitle>

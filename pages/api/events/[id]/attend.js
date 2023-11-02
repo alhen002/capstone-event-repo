@@ -16,6 +16,7 @@ export default async function handler(request, response) {
           .json({ message: "You've must be logged in to RSVP." });
       }
       const event = await Event.findById(id).populate("organizer").exec();
+
       if (!event) {
         return response
           .status(404)
@@ -26,7 +27,7 @@ export default async function handler(request, response) {
           $pull: { attendingUsers: session.id },
         });
         return response.status(200).json({
-          message: `Successfully removed the user ${session.id} to the event with the id ${newEvent._id}`,
+          message: `Successfully removed the user ${session.id} from the event with the id ${newEvent._id}`,
         });
       }
 
