@@ -111,7 +111,7 @@ export default function EventCard({ event = {}, mutate }) {
         )}
 
         <StyledEventCardImage
-          src={event.imageUrl}
+          src={event?.cover?.url}
           alt={event.title.toLowerCase()}
           quality={50}
           fill={true}

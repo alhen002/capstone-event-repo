@@ -3,6 +3,7 @@ import useSWR from "swr";
 import Paragraph from "./ui/Paragraph";
 import Button from "./Button";
 import { useRouter } from "next/router";
+import ResetButton from "@/components/ResetButton";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const StyledTextBoxCities = styled.div`
   display: flex;
   flex-wrap: wrap;
   color: var(--text-accent);
-  padding: 2rem;
+  padding: 1rem 2rem;
 `;
 
 const StyledCitySelector = styled.select`
@@ -31,12 +32,12 @@ const StyledCategoryBox = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   color: var(--text-accent);
-  padding: 2rem;
+  padding: 1rem 2rem;
 `;
 
 const StyledCategoryOptions = styled.option``;
 
-export default function FilterBar({ onChange, filters, type }) {
+export default function FilterBar({ onChange, filters, type, reset }) {
   const { data: cities } = useSWR("/api/events/cities");
   const { data: categories } = useSWR("/api/categories");
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function FilterBar({ onChange, filters, type }) {
           <>
             <StyledTextBoxCities>
               <Paragraph>
-                find curated, community-driven event in &nbsp;
+                find curated, community-driven events in &nbsp;
                 <label htmlFor="city"></label>
                 <StyledCitySelector
                   id="city"
@@ -70,19 +71,6 @@ export default function FilterBar({ onChange, filters, type }) {
         )}
         {type === "category" && (
           <>
-            {/* <label htmlFor="category">Categories:</label>
-            <select
-              id="category"
-              name="category"
-              onChange={onChange}
-              value={filters.category}
-            >
-              <option>All</option>
-              {categories?.map((category) => (
-                <option key={category.name}>{category.name}</option>
-              ))}
-            </select> */}
-
             <StyledCategoryBox>
               {categories?.map((category) => (
                 <Button
@@ -100,7 +88,8 @@ export default function FilterBar({ onChange, filters, type }) {
                 >
                   {category.name}
                 </Button>
-              ))}
+              ))}{" "}
+              <ResetButton reset={reset}>Reset</ResetButton>
             </StyledCategoryBox>
           </>
         )}

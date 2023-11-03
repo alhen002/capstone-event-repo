@@ -51,9 +51,9 @@ export default function EventList({
           onChange={onChange}
           filters={filters}
           type={filter}
+          reset={reset}
         />
       ))}
-      <ResetButton reset={reset}>Reset</ResetButton>
       {!events?.length ? (
         <p>Sorry, no events found.</p>
       ) : (

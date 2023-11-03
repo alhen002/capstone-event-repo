@@ -9,6 +9,8 @@ const StyledArrowLeft = styled(ArrowLeftIcon)`
     switch (props.$variant) {
       case "secondary":
         return "fill: var(--primary); stroke: var(--primary);";
+      case "none":
+        return "fill: var(--text-accent); stroke: var(--text-accent);";
       default:
         return "fill: var(--background); stroke: var(--background);";
     }
@@ -22,6 +24,8 @@ const StyledArrowRight = styled(ArrowRightIcon)`
     switch (props.$variant) {
       case "secondary":
         return "fill: var(--primary); stroke: var(--primary);";
+      case "none":
+        return "fill: var(--text-accent); stroke: var(--text-accent);";
       default:
         return "fill: var(--background); stroke: var(--background);";
     }

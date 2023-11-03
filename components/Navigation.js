@@ -91,7 +91,7 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
               signIn("github");
             }}
           >
-            login
+            login with github
           </Button>
         ) : (
           <Button onClick={() => signOut()}>logout</Button>

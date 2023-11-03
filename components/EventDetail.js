@@ -163,7 +163,7 @@ export default function EventDetail({ event = {} }) {
     <>
       <StyledContainer>
         <StyledHeaderImage
-          src={event.imageUrl}
+          src={event?.cover?.url}
           alt={event.title}
           width={260}
           height={260}

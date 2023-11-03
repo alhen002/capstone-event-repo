@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
+import Heading from "@/components/ui/Heading";
+import ChevronLeft from "@/components/ui/Icons/ChevronLeft";
 
 export default function OwnedEvents() {
   const router = useRouter();
@@ -15,8 +17,12 @@ export default function OwnedEvents() {
 
   return (
     <>
-      <h1>Here are all your owned Events</h1>
-      <Button onClick={() => router.back()}>Back</Button>
+      <Heading>
+        <Button variant="none" onClick={() => router.back()}>
+          <ChevronLeft variant="category" />
+        </Button>
+        Your events
+      </Heading>
       <EventList owned filterConfig={["city", "category"]} />
     </>
   );
