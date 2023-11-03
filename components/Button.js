@@ -35,6 +35,8 @@ const StyledButton = styled.button`
   align-items: center;
   gap: 8px;
   border-radius: 32px;
+  text-decoration: ${(props) => (props.$active ? "underline" : "none")};
+
   &:hover {
     ${(props) => {
       switch (props.$variant) {

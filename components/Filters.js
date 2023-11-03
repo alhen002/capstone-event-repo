@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import useSWR from "swr";
 import Paragraph from "./ui/Paragraph";
+import Button from "./Button";
+import { useRouter } from "next/router";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -13,7 +15,7 @@ const StyledTextBoxCities = styled.div`
   display: flex;
   flex-wrap: wrap;
   color: var(--text-accent);
-  padding: 1rem;
+  padding: 2rem;
 `;
 
 const StyledCitySelector = styled.select`
@@ -22,12 +24,25 @@ const StyledCitySelector = styled.select`
   background: none;
   width: auto;
   color: var(--primary);
-  /* text-decoration: underline; */
 `;
+
+const StyledCategoryBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--text-accent);
+  padding: 2rem;
+`;
+
+const StyledCategoryOptions = styled.option``;
 
 export default function FilterBar({ onChange, filters, type }) {
   const { data: cities } = useSWR("/api/events/cities");
   const { data: categories } = useSWR("/api/categories");
+  const router = useRouter();
+
+  console.log(categories);
+  console.log(filters);
 
   return (
     <>
@@ -55,7 +70,7 @@ export default function FilterBar({ onChange, filters, type }) {
         )}
         {type === "category" && (
           <>
-            <label htmlFor="category">Categories:</label>
+            {/* <label htmlFor="category">Categories:</label>
             <select
               id="category"
               name="category"
@@ -66,7 +81,27 @@ export default function FilterBar({ onChange, filters, type }) {
               {categories?.map((category) => (
                 <option key={category.name}>{category.name}</option>
               ))}
-            </select>
+            </select> */}
+
+            <StyledCategoryBox>
+              {categories?.map((category) => (
+                <Button
+                  id="category"
+                  name="category"
+                  key={category.name}
+                  onClick={() =>
+                    onChange({
+                      target: { name: "category", value: category.name },
+                    })
+                  }
+                  variant={
+                    filters.category == category.name ? "primary" : "secondary"
+                  }
+                >
+                  {category.name}
+                </Button>
+              ))}
+            </StyledCategoryBox>
           </>
         )}
       </StyledContainer>
