@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import Image from "next/image";
 import getDate from "@/lib/getDate";
 import Map from "./Map";
@@ -17,6 +17,9 @@ import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
 import Star from "./ui/icons/StarIcon";
 import Label from "./ui/Label";
+
+import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
   { ssr: false }
@@ -45,7 +48,7 @@ const StyledImageContainer = styled.div`
   border-top-left-radius: 0.75rem;
   z-index: 2;
 `;
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   position: absolute;
   z-index: 1;
   top: 15px;
@@ -74,6 +77,7 @@ const StyledContentBox = styled.div`
   flex-wrap: wrap;
   row-gap: 0.75rem;
   justify-content: space-between;
+  ${props => props.$right && css`justify-content: flex-end; column-gap: 0.25rem;`}
   width: 100%;
   padding-inline: 0.5rem;
   margin-bottom: 1.5rem;
@@ -85,12 +89,22 @@ const StyledContentGrid = styled.div`
   margin-bottom: 1.5rem;
 `;
 
+
+const StyledFieldSet = styled.fieldset`
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.75rem;
+  justify-content: space-between;
+  ${props => props.$right && css`justify-content: flex-end; column-gap: 0.25rem;`}
+  width: 100%;
+  padding-inline: 0.5rem;
+  margin-bottom: 1.5rem;
+`
+
+
+
 // form styles
 const StyledForm = styled.form`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: space-between;
-  align-items: baseline;
 `;
 
 const StyledLabel = styled.label`
@@ -117,6 +131,7 @@ const StyledTextarea = styled.textarea`
   border: 1px solid #000000;
   border-radius: 5px;
 `;
+
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
 
 export default function EventDetail({ event = {} }) {
@@ -200,7 +215,7 @@ export default function EventDetail({ event = {} }) {
         {!isEditMode ? (
           <>
             <StyledImageContainer>
-              <StyledButton onClick={() => router.back()}>Back</StyledButton>
+              <ArrowLeftIcon onClick={() => router.back()}>Back</ArrowLeftIcon>
               <StyledHeaderImage
                 src={event.cover.url}
                 alt={event.title}
@@ -213,6 +228,10 @@ export default function EventDetail({ event = {} }) {
               )}
             </StyledImageContainer>
             <StyledEventInfoContainer>
+              {isOwner && <StyledContentBox $right>
+                <Button edit onClick={() => setIsEditMode(true)}>Edit</Button>
+                 <Button trash onClick={handleDelete}>Delete</Button>
+              </StyledContentBox>}
               <StyledContentBox>
                 <Paragraph>{event.city}</Paragraph>
 
@@ -234,6 +253,8 @@ export default function EventDetail({ event = {} }) {
                   {event.address}
                   <br />
                   {event.postalCode} {event.city}
+                  <br />
+                {event.country}
                 </Paragraph>
               </StyledContentGrid>
               <StyledContentBox>
@@ -245,25 +266,28 @@ export default function EventDetail({ event = {} }) {
         ) : (
           // ab hier ist das styling für den edit mode
           <StyledForm onSubmit={handleSubmit}>
-            <StyledLabel htmlFor="title">
-              title
-              <StyledInput id="title" defaultValue={event.title} name="title" />
-            </StyledLabel>
-            <StyledLabel htmlFor="category">
-              category
-              <StyledSelect
-                id="category"
-                defaultValue={event.category}
-                name="category"
-              >
-                <option value=""> --Please pick a category-- </option>
-                <option value="Nightlife & Clubs">Nightlife & Clubs</option>
-                <option value="Culture & Arts">Culture & Arts</option>
-                <option value="Activities & Games">Activities & Games</option>
-                <option value="Live Shows"> Live Shows</option>
-                <option value="Community Meet-up">Community Meet-up</option>
-              </StyledSelect>
-            </StyledLabel>
+            <StyledFieldSet>
+              <StyledLabel htmlFor="title">
+                title
+                <StyledInput id="title" defaultValue={event.title} name="title" />
+              </StyledLabel>
+              <StyledLabel htmlFor="category">
+                category
+                <StyledSelect
+                  id="category"
+                  defaultValue={event.category}
+                  name="category"
+                >
+                  <option value=""> --Please pick a category-- </option>
+                  <option value="Nightlife & Clubs">Nightlife & Clubs</option>
+                  <option value="Culture & Arts">Culture & Arts</option>
+                  <option value="Activities & Games">Activities & Games</option>
+                  <option value="Live Shows"> Live Shows</option>
+                  <option value="Community Meet-up">Community Meet-up</option>
+                </StyledSelect>
+              </StyledLabel>
+            </StyledFieldSet>
+            <StyledFieldSet>
             <StyledLabel htmlFor="address">
               Address
               <AddressAutofill
@@ -322,6 +346,8 @@ export default function EventDetail({ event = {} }) {
                 name="endDateTime"
               />
             </StyledLabel>
+            </StyledFieldSet>
+            <StyledFieldSet>
             <StyledLabel $full htmlFor="description">
               description
               <StyledTextarea
@@ -330,6 +356,7 @@ export default function EventDetail({ event = {} }) {
                 defaultValue={event.description}
               />
             </StyledLabel>
+            </StyledFieldSet>
             <Button color={"green"}>Save</Button>
           </StyledForm>
         )}
@@ -337,29 +364,7 @@ export default function EventDetail({ event = {} }) {
           <Map posLng={event.coordinates.lng} posLat={event.coordinates.lat} />
         )}
       </StyledContainer>
-      {/* hier sind nur die buttons, das wird ja eh anders */}
-      {/* <StyledContainer>
-        {isOwner && (
-          <>
-            <Button
-              color={isEditMode ? "" : "green"}
-              onClick={() =>
-                setIsEditMode((currentIsEditMode) => !currentIsEditMode)
-              }
-            >
-              {isEditMode ? "Cancel" : "Edit"}
-            </Button>
-            <Button color={"rose"} onClick={handleDelete}>
-              Delete
-            </Button>
-          </>
-        )}
-        {session?.id && (
-          <Button onClick={handleToggleAttending}>
-            {isAttending ? "Won't attend" : "Attend"}
-          </Button>
-        )}
-      </StyledContainer> */}
     </>
   );
 }
+

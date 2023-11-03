@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowRightIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 const StyledArrowLeft = styled(ArrowLeftIcon)`
@@ -14,6 +14,15 @@ const StyledArrowLeft = styled(ArrowLeftIcon)`
   }
 }};
 `;
+
+const StyledTrash = styled(TrashIcon)`
+  width: 16px;
+  height: 14px;
+  `
+const StyledEdit = styled(PencilIcon)`
+  width: 16px;
+  height: 14px;
+  `
 
 const StyledArrowRight = styled(ArrowRightIcon)`
   width: 20px;
@@ -30,10 +39,12 @@ const StyledArrowRight = styled(ArrowRightIcon)`
 
 const StyledButton = styled.button`
   display: inline-flex;
-  padding: 8px 9px;
+  padding: 0.25rem 0.35rem;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 0.25rem;
+  
+  font-size: 0.75rem;
   border-radius: 32px;
   &:hover {
     ${(props) => {
@@ -73,7 +84,6 @@ const StyledLink = styled(Link)`
       }
     }}
   }
-
   ${(props) => {
     switch (props.$variant) {
       case "secondary":
@@ -84,7 +94,7 @@ const StyledLink = styled(Link)`
   }}
 `;
 
-export default function Button({ children, variant, onClick, arrow, href }) {
+export default function Button({ children, variant, onClick, arrow, href, trash, edit }) {
   return (
     <>
       {href ? (
@@ -93,9 +103,11 @@ export default function Button({ children, variant, onClick, arrow, href }) {
         </StyledLink>
       ) : (
         <StyledButton onClick={onClick} $variant={variant}>
-          {arrow == "left" && <StyledArrowLeft $variant={variant} />}
+          {arrow === "left" && <StyledArrowLeft $variant={variant} />}
+          {trash && <StyledTrash />}
+          {edit && <StyledEdit />}
           {children}
-          {arrow == "right" && <StyledArrowRight $variant={variant} />}
+          {arrow === "right" && <StyledArrowRight $variant={variant} />}
         </StyledButton>
       )}
     </>
