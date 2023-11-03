@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import SearchBar from "./SearchBar";
 
 const StyledHeader = styled.header`
-  position: relative;
+  position: ${(props) => (props.$menuOpen ? "fixed" : "relative")};
   display: grid;
   grid-template-columns: minmax(80px, 1fr) 3fr 1fr;
   align-items: center;
@@ -30,7 +30,7 @@ const LogoWrapper = styled.div`
 `;
 
 const StyledText = styled.p`
-  color: var(--primary);
+  color: var(--text-accent);
   font-size: 16px;
   place-self: start;
   align-self: center;
@@ -61,7 +61,7 @@ export default function Header() {
 
   return (
     <>
-      <StyledHeader>
+      <StyledHeader $menuOpen={menuOpen}>
         <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
 
         {searchOpen ? (
