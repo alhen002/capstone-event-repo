@@ -63,7 +63,7 @@ export default function SearchBar({
             ) : (
               <StyledSearchButton variant="confirm">Search</StyledSearchButton>
             )}
-          </StyledForm>{" "}
+          </StyledForm>
         </SearchBarContainer>
       ) : (
         <StyledSearchButton onClick={handleToggleSearch} variant="none">

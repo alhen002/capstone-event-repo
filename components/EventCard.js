@@ -44,7 +44,6 @@ const StyledInfoContainer = styled.div`
   gap: 10px;
 `;
 const StyledEventCardCity = styled.p`
-  font-family: Inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -52,7 +51,6 @@ const StyledEventCardCity = styled.p`
   color: var(--text-on-primary);
 `;
 const StyledEventCardDate = styled.p`
-  font-family: Inter;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -63,7 +61,6 @@ const StyledEventCardDate = styled.p`
 const StyledTitleContainer = styled.div``;
 
 const StyledEventCardTitle = styled.h2`
-  font-family: Inter;
   width: 185px;
   font-size: 24px;
   font-style: normal;

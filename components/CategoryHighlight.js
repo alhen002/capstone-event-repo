@@ -8,7 +8,8 @@ const StyledSection = styled.section`
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 `;
 
 const HeadlineContainer = styled.div`

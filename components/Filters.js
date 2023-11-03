@@ -20,6 +20,7 @@ const StyledCitySelector = styled.select`
   border: none;
   border-bottom: 2px solid var(--primary);
   background: none;
+  width: auto;
   color: var(--primary);
   /* text-decoration: underline; */
 `;

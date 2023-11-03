@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import "@fontsource/inter";
 
 export default createGlobalStyle`
+
 :root {
   --black: #000000;
   --dark-grey: #1D1D1D;
@@ -64,8 +66,8 @@ export default createGlobalStyle`
     background: var(--background);
     min-height: 100vh;
     line-height: 1.5;
-    font-family: Inter, sans-serif;
-  }
+    font-family: "Inter";
+   }
 
   input,
   button,
