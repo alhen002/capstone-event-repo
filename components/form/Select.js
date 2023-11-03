@@ -25,7 +25,6 @@ const StyledSelect = styled.select`
   background-color: var(--background);
   width: 100%;
 `;
-
 export default function Select({ label, name, required, options, handleSetAllData }) {
     const [value, setValue] = useState("")
 
@@ -35,7 +34,6 @@ export default function Select({ label, name, required, options, handleSetAllDat
             {[name]: event.target.value}
         )
     }
-
   return (
     <StyledContainer>
       <StyledLabel
@@ -57,7 +55,7 @@ export default function Select({ label, name, required, options, handleSetAllDat
         {options.map((option, index) => (
           <option
             key={index}
-            value={option.toLowerCase().trim().replaceAll(" ", "")}
+            value={option}
           >
             {option}
           </option>

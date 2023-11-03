@@ -13,7 +13,6 @@ export default function Event() {
 
   return (
     <>
-      <Button onClick={() => router.back()}>Back</Button>
       {isLoading && <Loading />}
       {error && (
         <Error>{`${error.status} | ${error.statusText} | ${error.message}`}</Error>

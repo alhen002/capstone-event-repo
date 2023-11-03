@@ -28,15 +28,14 @@ const StyledInput = styled.input`
 `;
 
 export default function Input({ label, name, type, required, min, autoComplete, handleSetAllData }) {
-    const [value, setValue] = useState("");
+  const [value, setValue] = useState("");
 
-    function handleChange(event) {
-        setValue(event.target.value);
-        handleSetAllData(
-            {[name]: event.target.value}
-        )
-    }
-
+  function handleChange(event) {
+    setValue(event.target.value);
+    handleSetAllData(
+      {[name]: event.target.value}
+    )
+  }
   return (
     <StyledContainer>
       <StyledLabel
