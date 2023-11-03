@@ -17,6 +17,7 @@ import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
 import Star from "./ui/icons/StarIcon";
 import Label from "./ui/Label";
+import Input from "@/components/form/Input";
 
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
 
@@ -90,6 +91,23 @@ const StyledContentGrid = styled.div`
 `;
 
 
+
+
+// form styles
+const StyledForm = styled.form`
+`;
+
+
+const StyledLabel = styled.label`
+  color: var(--subtle-text-on-primary);
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  line-height: normal;
+  grid-column: ${(props) => (props.$full ? "1 / -1" : "")};
+`;
 const StyledFieldSet = styled.fieldset`
   display: flex;
   flex-wrap: wrap;
@@ -99,37 +117,46 @@ const StyledFieldSet = styled.fieldset`
   width: 100%;
   padding-inline: 0.5rem;
   margin-bottom: 1.5rem;
+  border: none;
+`
+const StyledFieldGrid = styled.fieldset`
+  display: grid;
+  border: none;
+  column-gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  padding-inline: 0.5rem;
+  margin-bottom: 1.5rem;
 `
 
 
 
-// form styles
-const StyledForm = styled.form`
-`;
-
-const StyledLabel = styled.label`
-  font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  grid-column: ${(props) => (props.$full ? "1 / -1" : "")};
-`;
-
 const StyledInput = styled.input`
   font-size: 1rem;
-  border: 1px solid #000000;
-  border-radius: 5px;
+  background: var(--subtle-text-on-primary);
+  border: 1px solid var(--text-on-primary);
+  border-radius: 12px;
+  padding: 0.25rem;
 `;
 
 const StyledSelect = styled.select`
-  font-size: 1rem;
-  border: 1px solid #000000;
-  border-radius: 5px;
+  display: inline-flex;
+  color: var(--text-on-primary);
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--text-on-primary);
+  gap: 0.625rem;
+  border-radius: 2.5rem;
 `;
 
 const StyledTextarea = styled.textarea`
   font-size: 1rem;
-  border: 1px solid #000000;
-  border-radius: 5px;
+  background: var(--subtle-text-on-primary);
+  border: 1px solid var(--text-on-primary);
+  border-radius: 12px;
+  padding: 0.25rem;
 `;
 
 const confirmDeleteMessage = "Are you sure you want to delete the event?";
@@ -267,29 +294,47 @@ export default function EventDetail({ event = {} }) {
           // ab hier ist das styling für den edit mode
           <StyledForm onSubmit={handleSubmit}>
             <StyledFieldSet>
-              <StyledLabel htmlFor="title">
-                title
-                <StyledInput id="title" defaultValue={event.title} name="title" />
-              </StyledLabel>
-              <StyledLabel htmlFor="category">
-                category
-                <StyledSelect
-                  id="category"
-                  defaultValue={event.category}
-                  name="category"
-                >
-                  <option value=""> --Please pick a category-- </option>
-                  <option value="Nightlife & Clubs">Nightlife & Clubs</option>
-                  <option value="Culture & Arts">Culture & Arts</option>
-                  <option value="Activities & Games">Activities & Games</option>
-                  <option value="Live Shows"> Live Shows</option>
-                  <option value="Community Meet-up">Community Meet-up</option>
-                </StyledSelect>
-              </StyledLabel>
+              <StyledLabel htmlFor="title">Title</StyledLabel>
+              <StyledInput id="title" defaultValue={event.title} name="title" />
+              <StyledLabel htmlFor="category">Category</StyledLabel>
+              <StyledSelect
+                id="category"
+                defaultValue={event.category}
+                name="category"
+              >
+                <option value=""> --Please pick a category-- </option>
+                <option value="Nightlife & Clubs">Nightlife & Clubs</option>
+                <option value="Culture & Arts">Culture & Arts</option>
+                <option value="Activities & Games">Activities & Games</option>
+                <option value="Live Shows"> Live Shows</option>
+                <option value="Community Meet-up">Community Meet-up</option>
+              </StyledSelect>
             </StyledFieldSet>
-            <StyledFieldSet>
+            <StyledFieldGrid>
+              <StyledLabel htmlFor="date">
+                Start
+
+              </StyledLabel>
+              <StyledInput
+                id="date"
+                type="datetime-local"
+                defaultValue={startDateString}
+                name="startDateTime"
+              />
+              <StyledLabel htmlFor="date">
+                End
+
+              </StyledLabel>
+              <StyledInput
+                id="date"
+                type="datetime-local"
+                defaultValue={endDateString}
+                name="endDateTime"
+              />
             <StyledLabel htmlFor="address">
               Address
+
+            </StyledLabel>
               <AddressAutofill
                 accessToken={mapboxAccessToken}
                 onRetrieve={handleRetrievedAutofill}
@@ -300,64 +345,47 @@ export default function EventDetail({ event = {} }) {
                   name="address"
                 />
               </AddressAutofill>
+            <StyledLabel htmlFor="city">City
+
             </StyledLabel>
-            <StyledLabel htmlFor="city">
-              city
               <StyledInput
                 id="city"
                 defaultValue={event.city}
                 name="city"
                 autoComplete="address-level2"
               />
-            </StyledLabel>
             <StyledLabel htmlFor="postalCode">
               PLZ
+
+            </StyledLabel>
               <StyledInput
                 id="postalCode"
                 name="postalCode"
                 defaultValue={event.postalCode}
                 autoComplete="postal-code"
               />
-            </StyledLabel>
             <StyledLabel htmlFor="country">
-              city
-              <StyledInput
-                id="country"
-                defaultValue={event.country}
-                name="country"
-                autoComplete="country-name"
-              />
-            </StyledLabel>
-            <StyledLabel htmlFor="date">
-              start
-              <StyledInput
-                id="date"
-                type="datetime-local"
-                defaultValue={startDateString}
-                name="startDateTime"
-              />
-            </StyledLabel>
-            <StyledLabel htmlFor="date">
-              end
-              <StyledInput
-                id="date"
-                type="datetime-local"
-                defaultValue={endDateString}
-                name="endDateTime"
-              />
-            </StyledLabel>
-            </StyledFieldSet>
+              Country
+
+            </StyledLabel> <StyledInput
+              id="country"
+              defaultValue={event.country}
+              name="country"
+              autoComplete="country-name"
+            />
+
+            </StyledFieldGrid>
             <StyledFieldSet>
-            <StyledLabel $full htmlFor="description">
-              description
-              <StyledTextarea
-                id="description"
-                name="description"
-                defaultValue={event.description}
-              />
-            </StyledLabel>
+            <StyledLabel htmlFor="description">
+              Description
+            </StyledLabel><StyledTextarea
+              id="description"
+              name="description"
+              defaultValue={event.description}
+            />
             </StyledFieldSet>
-            <Button color={"green"}>Save</Button>
+            <StyledFieldSet $right><Button color={"green"}>Save</Button></StyledFieldSet>
+
           </StyledForm>
         )}
         {event.coordinates && (
