@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ArrowLeftIcon, ArrowRightIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowRightIcon, TrashIcon, PencilIcon, XMarkIcon, CheckIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 const StyledArrowLeft = styled(ArrowLeftIcon)`
@@ -23,7 +23,14 @@ const StyledEdit = styled(PencilIcon)`
   width: 16px;
   height: 14px;
   `
-
+const StyledCancel = styled(XMarkIcon)`
+  width: 16px;
+  height: 14px;
+  `
+const StyledSave = styled(CheckIcon)`
+  width: 16px;
+  height: 14px;
+  `
 const StyledArrowRight = styled(ArrowRightIcon)`
   width: 20px;
   height: 16px;
@@ -43,7 +50,6 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   gap: 0.25rem;
-  
   font-size: 0.75rem;
   border-radius: 32px;
   &:hover {
@@ -94,7 +100,7 @@ const StyledLink = styled(Link)`
   }}
 `;
 
-export default function Button({ children, variant, onClick, arrow, href, trash, edit }) {
+export default function Button({ children, variant, onClick, arrow, href, trash, edit, cancel, type, save }) {
   return (
     <>
       {href ? (
@@ -102,10 +108,12 @@ export default function Button({ children, variant, onClick, arrow, href, trash,
           {children}
         </StyledLink>
       ) : (
-        <StyledButton onClick={onClick} $variant={variant}>
+        <StyledButton onClick={onClick} $variant={variant} type={type}>
           {arrow === "left" && <StyledArrowLeft $variant={variant} />}
           {trash && <StyledTrash />}
           {edit && <StyledEdit />}
+          {cancel && <StyledCancel />}
+          {save && <StyledSave />}
           {children}
           {arrow === "right" && <StyledArrowRight $variant={variant} />}
         </StyledButton>
