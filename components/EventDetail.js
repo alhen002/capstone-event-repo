@@ -32,7 +32,6 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border: 1px solid blue;
   margin-block: 2rem;
   max-width: 36rem;
   margin-inline: auto;
@@ -42,7 +41,7 @@ const StyledContainer = styled.div`
 `;
 const StyledImageContainer = styled.div`
   max-width: 36rem;
-  height: 12rem;
+  height: 14rem;
   position: relative;
   border-top-right-radius: 0.75rem;
   border-top-left-radius: 0.75rem;
@@ -63,7 +62,6 @@ const StyledHeaderImage = styled(Image)`
   z-index: -1;
 `;
 
-
 const StyledContentBox = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -79,6 +77,7 @@ const StyledContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding-inline: 0.5rem;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
 `;
 
@@ -131,7 +130,6 @@ const StyledInput = styled.input`
   border: none;
   border-bottom: 1px solid var(--text-on-primary);
 `;
-
 const TitleInput = styled.textarea`
   border: none;
   background: transparent;
@@ -266,7 +264,7 @@ export default function EventDetail({ event = {} }) {
                  <Button trash onClick={handleDelete}>Delete</Button>
               </StyledContentBox>}
               <StyledContentBox>
-                <Paragraph>{event.city}</Paragraph>
+                <Paragraph size="large">{event.city}</Paragraph>
 
                 {event.attendingUsers.length > 0 && (
                   <AttendingUsersPreview

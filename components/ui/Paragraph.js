@@ -8,15 +8,16 @@ const sizes = {
     margin-bottom: 0.75rem;
   `,
   large: css`
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 400;
-    line-height: 2rem;
+    line-height: 2.5rem;
+    color: var(--subtle-text-on-primary);
   `,
 };
 
 const StyledParagraph = styled.p`
   color: var(--text-on-primary);
-  ${(props) => sizes[props.size]}
+  ${(props) => sizes[props.$size]}
   grid-column: ${(props) => (props.$left ? "1 / 1" : "")};
 `;
 

@@ -36,7 +36,6 @@ export default function Input({ label, name, type, required, min, autoComplete, 
       {[name]: event.target.value}
     )
   }
-
   return (
     <StyledContainer>
       <StyledLabel
