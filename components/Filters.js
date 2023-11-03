@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import useSWR from "swr";
+import Paragraph from "./ui/Paragraph";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -7,6 +8,22 @@ const StyledContainer = styled.div`
   gap: 1rem;
   align-items: center;
 `;
+
+const StyledTextBoxCities = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  color: var(--text-accent);
+  padding: 1rem;
+`;
+
+const StyledCitySelector = styled.select`
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  background: none;
+  color: var(--primary);
+  /* text-decoration: underline; */
+`;
+
 export default function FilterBar({ onChange, filters, type }) {
   const { data: cities } = useSWR("/api/events/cities");
   const { data: categories } = useSWR("/api/categories");
@@ -16,18 +33,23 @@ export default function FilterBar({ onChange, filters, type }) {
       <StyledContainer>
         {type === "city" && (
           <>
-            <label htmlFor="city">City:</label>
-            <select
-              id="city"
-              name="city"
-              onChange={onChange}
-              value={filters.city}
-            >
-              <option>All</option>
-              {cities?.map((city) => (
-                <option key={city.name}>{city.name}</option>
-              ))}
-            </select>
+            <StyledTextBoxCities>
+              <Paragraph>
+                find curated, community-driven event in &nbsp;
+                <label htmlFor="city"></label>
+                <StyledCitySelector
+                  id="city"
+                  name="city"
+                  onChange={onChange}
+                  value={filters.city}
+                >
+                  <option></option>
+                  {cities?.map((city) => (
+                    <option key={city.name}>{city.name}</option>
+                  ))}
+                </StyledCitySelector>
+              </Paragraph>
+            </StyledTextBoxCities>
           </>
         )}
         {type === "category" && (

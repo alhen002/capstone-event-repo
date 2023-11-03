@@ -15,7 +15,7 @@ const HeadlineContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  padding-inline: 1rem;
+  padding-inline: 2rem;
   flex-wrap: no-wrap;
   align-items: center;
 `;
