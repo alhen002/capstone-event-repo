@@ -9,7 +9,7 @@ import SearchBar from "./SearchBar";
 const StyledHeader = styled.header`
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: minmax(80px, 1fr) 3fr 1fr;
   align-items: center;
   top: 0;
   right: 0;
@@ -18,6 +18,7 @@ const StyledHeader = styled.header`
   z-index: 99;
   height: 80px;
   background: var(--background);
+  transition: 300ms;
 `;
 
 const LogoWrapper = styled.div`
@@ -40,6 +41,15 @@ const StyledText = styled.p`
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  function handleToggleSearch() {
+    setSearchOpen(!searchOpen);
+  }
+
+  function handleSearchClose() {
+    setSearchOpen(false);
+  }
 
   function handleToggleMenu() {
     setMenuOpen(!menuOpen);
@@ -54,7 +64,9 @@ export default function Header() {
       <StyledHeader>
         <MenuToggle menuOpen={menuOpen} handleToggleMenu={handleToggleMenu} />
 
-        {!session?.user ? (
+        {searchOpen ? (
+          ""
+        ) : !session?.user ? (
           <LogoWrapper>
             <Link href="/">Event Collective</Link>
           </LogoWrapper>
@@ -63,11 +75,16 @@ export default function Header() {
             <Link href="/">Hi {session?.user.name}</Link>
           </StyledText>
         )}
-        <SearchBar />
+
+        <SearchBar
+          handleToggleSearch={handleToggleSearch}
+          handleSearchClose={handleSearchClose}
+          searchOpen={searchOpen}
+        />
       </StyledHeader>
       {menuOpen && (
         <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
-      )}{" "}
+      )}
     </>
   );
 }

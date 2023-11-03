@@ -9,26 +9,34 @@ const StyledForm = styled.form`
   justify-content: space-around;
   gap: 1rem;
   align-items: center;
+  place-self: center;
+  align-self: center;
+  grid-column: 2 / 3;
 `;
 
 const SearchBarContainer = styled.div`
-  place-self: end;
+  place-self: center;
   align-self: center;
   grid-column: 3;
 `;
 
-export default function SearchBar() {
+const StyledSearchInput = styled.input`
+  transition: 2s;
+`;
+
+const StyledSearchButton = styled(Button)`
+  place-self: center;
+  align-self: center;
+  grid-column: 3;
+`;
+
+export default function SearchBar({
+  handleToggleSearch,
+  handleSearchClose,
+  searchOpen,
+}) {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
-
-  function handleToggleSearch() {
-    setSearchOpen(!searchOpen);
-  }
-
-  function handleSearchClose() {
-    setSearchOpen(false);
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -37,29 +45,31 @@ export default function SearchBar() {
   }
 
   return (
-    <SearchBarContainer>
+    <>
       {searchOpen ? (
-        <StyledForm onSubmit={handleSubmit}>
-          <label>
-            <input
-              placeholder="Search..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-          </label>
-          {inputValue.length == 0 ? (
-            <Button onClick={handleToggleSearch}>
-              <SearchIcon />
-            </Button>
-          ) : (
-            <Button variant="confirm">Search</Button>
-          )}
-        </StyledForm>
+        <SearchBarContainer>
+          <StyledForm onSubmit={handleSubmit}>
+            <label>
+              <StyledSearchInput
+                placeholder="Search..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            </label>
+            {inputValue.length == 0 ? (
+              <StyledSearchButton onClick={handleToggleSearch}>
+                <SearchIcon />
+              </StyledSearchButton>
+            ) : (
+              <StyledSearchButton variant="confirm">Search</StyledSearchButton>
+            )}
+          </StyledForm>{" "}
+        </SearchBarContainer>
       ) : (
-        <Button onClick={handleToggleSearch}>
+        <StyledSearchButton onClick={handleToggleSearch} variant="none">
           <SearchIcon />
-        </Button>
+        </StyledSearchButton>
       )}
-    </SearchBarContainer>
+    </>
   );
 }

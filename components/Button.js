@@ -50,6 +50,8 @@ const StyledButton = styled.button`
     switch (props.$variant) {
       case "secondary":
         return "background-color: var(--background); border: 1.5px solid var(--primary); color: var(--primary)";
+      case "none":
+        return "border: none; background-color: var(--background);";
       default:
         return "background-color: var(--primary); border: 1.5px solid var(--background); color: var(--text-on-primary) ";
     }
