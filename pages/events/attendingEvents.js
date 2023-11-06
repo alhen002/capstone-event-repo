@@ -3,7 +3,7 @@ import EventList from "@/components/EventList";
 import { useRouter } from "next/router";
 import Button from "@/components/Button";
 import Heading from "@/components/ui/Heading";
-import ChevronLeft from "@/components/ui/Icons/ChevronLeft";
+import ChevronLeft from "@/components/ui/icons/ChevronLeft";
 
 export default function AttendingEvents() {
   const router = useRouter();

@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import Heading from "@/components/ui/Heading";
-import ChevronLeft from "@/components/ui/Icons/ChevronLeft";
+import ChevronLeft from "@/components/ui/icons/ChevronLeft";
 
 export default function OwnedEvents() {
   const router = useRouter();

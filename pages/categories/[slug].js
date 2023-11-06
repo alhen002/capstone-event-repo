@@ -3,7 +3,7 @@ import EventList from "@/components/EventList";
 import Button from "@/components/Button";
 import useSWR from "swr";
 import Heading from "@/components/ui/Heading";
-import ChevronLeft from "@/components/ui/Icons/ChevronLeft";
+import ChevronLeft from "@/components/ui/icons/ChevronLeft";
 export default function Category() {
   const router = useRouter();
   const { slug } = router.query;

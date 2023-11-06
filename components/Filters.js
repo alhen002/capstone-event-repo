@@ -10,6 +10,7 @@ const StyledContainer = styled.div`
   justify-content: space-around;
   gap: 1rem;
   align-items: center;
+  padding-inline: 1rem;
 `;
 
 const StyledTextBoxCities = styled.div`
@@ -42,16 +43,13 @@ export default function FilterBar({ onChange, filters, type, reset }) {
   const { data: categories } = useSWR("/api/categories");
   const router = useRouter();
 
-  console.log(categories);
-  console.log(filters);
-
   return (
     <>
       <StyledContainer>
         {type === "city" && (
           <>
             <StyledTextBoxCities>
-              <Paragraph>
+              <Paragraph color={"accent"}>
                 find curated, community-driven events in &nbsp;
                 <label htmlFor="city"></label>
                 <StyledCitySelector
@@ -60,7 +58,7 @@ export default function FilterBar({ onChange, filters, type, reset }) {
                   onChange={onChange}
                   value={filters.city}
                 >
-                  <option></option>
+                  <option value="">select a city</option>
                   {cities?.map((city) => (
                     <option key={city.name}>{city.name}</option>
                   ))}

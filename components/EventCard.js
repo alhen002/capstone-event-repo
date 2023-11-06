@@ -8,8 +8,8 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { useState } from "react";
 import { StarIcon } from "@heroicons/react/24/outline";
-import ChevronRight from "./ui/Icons/ChevronRight";
-import Star from "./ui/Icons/StarIcon";
+import ChevronRight from "./ui/icons/ChevronRight";
+import Star from "./ui/icons/StarIcon";
 
 const StyledEventCard = styled.div`
   align-items: flex-start;
