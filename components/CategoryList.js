@@ -17,12 +17,8 @@ export default function CategoryList() {
   return (
     <>
       {categories?.length ? (
-        categories.map((category) => (
-          <CategoryHighlight
-            key={category.slug}
-            category={category}
-            mutate={mutate}
-          />
+        categories.map((category, index) => (
+          <CategoryHighlight key={index} category={category} mutate={mutate} />
         ))
       ) : (
         <p>Sorry, nothing found based on your filters. Please reset.</p>

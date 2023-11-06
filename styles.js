@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 import "@fontsource/inter";
-
 export default createGlobalStyle`
 
 :root {

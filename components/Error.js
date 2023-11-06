@@ -7,7 +7,6 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
 export default function Error({ children }) {
   return (
     <StyledContainer>
@@ -15,5 +14,4 @@ export default function Error({ children }) {
     </StyledContainer>
   );
 }
-
 export { StyledContainer };
