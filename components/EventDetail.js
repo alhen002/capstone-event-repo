@@ -38,6 +38,7 @@ const StyledContainer = styled.div`
   background-color: var(--primary);
   border-radius: 0.75rem;
   overflow: hidden;
+  margin: 1rem;
 `;
 const StyledImageContainer = styled.div`
   max-width: 36rem;
@@ -255,14 +256,18 @@ export default function EventDetail({ event = {} }) {
             <StyledImageContainer>
               <ArrowLeftIcon onClick={() => router.back()}>Back</ArrowLeftIcon>
               <StyledHeaderImage
-                src={event.cover.url}
+                src={event?.cover?.url}
                 alt={event.title}
                 fill={true}
               />
-              {isAttending ? (
-                <Star onClick={handleToggleAttending} variant="filled" />
-              ) : (
-                <Star onClick={handleToggleAttending} />
+              {session?.id && (
+                <button>
+                  {isAttending ? (
+                    <Star onClick={handleToggleAttending} variant="filled" />
+                  ) : (
+                    <Star onClick={handleToggleAttending} />
+                  )}
+                </button>
               )}
             </StyledImageContainer>
             {isOwner && (
@@ -308,7 +313,7 @@ export default function EventDetail({ event = {} }) {
           <StyledForm onSubmit={handleSubmit}>
             <StyledImageContainer>
               <StyledHeaderImage
-                src={event.cover.url}
+                src={event?.cover?.url}
                 alt={event.title}
                 fill={true}
               />
