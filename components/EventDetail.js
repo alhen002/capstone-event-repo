@@ -15,11 +15,11 @@ import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
 import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
-import Star from "./ui/icons/StarIcon";
+import Star from "./icons/StarIcon";
 import Label from "./ui/Label";
 import Input from "@/components/form/Input";
 
-import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),

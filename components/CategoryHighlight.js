@@ -1,7 +1,7 @@
 import EventCard from "./EventCard";
 import Link from "next/link";
 import styled from "styled-components";
-import ChevronRight from "./ui/icons/ChevronRight";
+import ChevronRight from "./icons/ChevronRight";
 
 const StyledSection = styled.section`
   margin-inline: auto;

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
-import SearchIcon from "./ui/icons/Search";
+import SearchIcon from "./icons/Search";
 
 const StyledForm = styled.form`
   display: flex;
