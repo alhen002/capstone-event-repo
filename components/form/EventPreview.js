@@ -1,56 +1,83 @@
 import styled from "styled-components";
 import getDate from "../../lib/getDate";
 import Image from "next/image";
-import SubHeading from "../ui/SubHeading";
 
-const StyledContainer = styled.div`
-  position: relative;
-  padding-inline: 1rem;
-  padding-block: 2rem;
-  border: 1px solid #000000;
+const StyledEventCard = styled.div`
+  align-items: flex-start;
   min-height: 9rem;
-  border-radius: 5px;
+  width: 288px;
+  flex-shrink: 0;
+  margin: 1rem;
 `;
 
-const StyledImage = styled(Image)`
-  z-index: -1;
+const StyledEventCardImageContainer = styled.div`
+  position: relative;
+  min-height: 10.25rem;
+`;
+const StyledEventCardImage = styled(Image)`
   object-fit: cover;
-`;
-const StyledTitle = styled(SubHeading)`
-  position: absolute;
-  left: 1rem;
-  bottom: 0.5rem;
+  border-radius: 20px 20px 0px 0px;
+  z-index: 1;
+  filter: grayscale(var(--value, 20%));
 `;
 
-const StyledCity = styled.span`
-  font-size: 0.75rem;
+const StyledEventCardTextContainer = styled.div`
+  border-radius: 0px 0px 20px 20px;
+  position: relative;
+  min-height: 7.75rem;
+  padding: 16px 12px 16px 16px;
+  background: var(--primary);
 `;
 
-const StyledDate = styled.p`
-  color: #ffffff;
-  font-size: 0.75rem;
-  position: absolute;
-  right: 1rem;
-  bottom: 0.5rem;
+const StyledInfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+`;
+const StyledEventCardCity = styled.p`
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--text-on-primary);
+`;
+const StyledEventCardDate = styled.p`
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--subtle-text-on-primary);
+`;
+
+const StyledEventCardTitle = styled.h2`
+  width: 185px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--text-on-primary);
 `;
 
 export default function EventPreview({ event }) {
   const { day, month } = getDate(event?.startDateTime);
 
   return (
-    <StyledContainer>
-      {event.cover && (
-        <StyledImage
+    <StyledEventCard>
+      <StyledEventCardImageContainer>
+        <StyledEventCardImage
           src={event?.cover?.url}
-          alt={event?.title.toLowerCase()}
+          alt={event?.title?.toLowerCase()}
+          quality={50}
           fill={true}
-          quality={30}
         />
-      )}
-      <StyledTitle>
-        {event.title}, <StyledCity>{event.city}</StyledCity>
-      </StyledTitle>
-      <StyledDate>{`${day}. ${month}`}</StyledDate>
-    </StyledContainer>
+      </StyledEventCardImageContainer>
+      <StyledEventCardTextContainer>
+        <StyledInfoContainer>
+          <StyledEventCardCity>{event.city}</StyledEventCardCity>
+          <StyledEventCardDate>{`${day}. ${month}`}</StyledEventCardDate>
+        </StyledInfoContainer>
+        <StyledEventCardTitle>{event.title}</StyledEventCardTitle>
+      </StyledEventCardTextContainer>
+    </StyledEventCard>
   );
 }

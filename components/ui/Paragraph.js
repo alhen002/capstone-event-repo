@@ -16,7 +16,14 @@ const sizes = {
 };
 
 const StyledParagraph = styled.p`
-  color: var(--text-on-primary);
+  color: ${(props) => {
+    switch (props.$color) {
+      case "accent":
+        return "var(--text-accent)";
+      default:
+        return "var(--text-on-primary)";
+    }
+  }};
   ${(props) => sizes[props.$size]}
   grid-column: ${(props) => (props.$left ? "1 / 1" : "")};
 `;
@@ -25,9 +32,9 @@ StyledParagraph.defaultProps = {
   size: "medium",
 };
 
-export default function Paragraph({ children, size, left }) {
+export default function Paragraph({ children, size, left, color }) {
   return (
-    <StyledParagraph $left={left} $size={size}>
+    <StyledParagraph $left={left} $size={size} $color={color}>
       {children}
     </StyledParagraph>
   );

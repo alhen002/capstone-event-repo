@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import EventList from "@/components/EventList";
 import Button from "@/components/Button";
 import useSWR from "swr";
+import Heading from "@/components/ui/Heading";
+import ChevronLeft from "@/components/icons/ChevronLeft";
 export default function Category() {
   const router = useRouter();
   const { slug } = router.query;
@@ -10,8 +12,12 @@ export default function Category() {
 
   return (
     <>
-      <h1>{category?.name}</h1>
-      <Button onClick={() => router.back()}>Back</Button>
+      <Heading>
+        <Button variant="none" onClick={() => router.back()}>
+          <ChevronLeft variant="category" />
+        </Button>
+        {category?.name}
+      </Heading>
       <EventList category={slug} filterConfig={["city"]} />
     </>
   );

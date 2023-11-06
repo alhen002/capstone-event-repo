@@ -1,18 +1,50 @@
 import styled from "styled-components";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const StyledMenuToggle = styled.div`
   cursor: pointer;
-  padding: 5px;
-  color: #63f287;
   font-size: xx-large;
-  grid-column: 3;
-  justify-self: end;
+  align-self: center;
+  place-self: center;
+`;
+
+const StyledBarMenu = styled(Bars3Icon)`
+  height: 24px;
+  width: 24px;
+  stroke: var(--primary);
+`;
+
+const StyledXMark = styled(XMarkIcon)`
+  height: 24px;
+  width: 24px;
+  stroke: var(--primary);
+`;
+
+const StyledProfileImage = styled(Image)`
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
 `;
 
 export default function MenuToggle({ menuOpen, handleToggleMenu }) {
+  const { data: session } = useSession();
   return (
     <StyledMenuToggle onClick={handleToggleMenu}>
-      {menuOpen ? "x" : "☰"}
+      {menuOpen ? (
+        <StyledXMark />
+      ) : !session?.user ? (
+        <StyledBarMenu />
+      ) : (
+        <StyledProfileImage
+          alt={session?.user.name}
+          src={session?.user.image}
+          height={40}
+          width={40}
+        />
+      )}
     </StyledMenuToggle>
   );
 }

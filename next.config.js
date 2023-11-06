@@ -18,6 +18,7 @@ const nextConfig = {
       "unsplash.com",
       "res.cloudinary.com",
       "images.unsplash.com",
+      "res.cloudinary.com",
       "avatars.githubusercontent.com",
     ],
   },

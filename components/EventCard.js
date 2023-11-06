@@ -7,37 +7,85 @@ import { toggleAttending } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { useState } from "react";
-const StyledLink = styled(Link)`
-  position: relative;
-  padding-inline: 1rem;
-  padding-block: 2rem;
-  border: 1px solid #000000;
+import { StarIcon } from "@heroicons/react/24/outline";
+import ChevronRight from "./icons/ChevronRight";
+import Star from "./icons/StarIcon";
+
+const StyledEventCard = styled.div`
+  align-items: flex-start;
   min-height: 9rem;
-  border-radius: 5px;
+  width: 288px;
+  flex-shrink: 0;
+  margin: 1rem;
 `;
-const StyledImage = styled(Image)`
-  z-index: -1;
+
+const StyledEventCardImageContainer = styled.div`
+  position: relative;
+  min-height: 10.25rem;
+`;
+const StyledEventCardImage = styled(Image)`
   object-fit: cover;
+  border-radius: 20px 20px 0px 0px;
+  z-index: 1;
+  filter: grayscale(var(--value, 20%));
 `;
 
-const StyledTitle = styled.h2`
-  color: #ffffff;
-  font-size: 1rem;
+const StyledEventCardTextContainer = styled.div`
+  border-radius: 0px 0px 20px 20px;
+  position: relative;
+  min-height: 7.75rem;
+  padding: 16px 12px 16px 16px;
+  background: var(--primary);
+`;
+
+const StyledInfoContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+`;
+const StyledEventCardCity = styled.p`
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--text-on-primary);
+`;
+const StyledEventCardDate = styled.p`
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--subtle-text-on-primary);
+`;
+
+const StyledTitleContainer = styled.div``;
+
+const StyledEventCardTitle = styled.h2`
+  width: 185px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--text-on-primary);
+`;
+
+const StyledStarIcon = styled(StarIcon)`
+  height: 40px;
+  width: 40px;
+  ${(props) => {
+    switch (props.$variant) {
+      case "filled":
+        return " stroke: var(--primary); fill: var(--primary); ";
+      default:
+        return "stroke: var(--primary); ";
+    }
+  }}
   position: absolute;
-  left: 1rem;
-  bottom: 0.5rem;
-`;
-
-const StyledCity = styled.span`
-  font-size: 0.75rem;
-`;
-
-const StyledDate = styled.p`
-  color: #ffffff;
-  font-size: 0.75rem;
-  position: absolute;
-  right: 1rem;
-  bottom: 0.5rem;
+  top: 12px;
+  right: 12px;
+  transition: 1s;
+  transition: 1s;
+  z-index: 2;
 `;
 
 export default function EventCard({ event = {}, mutate }) {
@@ -54,26 +102,31 @@ export default function EventCard({ event = {}, mutate }) {
   }
 
   return (
-    <>
-      <StyledLink href={`/events/${event._id}`}>
-        {event.cover && (
-          <StyledImage
-            src={event?.cover?.url}
-            alt={event?.title.toLowerCase()}
-            fill={true}
-            quality={50}
-          />
+    <StyledEventCard>
+      <StyledEventCardImageContainer>
+        {session?.id && (
+          <button onClick={handleToggleAttending}>
+            {isAttending ? <Star variant={"filled"} /> : <Star />}
+          </button>
         )}
-        <StyledTitle>
-          {event.title}, <StyledCity>{event.city}</StyledCity>
-        </StyledTitle>
-        <StyledDate>{`${day}. ${month}`}</StyledDate>
-      </StyledLink>{" "}
-      {session?.id && (
-        <Button onClick={handleToggleAttending}>
-          {isAttending ? "Won't attend" : "Attend"}
-        </Button>
-      )}
-    </>
+
+        <StyledEventCardImage
+          src={event?.cover?.url}
+          alt={event.title.toLowerCase()}
+          quality={50}
+          fill={true}
+        />
+      </StyledEventCardImageContainer>
+      <Link href={`/events/${event._id}`}>
+        <StyledEventCardTextContainer>
+          <StyledInfoContainer>
+            <StyledEventCardCity>{event.city}</StyledEventCardCity>
+            <StyledEventCardDate>{`${day}. ${month}`}</StyledEventCardDate>
+          </StyledInfoContainer>
+          <StyledEventCardTitle>{event.title}</StyledEventCardTitle>
+          <ChevronRight />
+        </StyledEventCardTextContainer>
+      </Link>
+    </StyledEventCard>
   );
 }

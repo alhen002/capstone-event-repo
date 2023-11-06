@@ -1,4 +1,4 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 import Image from "next/image";
 import getDate from "@/lib/getDate";
 import Map from "./Map";
@@ -15,11 +15,11 @@ import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
 import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
-import Star from "./ui/icons/StarIcon";
+import Star from "./icons/StarIcon";
 import Label from "./ui/Label";
 import Input from "@/components/form/Input";
 
-import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon";
+import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 
 const AddressAutofill = dynamic(
   () => import("@mapbox/search-js-react").then((mod) => mod.AddressAutofill),
@@ -38,6 +38,7 @@ const StyledContainer = styled.div`
   background-color: var(--primary);
   border-radius: 0.75rem;
   overflow: hidden;
+  margin: 1rem;
 `;
 const StyledImageContainer = styled.div`
   max-width: 36rem;
@@ -67,11 +68,15 @@ const StyledContentBox = styled.div`
   flex-wrap: wrap;
   row-gap: 0.75rem;
   justify-content: space-between;
-  ${props => props.$right && css`justify-content: flex-end; column-gap: 0.25rem;`}
+  ${(props) =>
+    props.$right &&
+    css`
+      justify-content: flex-end;
+      column-gap: 0.25rem;
+    `}
   width: 100%;
   padding-inline: 0.5rem;
   margin-bottom: 1.5rem;
-
 `;
 const StyledContentGrid = styled.div`
   display: grid;
@@ -107,20 +112,23 @@ const StyledFieldSet = styled.fieldset`
   row-gap: 1rem;
   gap: 2rem;
   justify-content: space-between;
-  ${props => props.$right && css`justify-content: flex-end; column-gap: 0.25rem;`}
+  ${(props) =>
+    props.$right &&
+    css`
+      justify-content: flex-end;
+      column-gap: 0.25rem;
+    `}
   width: 100%;
   padding-inline: 0.5rem;
   margin-bottom: 1.5rem;
   border: none;
-  
-`
+`;
 const StyledFieldContainer = styled.div`
-display: flex;
-flex-direction: column;
-row-gap: 0.25rem;
-min-width: ${(props) => (props.$full ? "100%" : "")};
-`
-
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+  min-width: ${(props) => (props.$full ? "100%" : "")};
+`;
 
 const StyledInput = styled.input`
   font-size: 1rem;
@@ -138,10 +146,9 @@ const TitleInput = styled.textarea`
   font-weight: 600;
   font-style: italic;
   border-bottom: 1px solid var(--text-on-primary);
-  resize:none;
+  resize: none;
   overflow: hidden;
-  
-`
+`;
 const StyledSelect = styled.select`
   display: inline-flex;
   color: var(--text-on-primary);
@@ -249,150 +256,165 @@ export default function EventDetail({ event = {} }) {
             <StyledImageContainer>
               <ArrowLeftIcon onClick={() => router.back()}>Back</ArrowLeftIcon>
               <StyledHeaderImage
-                src={event.cover.url}
+                src={event?.cover?.url}
                 alt={event.title}
                 fill={true}
               />
-              {isAttending ? (
-                <Star onClick={handleToggleAttending} variant="filled" />
-              ) : (
-                <Star onClick={handleToggleAttending} />
+              {session?.id && (
+                <button>
+                  {isAttending ? (
+                    <Star onClick={handleToggleAttending} variant="filled" />
+                  ) : (
+                    <Star onClick={handleToggleAttending} />
+                  )}
+                </button>
               )}
             </StyledImageContainer>
-              {isOwner && <StyledContentBox $right>
-                <Button edit onClick={() => setIsEditMode(true)}>Edit</Button>
-                 <Button trash onClick={handleDelete}>Delete</Button>
-              </StyledContentBox>}
-              <StyledContentBox>
-                <Paragraph size="large">{event.city}</Paragraph>
+            {isOwner && (
+              <StyledContentBox $right>
+                <Button edit onClick={() => setIsEditMode(true)}>
+                  Edit
+                </Button>
+                <Button trash onClick={handleDelete}>
+                  Delete
+                </Button>
+              </StyledContentBox>
+            )}
+            <StyledContentBox>
+              <Paragraph size="large">{event.city}</Paragraph>
 
-                {event.attendingUsers.length > 0 && (
-                  <AttendingUsersPreview
-                    attendingUsers={event.attendingUsers}
-                  />
-                )}
-                <SubHeading>{event.title}</SubHeading>
-                <Label>{event.category}</Label>
-              </StyledContentBox>
-              <StyledContentGrid>
-                <StyledThirdHeading>Start</StyledThirdHeading>
-                <StyledThirdHeading>End</StyledThirdHeading>
-                <Paragraph>{`${startDay}. ${startMonth} ${startYear}, ${startTime}`}</Paragraph>
-                <Paragraph>{`${endDay}. ${endMonth} ${endYear}, ${endTime}`}</Paragraph>
-                <StyledThirdHeading>Location</StyledThirdHeading>
-                <Paragraph left>
-                  {event.address}
-                  <br />
-                  {event.postalCode} {event.city}
-                  <br />
+              {event.attendingUsers.length > 0 && (
+                <AttendingUsersPreview attendingUsers={event.attendingUsers} />
+              )}
+              <SubHeading>{event.title}</SubHeading>
+              <Label>{event.category}</Label>
+            </StyledContentBox>
+            <StyledContentGrid>
+              <StyledThirdHeading>Start</StyledThirdHeading>
+              <StyledThirdHeading>End</StyledThirdHeading>
+              <Paragraph>{`${startDay}. ${startMonth} ${startYear}, ${startTime}`}</Paragraph>
+              <Paragraph>{`${endDay}. ${endMonth} ${endYear}, ${endTime}`}</Paragraph>
+              <StyledThirdHeading>Location</StyledThirdHeading>
+              <Paragraph left>
+                {event.address}
+                <br />
+                {event.postalCode} {event.city}
+                <br />
                 {event.country}
-                </Paragraph>
-              </StyledContentGrid>
-              <StyledContentBox>
-                <StyledThirdHeading>Description</StyledThirdHeading>
-                <Paragraph>{event.description}</Paragraph>
-              </StyledContentBox>
+              </Paragraph>
+            </StyledContentGrid>
+            <StyledContentBox>
+              <StyledThirdHeading>Description</StyledThirdHeading>
+              <Paragraph>{event.description}</Paragraph>
+            </StyledContentBox>
           </>
         ) : (
           // ab hier ist das styling für den edit mode
           <StyledForm onSubmit={handleSubmit}>
             <StyledImageContainer>
               <StyledHeaderImage
-                src={event.cover.url}
+                src={event?.cover?.url}
                 alt={event.title}
                 fill={true}
               />
             </StyledImageContainer>
 
-            {isOwner && <StyledContentBox $right>
-              <Button type="submit" save >Save</Button>
-              <Button cancel onClick={() => setIsEditMode(false)}>Cancel</Button>
-            </StyledContentBox>}
+            {isOwner && (
+              <StyledContentBox $right>
+                <Button type="submit" save>
+                  Save
+                </Button>
+                <Button cancel onClick={() => setIsEditMode(false)}>
+                  Cancel
+                </Button>
+              </StyledContentBox>
+            )}
             <StyledFieldSet>
-              <StyledFieldContainer ><StyledLabel htmlFor="title">Title</StyledLabel>
-                <TitleInput id="title" defaultValue={event.title} name="title" /></StyledFieldContainer>
-              <StyledFieldContainer><StyledLabel htmlFor="category">Category</StyledLabel>
-              <StyledSelect
-                id="category"
-                defaultValue={event.category}
-                name="category"
-              >
-                <option value=""> --Please pick a category-- </option>
-                <option value="Nightlife & Clubs">Nightlife & Clubs</option>
-                <option value="Culture & Arts">Culture & Arts</option>
-                <option value="Activities & Games">Activities & Games</option>
-                <option value="Live Shows"> Live Shows</option>
-                <option value="Community Meet-up">Community Meet-up</option>
-              </StyledSelect></StyledFieldContainer>
+              <StyledFieldContainer>
+                <StyledLabel htmlFor="title">Title</StyledLabel>
+                <TitleInput
+                  id="title"
+                  defaultValue={event.title}
+                  name="title"
+                />
+              </StyledFieldContainer>
+              <StyledFieldContainer>
+                <StyledLabel htmlFor="category">Category</StyledLabel>
+                <StyledSelect
+                  id="category"
+                  defaultValue={event.category}
+                  name="category"
+                >
+                  <option value=""> --Please pick a category-- </option>
+                  <option value="Nightlife & Clubs">Nightlife & Clubs</option>
+                  <option value="Culture & Arts">Culture & Arts</option>
+                  <option value="Activities & Games">Activities & Games</option>
+                  <option value="Live Shows"> Live Shows</option>
+                  <option value="Community Meet-up">Community Meet-up</option>
+                </StyledSelect>
+              </StyledFieldContainer>
             </StyledFieldSet>
             <StyledFieldSet>
               <StyledFieldContainer>
-              <StyledLabel htmlFor="date">
-                Start
-              </StyledLabel>
-              <StyledInput
-                id="date"
-                $short
-                type="datetime-local"
-                defaultValue={startDateString}
-                name="startDateTime"
-              /></StyledFieldContainer>
-              <StyledFieldContainer>
-              <StyledLabel htmlFor="date">
-                End
-              </StyledLabel>
-              <StyledInput
-                $short
-                id="date"
-                type="datetime-local"
-                defaultValue={endDateString}
-                name="endDateTime"
-              />
-                </StyledFieldContainer>
-              <StyledFieldContainer>
-            <StyledLabel htmlFor="address">
-              Location
-            </StyledLabel>
-              <AddressAutofill
-                accessToken={mapboxAccessToken}
-                onRetrieve={handleRetrievedAutofill}
-              >
+                <StyledLabel htmlFor="date">Start</StyledLabel>
                 <StyledInput
-                  id="address"
-                  defaultValue={event.address}
-                  name="address"
+                  id="date"
+                  $short
+                  type="datetime-local"
+                  defaultValue={startDateString}
+                  name="startDateTime"
                 />
-              </AddressAutofill>
-              <StyledInput
-                id="city"
-                defaultValue={event.city}
-                name="city"
-                autoComplete="address-level2"
-              />
-              <StyledInput
-                id="postalCode"
-                name="postalCode"
-                defaultValue={event.postalCode}
-                autoComplete="postal-code"
-              />
-           <StyledInput
-              id="country"
-              defaultValue={event.country}
-              name="country"
-              autoComplete="country-name"
-            />
+              </StyledFieldContainer>
+              <StyledFieldContainer>
+                <StyledLabel htmlFor="date">End</StyledLabel>
+                <StyledInput
+                  $short
+                  id="date"
+                  type="datetime-local"
+                  defaultValue={endDateString}
+                  name="endDateTime"
+                />
+              </StyledFieldContainer>
+              <StyledFieldContainer>
+                <StyledLabel htmlFor="address">Location</StyledLabel>
+                <AddressAutofill
+                  accessToken={mapboxAccessToken}
+                  onRetrieve={handleRetrievedAutofill}
+                >
+                  <StyledInput
+                    id="address"
+                    defaultValue={event.address}
+                    name="address"
+                  />
+                </AddressAutofill>
+                <StyledInput
+                  id="city"
+                  defaultValue={event.city}
+                  name="city"
+                  autoComplete="address-level2"
+                />
+                <StyledInput
+                  id="postalCode"
+                  name="postalCode"
+                  defaultValue={event.postalCode}
+                  autoComplete="postal-code"
+                />
+                <StyledInput
+                  id="country"
+                  defaultValue={event.country}
+                  name="country"
+                  autoComplete="country-name"
+                />
               </StyledFieldContainer>
             </StyledFieldSet>
             <StyledFieldSet>
               <StyledFieldContainer $full>
-            <StyledLabel htmlFor="description">
-              Description
-            </StyledLabel><StyledTextarea
-
-              id="description"
-              name="description"
-              defaultValue={event.description}
-            />
+                <StyledLabel htmlFor="description">Description</StyledLabel>
+                <StyledTextarea
+                  id="description"
+                  name="description"
+                  defaultValue={event.description}
+                />
               </StyledFieldContainer>
             </StyledFieldSet>
           </StyledForm>
@@ -404,4 +426,3 @@ export default function EventDetail({ event = {} }) {
     </>
   );
 }
-

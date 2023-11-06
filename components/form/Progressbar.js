@@ -7,7 +7,7 @@ const ProgressBarSegment = styled.div`
   background-color: ${(props) => {
     switch (props.$color) {
       case "green":
-        return "var(--bright-green)";
+        return "var(--primary)";
       case "mid-grey":
         return "var(--mid-grey)";
       default:
@@ -23,9 +23,10 @@ const ProgressBarContainer = styled.div`
   justify-content: center;
   max-width: 36rem;
   margin: auto;
+  padding-inline: 2rem;
 `;
 
-export default function ProgressBar({  currentStep }) {
+export default function ProgressBar({ currentStep }) {
   return (
     <ProgressBarContainer>
       <ProgressBarSegment

@@ -76,7 +76,6 @@ export default function FileInput({ handleUpload, required }) {
   async function handleDelete(event) {
     setCover(null);
   }
-
   return (
     <StyledContainer>
       <StyledLabel htmlFor="cover" id="coverLabel">
@@ -110,7 +109,7 @@ export default function FileInput({ handleUpload, required }) {
             alt="new-cover-image"
             src={cover.url}
             fill={true}
-            quality={30}
+            quality={15}
           />
         )}
       </ImageContainer>

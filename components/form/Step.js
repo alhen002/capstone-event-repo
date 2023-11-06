@@ -4,6 +4,7 @@ import Button from "../Button";
 const StyledForm = styled.form`
   margin-top: 3rem;
   margin-inline: auto;
+  padding-inline: 2rem;
   max-width: 36rem;
   display: ${(props) => {
     switch (props.$display) {
@@ -16,16 +17,13 @@ const StyledForm = styled.form`
     }
   }};
 `;
-
 const StyledFieldSet = styled.fieldset`
   border: none;
 `;
-
 const StyledLegend = styled.legend`
   font-size: 2rem;
   color: var(--primary);
 `;
-
 const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -44,7 +42,6 @@ export default function Step({
     event.preventDefault();
     handleNext();
   }
-
   return (
     <StyledForm onSubmit={handleSubmit} $display={isVisible}>
       <StyledFieldSet>
