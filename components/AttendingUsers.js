@@ -3,12 +3,14 @@ import Image from "next/image";
 
 const AttendingUsersContainer = styled.div`
   display: flex;
+  min-width: 35px;
 `;
 const StyledPreviewImage = styled(Image)`
   object-fit: cover;
   border-radius: 30px;
-  border: solid 2px #f5f289;
+  margin-left: -0.5rem;
   background: #f5f289;
+  display: inline-block;
 `;
 
 export default function AttendingUsersPreview({ attendingUsers }) {

@@ -7,7 +7,7 @@ import Error from "./Error";
 import useFilters from "@/hooks/useFilters";
 import ResetButton from "./ResetButton";
 import { getURLParams } from "@/lib/utils";
-
+import Paragraph from "./ui/Paragraph";
 const StyledSection = styled.section`
   margin-inline: auto;
   max-width: 36rem;
@@ -55,7 +55,9 @@ export default function EventList({
         />
       ))}
       {!events?.length ? (
-        <p>Sorry, no events found.</p>
+        <StyledSection>
+          <Paragraph color="accent">Sorry, no events found.</Paragraph>
+        </StyledSection>
       ) : (
         <>
           <StyledSection>

@@ -26,15 +26,16 @@ const StyledParagraph = styled.p`
   }};
   ${(props) => sizes[props.$size]}
   grid-column: ${(props) => (props.$left ? "1 / 1" : "")};
+  min-width: ${(props) => (props.$full ? "100%" : "")};
 `;
 
 StyledParagraph.defaultProps = {
   size: "medium",
 };
 
-export default function Paragraph({ children, size, left, color }) {
+export default function Paragraph({ children, size, left, color, full }) {
   return (
-    <StyledParagraph $left={left} $size={size} $color={color}>
+    <StyledParagraph $left={left} $full={full} $size={size} $color={color}>
       {children}
     </StyledParagraph>
   );

@@ -96,6 +96,11 @@ export default function EventCard({ event = {}, mutate }) {
     (user) => user === session?.id
   );
 
+  const { title, city, cover } = event;
+
+  const computedTitle =
+    title?.length > 25 ? `${title.substring(0, 25)}...` : title;
+
   async function handleToggleAttending() {
     await toggleAttending(event._id);
     mutate();
@@ -105,14 +110,14 @@ export default function EventCard({ event = {}, mutate }) {
     <StyledEventCard>
       <StyledEventCardImageContainer>
         {session?.id && (
-          <button onClick={handleToggleAttending}>
+          <span onClick={handleToggleAttending}>
             {isAttending ? <Star variant={"filled"} /> : <Star />}
-          </button>
+          </span>
         )}
 
         <StyledEventCardImage
-          src={event?.cover?.url}
-          alt={event.title.toLowerCase()}
+          src={cover?.url}
+          alt={title.toLowerCase()}
           quality={50}
           fill={true}
         />
@@ -120,10 +125,10 @@ export default function EventCard({ event = {}, mutate }) {
       <Link href={`/events/${event._id}`}>
         <StyledEventCardTextContainer>
           <StyledInfoContainer>
-            <StyledEventCardCity>{event.city}</StyledEventCardCity>
+            <StyledEventCardCity>{city}</StyledEventCardCity>
             <StyledEventCardDate>{`${day}. ${month}`}</StyledEventCardDate>
           </StyledInfoContainer>
-          <StyledEventCardTitle>{event.title}</StyledEventCardTitle>
+          <StyledEventCardTitle>{computedTitle}</StyledEventCardTitle>
           <ChevronRight />
         </StyledEventCardTextContainer>
       </Link>
