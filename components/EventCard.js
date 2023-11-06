@@ -90,6 +90,7 @@ const StyledStarIcon = styled(StarIcon)`
 
 export default function EventCard({ event = {}, mutate }) {
   const { day, month } = getDate(event.startDateTime);
+
   const { data: session } = useSession();
 
   const isAttending = event?.attendingUsers?.some(

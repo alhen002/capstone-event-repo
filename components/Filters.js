@@ -86,7 +86,7 @@ export default function FilterBar({ onChange, filters, type, reset }) {
                 >
                   {category.name}
                 </Button>
-              ))}{" "}
+              ))}
               <ResetButton reset={reset}>Reset</ResetButton>
             </StyledCategoryBox>
           </>

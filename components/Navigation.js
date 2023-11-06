@@ -4,8 +4,7 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import Greeting from "./Greeting";
-import MenuToggle from "./MenuToggle";
+import GitHub from "./icons/GitHubIcon";
 
 const StyledContainer = styled.div`
   background: var(--background);
@@ -85,11 +84,12 @@ export default function Navigation({ handleMenuClose, menuOpen }) {
           )}
           {!session?.user ? (
             <Button
+              github
               onClick={() => {
                 signIn("github");
               }}
             >
-              login with github
+              login
             </Button>
           ) : (
             <Button onClick={() => signOut()}>logout</Button>

@@ -25,7 +25,7 @@ const ImageContainer = styled.div`
 `;
 const StyledImage = styled(Image)`
   object-fit: cover;
-  z-index: -1;
+  z-index: 1;
 `;
 
 const StyledParagraph = styled.p`
@@ -52,7 +52,6 @@ const StyledInput = styled.input`
   background-color: var(--background);
   width: 100%;
 `;
-
 const StyledLabel = styled.label`
   color: var(--text-accent);
   font-size: 1rem;
@@ -76,6 +75,7 @@ export default function FileInput({ handleUpload, required }) {
   async function handleDelete(event) {
     setCover(null);
   }
+
   return (
     <StyledContainer>
       <StyledLabel htmlFor="cover" id="coverLabel">
@@ -96,20 +96,16 @@ export default function FileInput({ handleUpload, required }) {
           <StyledParagraph>Upload a cover image</StyledParagraph>
         )}
         {cover && (
-          <Button
-            style={{ position: "absolute", zIndex: "99" }}
-            variant="delete"
-            onClick={handleDelete}
-          >
+          <Button variant="delete" onClick={handleDelete}>
             Remove
           </Button>
         )}
         {cover && (
           <StyledImage
             alt="new-cover-image"
-            src={cover.url}
+            src={cover?.url}
             fill={true}
-            quality={15}
+            quality={30}
           />
         )}
       </ImageContainer>
