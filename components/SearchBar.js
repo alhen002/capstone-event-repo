@@ -18,7 +18,7 @@ const StyledForm = styled.form`
 const SearchBarContainer = styled.div`
   place-self: center;
   align-self: center;
-  grid-column: 2 /4;
+  grid-column: 2 / d4;
 `;
 
 const StyledSearchInput = styled.input`
@@ -44,6 +44,7 @@ export default function SearchBar({ handleToggleSearch, handleSearchClose }) {
     event.preventDefault();
     router.push(`/events/search?q=${inputValue}`);
     setInputValue("");
+    handleSearchClose();
   }
 
   return (
