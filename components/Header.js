@@ -5,7 +5,8 @@ import Navigation from "./Navigation";
 import MenuToggle from "./MenuToggle";
 import { useSession } from "next-auth/react";
 import SearchBar from "./SearchBar";
-
+import Button from "./Button";
+import SearchIcon from "./icons/Search";
 const StyledHeader = styled.header`
   position: ${(props) => (props.$menuOpen ? "fixed" : "relative")};
   display: grid;
@@ -19,6 +20,12 @@ const StyledHeader = styled.header`
   height: 80px;
   background: var(--background);
   transition: 300ms;
+`;
+
+const StyledSearchButton = styled(Button)`
+  place-self: center;
+  align-self: center;
+  grid-column: 3;
 `;
 
 const LogoWrapper = styled.div`
@@ -75,12 +82,16 @@ export default function Header() {
             <Link href="/">Hi {session?.user.name}</Link>
           </StyledText>
         )}
-
-        <SearchBar
-          handleToggleSearch={handleToggleSearch}
-          handleSearchClose={handleSearchClose}
-          searchOpen={searchOpen}
-        />
+        {searchOpen ? (
+          <SearchBar
+            handleToggleSearch={handleToggleSearch}
+            handleSearchClose={handleSearchClose}
+          />
+        ) : (
+          <StyledSearchButton variant="none" onClick={handleToggleSearch}>
+            <SearchIcon />
+          </StyledSearchButton>
+        )}
       </StyledHeader>
       {menuOpen && (
         <Navigation handleMenuClose={handleMenuClose} menuOpen={menuOpen} />
