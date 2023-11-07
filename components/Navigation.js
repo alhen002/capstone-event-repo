@@ -4,8 +4,7 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
-import GitHub from "./icons/GitHubIcon";
-
+import { animated, useSpring } from "react-spring";
 const StyledContainer = styled.div`
   background: var(--background);
   z-index: 90;
@@ -47,15 +46,17 @@ const StyledLink = styled(Link)`
   text-decoration-color: ${(props) =>
     props.$active ? "var(--primary)" : "var(--black)"};
 `;
-
 export default function Navigation({ handleMenuClose, menuOpen }) {
   const router = useRouter();
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
-
+  const springs = useSpring({
+    from: { y: -100 },
+    to: { y: 0 },
+  });
   return (
     <>
-      <StyledContainer>
+      <StyledContainer as={animated.div} style={{ ...springs }}>
         <StyledNavigation>
           <StyledLink href="/" $active={router.pathname === "/"}>
             <div onClick={handleMenuClose}>home</div>
