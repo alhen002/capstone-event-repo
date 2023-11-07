@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from "react";
+import { useState } from "react";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -27,14 +27,20 @@ const StyledInput = styled.input`
   width: 100%;
 `;
 
-export default function Input({ label, name, type, required, min, autoComplete, handleSetAllData }) {
+export default function Input({
+  label,
+  name,
+  type,
+  required,
+  min,
+  autoComplete,
+  handleSetAllData,
+}) {
   const [value, setValue] = useState("");
 
   function handleChange(event) {
     setValue(event.target.value);
-    handleSetAllData(
-      {[name]: event.target.value}
-    )
+    handleSetAllData({ [name]: event.target.value });
   }
   return (
     <StyledContainer>

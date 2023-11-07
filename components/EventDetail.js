@@ -1,24 +1,23 @@
 import styled, { css } from "styled-components";
 import Image from "next/image";
-import getDate from "@/lib/getDate";
+
 import Map from "./Map";
 import { useState } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { updateEvent } from "@/lib/api";
 import { deleteEvent } from "@/lib/api";
+import getDate from "@/lib/getDate";
+import { toggleAttending } from "@/lib/api";
 import Button from "components/Button.js";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { toggleAttending } from "@/lib/api";
 import AttendingUsersPreview from "./AttendingUsers";
 import toast from "react-hot-toast";
 import SubHeading from "./ui/SubHeading";
 import Paragraph from "./ui/Paragraph";
 import Star from "./icons/StarIcon";
 import Label from "./ui/Label";
-import Input from "@/components/form/Input";
-
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 
 const AddressAutofill = dynamic(
@@ -261,13 +260,13 @@ export default function EventDetail({ event = {} }) {
                 fill={true}
               />
               {session?.id && (
-                <button>
+                <span>
                   {isAttending ? (
                     <Star onClick={handleToggleAttending} variant="filled" />
                   ) : (
                     <Star onClick={handleToggleAttending} />
                   )}
-                </button>
+                </span>
               )}
             </StyledImageContainer>
             {isOwner && (
@@ -305,7 +304,7 @@ export default function EventDetail({ event = {} }) {
             </StyledContentGrid>
             <StyledContentBox>
               <StyledThirdHeading>Description</StyledThirdHeading>
-              <Paragraph>{event.description}</Paragraph>
+              <Paragraph full>{event.description}</Paragraph>
             </StyledContentBox>
           </>
         ) : (

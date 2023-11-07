@@ -60,23 +60,23 @@ const StyledEventCardTitle = styled.h2`
 
 export default function EventPreview({ event }) {
   const { day, month } = getDate(event?.startDateTime);
-
+  const { cover, title, city } = event;
   return (
     <StyledEventCard>
       <StyledEventCardImageContainer>
         <StyledEventCardImage
-          src={event?.cover?.url}
-          alt={event?.title?.toLowerCase()}
+          src={cover?.url}
+          alt={title?.toLowerCase()}
           quality={50}
           fill={true}
         />
       </StyledEventCardImageContainer>
       <StyledEventCardTextContainer>
         <StyledInfoContainer>
-          <StyledEventCardCity>{event.city}</StyledEventCardCity>
+          <StyledEventCardCity>{city}</StyledEventCardCity>
           <StyledEventCardDate>{`${day}. ${month}`}</StyledEventCardDate>
         </StyledInfoContainer>
-        <StyledEventCardTitle>{event.title}</StyledEventCardTitle>
+        <StyledEventCardTitle>{title}</StyledEventCardTitle>
       </StyledEventCardTextContainer>
     </StyledEventCard>
   );

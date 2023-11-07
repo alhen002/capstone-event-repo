@@ -47,7 +47,7 @@ export default function CategoryHighlight({ category, mutate }) {
           </HeadlineContainer>
         </Link>
         <CardContainer>
-          {category.events.slice(0, 3).map((event) => (
+          {category.events.slice(0, 5).map((event) => (
             <EventCard key={event._id} event={event} mutate={mutate} />
           ))}
         </CardContainer>
