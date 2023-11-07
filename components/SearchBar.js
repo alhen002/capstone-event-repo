@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import SearchIcon from "./icons/Search";
+import { animated, useSpring } from "react-spring";
 
 const StyledForm = styled.form`
   display: flex;
@@ -17,11 +18,11 @@ const StyledForm = styled.form`
 const SearchBarContainer = styled.div`
   place-self: center;
   align-self: center;
-  grid-column: 3;
+  grid-column: 2 /4;
 `;
 
 const StyledSearchInput = styled.input`
-  transition: 2s;
+  width: 80px;
 `;
 
 const StyledSearchButton = styled(Button)`
@@ -30,13 +31,14 @@ const StyledSearchButton = styled(Button)`
   grid-column: 3;
 `;
 
-export default function SearchBar({
-  handleToggleSearch,
-  handleSearchClose,
-  searchOpen,
-}) {
+export default function SearchBar({ handleToggleSearch, handleSearchClose }) {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
+
+  const springs = useSpring({
+    from: { width: "0%" },
+    to: { width: "100%" },
+  });
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -45,31 +47,25 @@ export default function SearchBar({
   }
 
   return (
-    <>
-      {searchOpen ? (
-        <SearchBarContainer>
-          <StyledForm onSubmit={handleSubmit}>
-            <label>
-              <StyledSearchInput
-                placeholder="Search..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-            </label>
-            {inputValue.length == 0 ? (
-              <StyledSearchButton onClick={handleToggleSearch}>
-                <SearchIcon />
-              </StyledSearchButton>
-            ) : (
-              <StyledSearchButton variant="confirm">Search</StyledSearchButton>
-            )}
-          </StyledForm>
-        </SearchBarContainer>
-      ) : (
-        <StyledSearchButton onClick={handleToggleSearch} variant="none">
-          <SearchIcon />
-        </StyledSearchButton>
-      )}
-    </>
+    <SearchBarContainer>
+      <StyledForm onSubmit={handleSubmit}>
+        <label>
+          <StyledSearchInput
+            as={animated.input}
+            style={{ ...springs }}
+            placeholder="Search..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+        </label>
+        {inputValue.length == 0 ? (
+          <StyledSearchButton onClick={handleToggleSearch}>
+            <SearchIcon />
+          </StyledSearchButton>
+        ) : (
+          <StyledSearchButton variant="confirm">Search</StyledSearchButton>
+        )}
+      </StyledForm>
+    </SearchBarContainer>
   );
 }
